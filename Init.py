@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# __init__.py
+# Init.py
 #
 #******************************************************************************
 #* Cosmetic Thread 3D Work Bench - tools for cosmetic threads creation        *
@@ -25,9 +25,9 @@
 #******************************************************************************
 
 """
-This file is necessary for macro version. This file is called when FreeCAD starts.
-
-But I change the approach to workbench, so this file is obsolete now and I left
-it here just for the case I want to go back to macro version someday...
+Add a couple of things used even when FreeCAD works in console mode.
+This file is called when FreeCAD starts.
 """
+
+import cosmeticthread3d
 
