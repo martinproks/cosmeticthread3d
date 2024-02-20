@@ -29,5 +29,12 @@ Add a couple of things used even when FreeCAD works in console mode.
 This file is called when FreeCAD starts.
 """
 
+__title__   = 'Cosmetic Thread 3D Work Bench'
+__author__  = 'Martin Prokš'
+__License__ = 'LGPL 2.1'
+__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+
+
+
 import cosmeticthread3d
 

@@ -34,6 +34,11 @@ of the work. The third one when the workbench is deactivated, so you can
 remove things if needed.
 """
 
+__title__   = 'Cosmetic Thread 3D Work Bench'
+__author__  = 'Martin Prokš'
+__License__ = 'LGPL 2.1'
+__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+
 class CosmeticThread3D (Workbench):
     """
     CosmeticThread3D Workbench definition class
