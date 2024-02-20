@@ -42,6 +42,12 @@ import os
 import FreeCAD as App
 import Part
 
+___title__   = 'Cosmetic Thread 3D Work Bench'
+__author__  = 'Martin Prokš'
+__License__ = 'LGPL 2.1'
+__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+
+
 
 def get_module_path():
     """Returns the current module path."""

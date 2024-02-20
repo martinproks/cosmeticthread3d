@@ -82,20 +82,6 @@ The parameters should be:
 
 # Implementation
 
-## Plan of work
-
-- Create PythonFeatures (or PythonDocumentGroup) `CosmeticThread3DInternal` and `CosmeticThread3DExternal`. May be it could be good idea to simplify the names to `ct3di` and `ct3de`. These PythonFeatures should hold the geometry and parameters of the cosmetic threads. The helix and shells should be modeled in local coord. 0,0,0 and in Z axis and attached to point and direction.
-
-- Create small workbench `CosmeticThread3D` with GUI functions `cosmetic thread 3d internal` and `cosmetic thread 3d external`. May be it could be good idea to simplify the names to `ct3di` and `ct3de`.
-
-## Workbench installation
-
-Find path to Your FreeCAD `Mod` directory. You can find it by typing command `App.getUserAppDataDir()` in the [Python console](https://wiki.freecad.org/Python_console "Python console").
-
-Create folder `Mod/CosmeticThread3D` and copy there all data from this git repository.
-
-Restart FreeCAD and the workbench should be there.
-
 ## File structure - what is what
 
 - `icons/` - icon folder...
@@ -122,17 +108,27 @@ Workbench for just two buttons does not make sense in the end. But for the devel
 
 # How to use it
 
+## Workbench installation
+
+Find path to Your FreeCAD `Mod` directory. You can find it by typing command `App.getUserAppDataDir()` in the [Python console](https://wiki.freecad.org/Python_console "Python console").
+
+Create folder `Mod/CosmeticThread3D` and copy there all data from this git repository.
+
+Restart FreeCAD and the workbench should be there.
+
 This tools are at early stage of developement. It is just presentation of the current stage and the direction it is heading. It is not usable for real work yet.
 
-1. Install cosmeticthread3d work bench
+## Current usage
 
-2. Open some document (`tests_and_examples/testing_model.FCStd` ideally)
+1. Open some document (`tests_and_examples/testing_model.FCStd` ideally)
 
-3. Press Internal cosmetic thread button (from menu or from tool buttons). It should create M10 feature with geometry at 0,0,0 oriented into Z direction.
+2. Press Internal cosmetic thread button (from menu or from tool buttons). It should create cone and attachment editor. It represent thread orientation.
 
-4. There is no GUI yet for selecting of the circle/hole, thread type and dimensions.
+3. Select hole edge (circle) as first attachment and select "Concentric".
 
-5. You can edit attachement of the feature and see how it works. Attache it to some circle please and reverse direction if necessary.
+4. If You need, flip side orientation.
+
+5. There is no GUI yet for selecting of the thread type and dimensions. It will create M10 thread for now.
 
 6. You can check parameters of the feature.
 
@@ -144,7 +140,7 @@ Feedback is welcome.
 
 1. There is just `internal cosmetic thread` function under developement yet. The `external cosmetic thread` will be equivalent, I just start with the internal for now.
 
-2. It is based on a Part objects now. It means, there will be problems with PartDesign patterns - not usable. But the threaded holes are wery offen arranged into patterns (linear, rectangular or polar). It means there will be good idea to rework it to the PartDesign approach. But there will be PartDesign specific problems too, I'm afraid.
+2. It is based on a Part objects now. It means, there will be problems with PartDesign patterns - not usable. But the threaded holes are wery offen arranged into patterns (linear, rectangular or polar). It means there will be good idea to rework it to the PartDesign approach. But there will be PartDesign specific problems too.
 
 3. There is no GUI and no thread type and dimension selection menu. Yes, it's under developement, I'm learning how to do it right now.
 
@@ -157,3 +153,5 @@ Feedback is welcome.
 7. Hole to the thread will be not correct representation.
 
 8. Icons are uggly. Who cares? It is just start of developement, icons are the last thing I care.
+
+9. TechDraw problems. On the normal view, the thread major diameter is shown. It is not exactly according to ISO drawing standards, there is whole circle shown. Bigger problem is ViewSections. The ViewSections showns just bodies, faces and their edges are ignored. It means, the cosmetic thread is not shown on ViewSections at this moment.

@@ -36,6 +36,13 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import cosmeticthread3d
 
+__title__   = 'Cosmetic Thread 3D Work Bench'
+__author__  = 'Martin Prokš'
+__License__ = 'LGPL 2.1'
+__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+
+
+
 class ct3di_menu_command():
     """internal cosmetic thread - GUI command"""
 
@@ -44,7 +51,6 @@ class ct3di_menu_command():
         ct3d_path = cosmeticthread3d.get_module_path()
         App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.ct3di_menu_command() - icon to svg\n")
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'internal_thread.xpm')
-
         Menu_text  = "internal cosmetic thread"
         Tool_tip   = "Create cosmetic thread geometry and parameters"
         return {"Pixmap"  : Pixmap_icon,
@@ -54,14 +60,35 @@ class ct3di_menu_command():
 
     def Activated(self):
         """Button pressed - do something here"""
-        doc = App.ActiveDocument
-        if not doc:
+        self.doc = App.ActiveDocument
+        if not self.doc:
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
             #
-            # Call the geometry creation function and give there all necessary parameters
-            cosmeticthread3d.internal('', '')
+            # Create an temporary object - arrow/cone for example
+            self.obj_tmp = self.doc.addObject("Part::Cone","ThreadOrientation")
+            self.obj_tmp.Label = "ThreadOrientation"
+            self.doc.recompute()
+            self.obj_tmp.Radius1 = '2.0 mm'
+            self.obj_tmp.Radius2 = '0.0 mm'
+            self.obj_tmp.Height  = '5.0 mm'
+            #
+            # Object Attachement...
+            # Probem - The cone dimensions are fixed. But the hole dimensions could
+            #          be from approx. 1 mm to infinity. It could be good, if the
+            #          obj_tmp can react (scale) to the selected geometry in the
+            #          Object Attachment. But I do not know how to do it - how
+            #          to detect selected geometry and estimate the scale
+            #
+            from AttachmentEditor import Commands
+            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
+            # The command editAttachment is not modal. It means, script is continuing.
+            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            #   CANCEL = delete temporary object, remove the conus and ends.
+            #   APPLY  = just update the conus position.
+            #   OK     = go far to the cosmetic thread creation
+        # end if
         #
         return
 
@@ -69,6 +96,38 @@ class ct3di_menu_command():
         """Here you can define if the command must be active or not (greyed)
         if certain conditions are met or not. This function is optional."""
         return True
+
+    def eA_ok(self):
+        """Reaction to editAttachment - OK has been pressed"""
+        # Thread parameters definition
+        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.eA_ok() - thread parameters definition...\n")
+        #
+        # Cosmetic thread creation
+        obj = cosmeticthread3d.internal('', '')
+        #
+        # Attachement apply from temporary object to cosmetic thread
+        obj.AttachmentOffset = self.obj_tmp.AttachmentOffset
+        obj.MapReversed      = self.obj_tmp.MapReversed 
+        obj.Support          = self.obj_tmp.Support
+        obj.MapPathParameter = self.obj_tmp.MapPathParameter
+        obj.MapMode          = self.obj_tmp.MapMode
+        obj.recompute()
+        #
+        # Remove geometry from document
+        self.doc.removeObject(self.obj_tmp.Name)
+        #
+        return
+
+    def eA_cancel(self):
+        """Reaction to editAttachment - CANCEL has been pressed """
+        # Remove geometry from document
+        self.doc.removeObject(self.obj_tmp.Name)
+        return
+
+    def eA_apply(self):
+        """Reaction to editAttachment - APPLY has been pressed """
+        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.eA_apply() - estimate hole diameter and scale cone\n")
+        return
 
 Gui.addCommand("internal_cosmetic_thread", ct3di_menu_command())
 
@@ -79,15 +138,15 @@ class ct3de_menu_command():
 
     def GetResources(self):
         ct3d_path = cosmeticthread3d.get_module_path()
-        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.ct3de_menu_command() - icon to svg\n")
+        App.Console.PrintMessage('*** FIXME *** cosmeticthread3d_Gui.ct3de_menu_command() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
 
-        Menu_text  = "external cosmetic thread"
-        Tool_tip   = "Create cosmetic thread geometry and parameters"
-        return {"Pixmap"  : Pixmap_icon,
+        Menu_text  = 'external cosmetic thread'
+        Tool_tip   = 'Create cosmetic thread geometry and parameters'
+        return {'Pixmap'  : Pixmap_icon,
                 # "Accel"   : "Shift+S", # a default shortcut (optional)
-                "MenuText": Menu_text,
-                "ToolTip" : Tool_tip}
+                'MenuText': Menu_text,
+                'ToolTip' : Tool_tip}
 
     def Activated(self):
         """Button pressed - do something here"""
