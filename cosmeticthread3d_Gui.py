@@ -24,6 +24,13 @@
 #* USA                                                                        *
 #******************************************************************************
 
+__title__   = 'Cosmetic Thread 3D Work Bench'
+__author__  = 'Martin Prokš'
+__License__ = 'LGPL 2.1'
+__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+
+
+
 """
 Vocabulary:
 ct3d   - Cosmetic Thread 3D
@@ -35,11 +42,7 @@ import os
 import FreeCAD as App
 import FreeCADGui as Gui
 import cosmeticthread3d
-
-__title__   = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
-__License__ = 'LGPL 2.1'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+import MetricCoarse1st
 
 
 
@@ -70,7 +73,7 @@ class ct3di_menu_command():
             self.obj_tmp = self.doc.addObject("Part::Cone","ThreadOrientation")
             self.obj_tmp.Label = "ThreadOrientation"
             self.doc.recompute()
-            self.obj_tmp.Radius1 = '2.0 mm'
+            self.obj_tmp.Radius1 = '1.0 mm'
             self.obj_tmp.Radius2 = '0.0 mm'
             self.obj_tmp.Height  = '5.0 mm'
             #
@@ -99,11 +102,28 @@ class ct3di_menu_command():
 
     def eA_ok(self):
         """Reaction to editAttachment - OK has been pressed"""
+        #
+        lst_threads = MetricCoarse1st.MetricCoarse1st()
+        #
+        ct3di_params = cosmeticthread3d.ct3di_params_class()
+        ct3di_params.name = lst_threads.name[0]
+        ct3di_params.D_nominal = lst_threads.D_nominal[0]
+        ct3di_params.pitch = lst_threads.pitch[0]
+        ct3di_params.D = lst_threads.D[0]
+        ct3di_params.D1 = lst_threads.D1[0]
+        ct3di_params.d3 = lst_threads.d3[0]
+        ct3di_params.D_drill = lst_threads.D_drill[0]
+        ct3di_params.tolerance = '6H'
+        ct3di_params.roughness = 'Ra 1.6'
+        ct3di_params.length = 1.5
+        ct3di_params.length_trought = False
+        ct3di_params.length_tol = "H17"
+
         # Thread parameters definition
         App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.eA_ok() - thread parameters definition...\n")
         #
         # Cosmetic thread creation
-        obj = cosmeticthread3d.internal('', '')
+        obj = cosmeticthread3d.internal('', ct3di_params)
         #
         # Attachement apply from temporary object to cosmetic thread
         obj.AttachmentOffset = self.obj_tmp.AttachmentOffset
@@ -126,7 +146,7 @@ class ct3di_menu_command():
 
     def eA_apply(self):
         """Reaction to editAttachment - APPLY has been pressed """
-        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.eA_apply() - estimate hole diameter and scale cone\n")
+        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.eA_apply() - estimate hole diameter and scale cone.\n")
         return
 
 Gui.addCommand("internal_cosmetic_thread", ct3di_menu_command())
