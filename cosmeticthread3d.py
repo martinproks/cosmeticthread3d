@@ -44,7 +44,7 @@ import Part
 
 ___title__   = 'Cosmetic Thread 3D Work Bench'
 __author__  = 'Martin Prokš'
-__License__ = 'LGPL 2.1'
+__License__ = 'LGPL-2.1-or-later'
 __url__     = 'https://github.com/martinproks/cosmeticthread3d'
 
 
@@ -78,12 +78,12 @@ class ct3di_params_class:
         self.tolerance      = "6H"     # [string]     Hole thread tolerance (empty string allowed)
         self.roughness      = "Ra 1.6" # [string]     Hole thread roughness (empty string allowed)
         self.length         = 18.0     # [float - mm] Thread length
-        self.length_trought = False    # [Bool]       Default value No. If Yes, thread does not have end shell.
+        self.length_through = False    # [Bool]       Default value No. If Yes, thread does not have end shell.
         self.length_tol     = "H17"    # [string]     Length tolerance (empty string allowed). For example "H17" or "0/+1.8" or ""
 
 
 
-def internal(name='', ct3di_params=''):
+def internal(name='CosmeticThread3DInternal', ct3di_params=''):
     """
     internal(name, ct3di_params) -> obj
 
@@ -118,29 +118,29 @@ class CosmeticThread3DInternal:
         """
         self.Type = 'CosmeticThread3DInternal'
         obj.Proxy = self
-        # Description - Read Only
+        # Description - Read and Write
         obj.addProperty('App::PropertyString', 'Description', 'Base', \
-                        'Thread designation.', 1).Description \
+                        'Thread designation.', 0).Description \
                         = ct3di_params.name
-        # D nominal - Read Only
+        # D nominal - Read and Write
         obj.addProperty('App::PropertyLength', 'D_nominal', 'ct3di_data', \
-                        'Nominal diameter.', 1).D_nominal \
+                        'Nominal diameter.', 0).D_nominal \
                         = ct3di_params.D_nominal
-        # Pitch - Read only
+        # Pitch - Read and Write
         obj.addProperty('App::PropertyLength', 'pitch', 'ct3di_data', \
-                        'Thread pitch.', 1).pitch \
+                        'Thread pitch.', 0).pitch \
                         = ct3di_params.pitch
-        # Major diameter - Read only
+        # Major diameter - Read and Write
         obj.addProperty('App::PropertyLength', 'D', 'ct3di_data', \
-                        'Thread major diameter.', 1).D \
+                        'Thread major diameter.', 0).D \
                         = ct3di_params.D
-        # Minor diameter - Read only
+        # Minor diameter - Read and Write
         obj.addProperty('App::PropertyLength', 'D1', 'ct3di_data', \
-                        'Thread minor diameter.', 1).D1 \
+                        'Thread minor diameter.', 0).D1 \
                         = ct3di_params.D1
-        # Pre drilled recomendation - Read Only
+        # Pre drilled recomendation - Read and Write
         obj.addProperty('App::PropertyLength', 'D_drill', 'ct3di_data', \
-                        'Recommended pre-driled hole diameter.', 1).D_drill \
+                        'Recommended pre-driled hole diameter.', 0).D_drill \
                         = ct3di_params.D_drill
         # Thread tolerance - Read and Write
         obj.addProperty('App::PropertyString', 'tolerance', 'ct3di_data', \
@@ -155,9 +155,9 @@ class CosmeticThread3DInternal:
                         'Thread length.', 0).length \
                         = ct3di_params.length
         # Is the thread throught? - Read and Write
-        obj.addProperty('App::PropertyBool', 'length_trought', 'ct3di_data', \
-                        'Thread is trought whole body?', 0).length_trought \
-                        = ct3di_params.length_trought
+        obj.addProperty('App::PropertyBool', 'length_through', 'ct3di_data', \
+                        'Thread is through whole body?', 0).length_through \
+                        = ct3di_params.length_through
         # Length tolerance - Read and Write
         obj.addProperty('App::PropertyString', 'length_tol', 'ct3di_data', \
                         'Length tolerance. For example "H17" or "0/+1.8" or just nothing.', 0).length_tol \
@@ -198,7 +198,7 @@ class CosmeticThread3DInternal:
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-        if obj.length_trought == True:
+        if obj.length_through == True:
             # Thread is going throught whole body - there is no ending anulus
             r = Part.makeCompound([h, r0])
         else:
@@ -336,7 +336,7 @@ class ct3de_params_class:
         self.tolerance      = "6g"     # [string]     Hole thread tolerance (empty string allowed)
         self.roughness      = "Ra 1.6" # [string]     Hole thread roughness (empty string allowed)
         self.length         = 18.0     # [float - mm] Thread length
-        self.length_trought = False    # [Bool]       Default value No. If Yes, thread does not have end shell.
+        self.length_through = False    # [Bool]       Default value No. If Yes, thread does not have end shell.
         self.length_tol     = "H17"    # [string]     Length tolerance (empty string allowed). For example "H17" or "0/+1.8" or ""
         # metric_thread_params.attachement ???????       # Attachement to hole starting point and direction....
 

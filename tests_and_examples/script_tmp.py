@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
+__title__   = 'Cosmetic Thread 3D Work Bench'
+__author__  = 'Martin Prokš'
+__License__ = 'LGPL-2.1-or-later'
+__url__     = 'https://github.com/martinproks/cosmeticthread3d'
 
 # import aaa
 # from importlib import reload
-#
 # reload(aaa)
+
+# import cosmeticthread3d_Gui
+# from importlib import reload
 # reload(cosmeticthread3d_Gui)
+# a = cosmeticthread3d_Gui.ct3di_menu_command
+# cosmeticthread3d_Gui.ct3di_menu_command.Activated(a)
 #
 # a_object = ct3d.internal()
 # 

@@ -26,7 +26,7 @@
 
 __title__   = 'Cosmetic Thread 3D Work Bench'
 __author__  = 'Martin Prokš'
-__License__ = 'LGPL 2.1'
+__License__ = 'LGPL-2.1-or-later'
 __url__     = 'https://github.com/martinproks/cosmeticthread3d'
 
 

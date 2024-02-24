@@ -36,8 +36,10 @@ remove things if needed.
 
 __title__   = 'Cosmetic Thread 3D Work Bench'
 __author__  = 'Martin Prokš'
-__License__ = 'LGPL 2.1'
+__License__ = 'LGPL-2.1-or-later'
 __url__     = 'https://github.com/martinproks/cosmeticthread3d'
+
+
 
 class CosmeticThread3D (Workbench):
     """
@@ -65,7 +67,7 @@ class CosmeticThread3D (Workbench):
                      "external_cosmetic_thread"]
         #
         # creates a new toolbar with your commands
-        self.appendToolbar("Cosmetic_Thread_3D", self.list)
+        # self.appendToolbar("Cosmetic_Thread_3D", self.list) # toolbar not necessary, this workbench is for developement and testing of tools
         #
         # creates a new menu
         self.appendMenu("Cosmetic Thread 3D", self.list)
@@ -75,6 +77,11 @@ class CosmeticThread3D (Workbench):
 
     def Activated(self):
         """This function is executed whenever the workbench is activated"""
+        # at least for the time I'm developing it...
+        import cosmeticthread3d_Gui
+        from importlib import reload
+        reload(cosmeticthread3d_Gui)
+
         return
 
     def Deactivated(self):
