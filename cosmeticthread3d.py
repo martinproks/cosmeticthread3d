@@ -80,12 +80,12 @@ class ct3di_params_class:
         self.length         = 18.0     # [float - mm] Thread length
         self.length_trought = False    # [Bool]       Default value No. If Yes, thread does not have end shell.
         self.length_tol     = "H17"    # [string]     Length tolerance (empty string allowed). For example "H17" or "0/+1.8" or ""
-        # metric_thread_params.attachement ???????       # Attachement to hole starting point and direction....
 
 
-def internal(obj, obj_name=''):
+
+def internal(name='', ct3di_params=''):
     """
-    obj = internal(name, ct3di_params) -> obj
+    internal(name, ct3di_params) -> obj
 
     creates Cosmetic Thread 3D Internal and returns obj
 
@@ -93,17 +93,18 @@ def internal(obj, obj_name=''):
     ct3di_params - [ct3di_params_class] parameters of the cosmetic thread
     """
 
-    # First, define parameters for the thread... It should came from GUI, but now for starting
-    # of the developement I put something constant here temporary.
-    ct3di_params = ct3di_params_class()
+    obj = ''
+    
+    if ct3di_params == '':
+        App.Console.PrintError('internal(name, ct3di_params) - Check ct3di_params .\n')
+    else:
+        if name == '':
+            name = ct3di_params.name
+        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        CosmeticThread3DInternal(obj, ct3di_params)
+        ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        App.ActiveDocument.recompute()
 
-    if obj_name == '':
-        obj_name = ct3di_params.name
-
-    obj = App.ActiveDocument.addObject('Part::FeaturePython', obj_name)
-    CosmeticThread3DInternal(obj, ct3di_params)
-    ViewProviderCosmeticThread3DInternal(obj.ViewObject)
-    App.ActiveDocument.recompute()
     return obj
 
 
