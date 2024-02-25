@@ -67,12 +67,12 @@ class ct3d_threadUI(QtGui.QDialog):
     # https://doc.qt.io/qt-5/qcheckbox.html
     # https://doc.qt.io/qt-5/qcombobox.html
     # https://doc.qt.io/qt-5/qlineedit.html
-    def __init__(self, obj, Dhole, lst_threads):
+    def __init__(self, obj, Dobj, lst_threads):
         # the obj ans lst_threads pointers are copied to internal variables accessible from other methods
         self.s_obj = obj
-        self.s_Dhole = Dhole
+        self.s_Dobj = Dobj # diameter of hole or shaft - it depends on obj if it has parameters d3 (external) or D1 (internal)
         self.s_lst_threads = lst_threads
-        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.ct3d_threadUI.__init__() - Dhole -> thread estimation - s_lstCurrentIndex\n")
+        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.ct3d_threadUI.__init__() - Dobj -> thread estimation - s_lstCurrentIndex\n")
         self.s_lstCurrentIndex = 0
         #
         super(ct3d_threadUI, self).__init__()
@@ -334,10 +334,18 @@ class ct3d_threadUI(QtGui.QDialog):
 class arrow_direction():
     """Arrow / direction symbol
     service class for tools for create/manipulate it"""
+
     def __init__(self):
+        """__init__() - internal initialization function."""
+        #
+        # empty
         return
     
     def create():
+        """create() -> obj
+
+        Create directional symbol / arrow / cone and return textlink (obj) at it."""
+        #
         obj = App.ActiveDocument.addObject("Part::Cone","ThreadOrientation")
         obj.Label = "ThreadOrientation"
         obj.Radius1 = '1.0 mm'
@@ -347,6 +355,11 @@ class arrow_direction():
         return obj
     
     def scale(obj, hole_diameter):
+        """scale(obj, hole_diameter)
+
+        Scale directional symbol / arrow / cone (textlink obj) to be visually adequate to hole diameter.
+        """
+        #
         obj.Radius1 = 0.25 * hole_diameter
         obj.Radius2 = 0.0
         obj.Height  = 2.5 * obj.Radius1
@@ -354,21 +367,45 @@ class arrow_direction():
         return
 
 
+
+# +-------------------------------------------------------+
+# |                                                       |
+# | Copy attachent() - service functions                  |
+# |                                                       |
+# +-------------------------------------------------------+
+def copy_attachment(obj_from, obj_to):
+    """copy_attachment(obj_from, obj_to)
     
+    Internal function.
+    """
+    #
+    obj_to.AttachmentOffset = obj_from.AttachmentOffset
+    obj_to.MapReversed      = obj_from.MapReversed 
+    obj_to.Support          = obj_from.Support
+    obj_to.MapPathParameter = obj_from.MapPathParameter
+    obj_to.MapMode          = obj_from.MapMode
+    #
+    return
+
+
+
 # +--------------------------------------------------------+
 # |                                                        |
 # | Command for UI creating internal thread - Part version |
 # |                                                        |
 # +--------------------------------------------------------+
 class ct3di_menu_command():
-    """Command internal cosmetic thread - UI.
+    """Command UI - cosmetic thread internal.
     This command is called from workbench menu or tool banner.
     """
 
     def GetResources(self):
+        """Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip."""
+        #
         # The name of a svg file available in the resources
         ct3d_path = cosmeticthread3d.get_module_path()
-        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.ct3di_menu_command() - icon to svg\n")
+        App.Console.PrintMessage("*** FIXME *** ct3di_menu_command.GetResources() - icon to svg\n")
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'internal_thread.xpm')
         Menu_text  = "internal cosmetic thread"
         Tool_tip   = "Create cosmetic thread geometry and parameters"
@@ -378,7 +415,10 @@ class ct3di_menu_command():
                 "ToolTip" : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do something here"""
+        """Button pressed - do the working action here - call UI components..."""
+        #
+        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
+        # The button is pressed NOW and now You need to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -401,24 +441,22 @@ class ct3di_menu_command():
         """Here you can define if the command must be active or not (greyed)
         if certain conditions are met or not. This function is optional."""
         result = True
-        # if not self.doc:
-        #     result = False
         return result
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed"""
+        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_params = cosmeticthread3d.ct3di_params_class()
 
-        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.eA_ok() - estimate hole diameter Dhole\n")
-        Dhole = 8.5
+        App.Console.PrintMessage("*** FIXME *** ct3di_menu_command.eA_ok() - estimate hole diameter D_hole\n")
+        D_hole = 8.5
         ct3d_params.name = lst_threads.name[0]
         ct3d_params.D_nominal = lst_threads.D_nominal[0]
         ct3d_params.pitch = lst_threads.pitch[0]
         ct3d_params.D = lst_threads.D[0]
         ct3d_params.D1 = lst_threads.D1[0]
-        ct3d_params.d3 = lst_threads.d3[0]
+        # ct3d_params.d3 = lst_threads.d3[0] # internal thread doesn't have this parameter
         ct3d_params.D_drill = lst_threads.D_drill[0]
         ct3d_params.tolerance = '6H'
         ct3d_params.roughness = 'Ra 1.6'
@@ -429,18 +467,15 @@ class ct3di_menu_command():
         # Cosmetic thread creation
         obj = cosmeticthread3d.internal('CosmeticThread3DInternal', ct3d_params)
         # Attachement apply from temporary object to cosmetic thread
-        obj.AttachmentOffset = self.obj_tmp.AttachmentOffset
-        obj.MapReversed      = self.obj_tmp.MapReversed 
-        obj.Support          = self.obj_tmp.Support
-        obj.MapPathParameter = self.obj_tmp.MapPathParameter
-        obj.MapMode          = self.obj_tmp.MapMode
+        copy_attachment(self.obj_tmp, obj)
         obj.recompute()
-        # Remove cone geometry from document
+        #
+        # Remove temporary geometry (directional arrow / cone) from document
         self.doc.removeObject(self.obj_tmp.Name)
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3d_threadUI(obj, Dhole, lst_threads)
+        form = ct3d_threadUI(obj, D_hole, lst_threads)
         form.exec_()
         if form.result == userCancelled:
             self.doc.removeObject(obj.Name)
@@ -450,7 +485,7 @@ class ct3di_menu_command():
         # clean up...
         del(lst_threads)
         del(ct3d_params)
-        del(Dhole)
+        del(D_hole)
         del(obj)
 
         return
@@ -464,8 +499,8 @@ class ct3di_menu_command():
     def eA_apply(self):
         """Reaction to editAttachment - APPLY has been pressed """
         App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.eA_apply() - estimate hole diameter and scale cone.\n")
-        hole_diameter = 8.5 # FIXME - estimate it correctly...
-        arrow_direction.scale(self.obj_tmp, hole_diameter)
+        D_hole = 8.5 # FIXME - estimate it correctly...
+        arrow_direction.scale(self.obj_tmp, D_hole)
         return
 
 Gui.addCommand("internal_cosmetic_thread", ct3di_menu_command())
@@ -483,10 +518,13 @@ class ct3de_menu_command():
     """
   
     def GetResources(self):
+        """Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip."""
+        #
+        # The name of a svg file available in the resources
         ct3d_path = cosmeticthread3d.get_module_path()
-        App.Console.PrintMessage('*** FIXME *** cosmeticthread3d_Gui.ct3de_menu_command() - icon to svg\n')
+        App.Console.PrintMessage('*** FIXME *** ct3de_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
-
         Menu_text  = 'external cosmetic thread'
         Tool_tip   = 'Create cosmetic thread geometry and parameters'
         return {'Pixmap'  : Pixmap_icon,
@@ -495,16 +533,91 @@ class ct3de_menu_command():
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do something here"""
-        # Make GUI part of the creation
-        # xxxxxxxxxxx
-        # Call the geometry creation function and give there all necessary parameters
-        cosmeticthread3d.external()
+        """Button pressed - do the working action here - call UI components..."""
+        #
+        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
+        # The button is pressed NOW and now You need to know active document...
+        self.doc = App.ActiveDocument
+        if not self.doc:
+            App.Console.PrintError('No Active Document.\n')
+        else:
+            # Make GUI part of the creation
+            # Create an temporary object - arrow/cone for example
+            self.obj_tmp = arrow_direction.create()
+            # Object Attachement...
+            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
+            # The command editAttachment is not modal. It means, script is continuing.
+            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            #   CANCEL = delete temporary object, remove the conus and ends.
+            #   APPLY  = just update the conus position and dimensions.
+            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+        # end if
+        #
         return
 
     def IsActive(self):
         """Here you can define if the command must be active or not (greyed)
         if certain conditions are met or not. This function is optional."""
         return True
+
+    def eA_ok(self):
+        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+
+        lst_threads = MetricCoarse1st.MetricCoarse1st()
+        ct3d_params = cosmeticthread3d.ct3de_params_class()
+
+        App.Console.PrintMessage("*** FIXME *** ct3de_menu_command.eA_ok() - estimate shaft diameter D_shaft\n")
+        D_shaft = 10
+        ct3d_params.name = lst_threads.name[0]
+        ct3d_params.D_nominal = lst_threads.D_nominal[0]
+        ct3d_params.pitch = lst_threads.pitch[0]
+        ct3d_params.D = lst_threads.D[0]
+        # ct3d_params.D1 = lst_threads.D1[0] # external thread doesn't have this parameter
+        ct3d_params.d3 = lst_threads.d3[0]
+        # ct3d_params.D_drill = lst_threads.D_drill[0] # external thread doesn't have this parameter
+        ct3d_params.tolerance = '6g'
+        ct3d_params.roughness = 'Ra 1.6'
+        ct3d_params.length = 1.5 * ct3d_params.D_nominal
+        ct3d_params.length_through = False
+        ct3d_params.length_tol = "H17"
+
+        # Cosmetic thread creation
+        obj = cosmeticthread3d.external('CosmeticThread3DExternal', ct3d_params)
+        # Attachement apply from temporary object to cosmetic thread
+        copy_attachment(self.obj_tmp, obj)
+        obj.recompute()
+        #
+        # Remove temporary geometry (directional arrow / cone) from document
+        self.doc.removeObject(self.obj_tmp.Name)
+        #
+        # UI thread parameters estimation.
+        # UI IS modal. It means code is waiting to UI close.
+        form = ct3d_threadUI(obj, D_shaft, lst_threads)
+        form.exec_()
+        if form.result == userCancelled:
+            self.doc.removeObject(obj.Name)
+        # elif form.result == userOk:
+        #    obj.recompute()
+        #
+        # clean up...
+        del(lst_threads)
+        del(ct3d_params)
+        del(D_shaft)
+        del(obj)
+
+        return
+
+    def eA_cancel(self):
+        """Reaction to editAttachment - CANCEL has been pressed """
+        # Remove geometry from document
+        self.doc.removeObject(self.obj_tmp.Name)
+        return
+
+    def eA_apply(self):
+        """Reaction to editAttachment - APPLY has been pressed """
+        App.Console.PrintMessage("*** FIXME *** ct3de_menu_command.eA_apply() - estimate D_shaft and scale cone.\n")
+        D_shaft = 10 # FIXME - estimate it correctly...
+        arrow_direction.scale(self.obj_tmp, D_shaft)
+        return
 
 Gui.addCommand("external_cosmetic_thread", ct3de_menu_command())
