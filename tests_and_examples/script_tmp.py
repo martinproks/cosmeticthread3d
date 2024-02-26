@@ -16,6 +16,9 @@ __url__     = 'https://github.com/martinproks/cosmeticthread3d'
 #
 # a_object = ct3d.internal()
 # 
+# $ while true; do gnome-screenshot -b -p ; sleep 0.9; done
+
+
 
 import FreeCAD as App
 import Part

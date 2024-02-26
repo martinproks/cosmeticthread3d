@@ -49,9 +49,10 @@ class CosmeticThread3D (Workbench):
     def __init__(self):
         import os
         import cosmeticthread3d
-        self.__class__.MenuText = "Cosmetic Thread 3D"
-        self.__class__.ToolTip = "Create cosmetic thread at model space - holes and rods"
+        self.__class__.MenuText = 'Cosmetic Thread 3D'
+        self.__class__.ToolTip = 'Create cosmetic thread at model space - holes and rods'
         self.__class__.Icon = os.path.join(cosmeticthread3d.get_module_path(), 'icons', 'CosmeticThread3D_WB.png')
+        return None
         
     def Initialize(self):
         """This function is executed when the workbench is first activated.
@@ -63,17 +64,18 @@ class CosmeticThread3D (Workbench):
         import cosmeticthread3d_Gui
         #
         # a list of command names created in the line above
-        self.list = ["internal_cosmetic_thread",
-                     "external_cosmetic_thread"]
+        self.list = ['internal_cosmetic_thread_p0',
+                     'external_cosmetic_thread_p0']
         #
         # creates a new toolbar with your commands
         # self.appendToolbar("Cosmetic_Thread_3D", self.list) # toolbar not necessary, this workbench is for developement and testing of tools
         #
         # creates a new menu
-        self.appendMenu("Cosmetic Thread 3D", self.list)
+        self.appendMenu('Cosmetic Thread 3D', self.list)
         #
         # appends a submenu to an existing menu
         # self.appendMenu(["An existing Menu", "My submenu"], self.list)
+        return None
 
     def Activated(self):
         """This function is executed whenever the workbench is activated"""
@@ -81,12 +83,11 @@ class CosmeticThread3D (Workbench):
         import cosmeticthread3d_Gui
         from importlib import reload
         reload(cosmeticthread3d_Gui)
-
-        return
+        return None
 
     def Deactivated(self):
         """This function is executed whenever the workbench is deactivated"""
-        return
+        return None
 
     def ContextMenu(self, recipient):
         """This function is executed whenever the user right-clicks
@@ -94,12 +95,13 @@ class CosmeticThread3D (Workbench):
         # "recipient" will be either "view" or "tree"
         # add commands to the context menu
         # self.appendContextMenu("My commands", self.list)
-        return
+        return None
 
     def GetClassName(self): 
         # This function is mandatory if this is a full Python workbench
         # This is not a template, the returned string should be exactly
         #      "Gui::PythonWorkbench"
-        return "Gui::PythonWorkbench"
+        return 'Gui::PythonWorkbench'
        
 Gui.addWorkbench(CosmeticThread3D())
+
