@@ -16,7 +16,7 @@ FreeCAD tool - cosmetic thread for 3D geometry - experimental.
 
 This tool should make 3D representation and important parameters of cosmetic threads (internal and external) for basic metric standard threads to the FreeCAD.
 
-Goal of this macro is not bring final version of the cosmetic threads, but explore ways how to do it and prepare background for more stable and better codded solution. This macro is just first approach.
+Goal of this macro is not bring final version of the cosmetic threads, but explore ways how to do it and prepare background for more stable and better codded solution. This macro is just first approach. But still, it could be helpfull I hope.
 
 I'm not a programmer, I'm a learning python/FreeCAD techniques and I'm fighting with GIT - a lot. Be patient with this code and with me please.
 
@@ -34,27 +34,29 @@ This tool should support at least standard metric threads with coarse pitch. It 
 
 ## Visual representation
 
-For 3D representation it is good to see for threaded parts:
+There will be more types of Cosmetic Threads for tests and comparison what type is/are the best for further implementation.
 
-- Length of the thread
-
-- Small and big diameter of the thread
-
-- Helix with appropriate pitch
+* Type 0 - for 3D representation it is good to see for threaded parts:
+  
+  * Length of the thread.
+  
+  * Small and big diameter of the thread.
+  
+  * Helix with appropriate pitch.
 
 ## FreeCAD geometric and parameter representation
 
-Geometric representation should be for internal thread:
+- Type 0 - Internal thread geometric representation:
+  
+  * Shell of end of thread and shell of nominal diameter.
+  
+  * Helix (right handed) on the drilled hole diameter with thread pitch.
 
-* Shell of end of thread and shell of nominal diameter
-
-* Helix (right handed) on the drilled hole diameter with thread pitch.
-
-Geometric representation should be for external thread:
-
-- Shell of end of thread and shell of small diameter.
-
-- Helix (right handed) on nominal diameter with thread pitch.
+- Type 0 - External thread geometric representation:
+  
+  - Shell of end of thread and shell of small diameter.
+  
+  - Helix (right handed) on nominal diameter with thread pitch.
 
 The cosmetic thread geometry should be wrapped into one FreeCAD feature or object with parameters for possibility to advanced usage - for example for TechDraw.
 
@@ -100,7 +102,30 @@ The parameters should be:
 
 ## Notes to implementation
 
-The whole work is based on Part objects.
+There are more functions and classes for threads (at least it is planned).
+
+* P0 - Part version, type 0 of geometry representation.
+  The whole work is based on Part objects and it is dedicated to be used on Part geometry. Do not mix it with PartDesign, there are non-compatible problems.
+
+* P1 - Part version, type 1 of geometry representation.
+  (not implemented yet)
+  Simmilar as P0, but without the helix.
+
+* PD0 - PartDesign version, type 0 of geometry representation.
+  (not implemented yet)
+  Geometric identical or verry simmilar to P0.
+
+* PD1 - PartDesign version, type 1 of geometry representation.
+  (not implemented yet)
+  Simmilar as PD0, but without the helix.
+
+* PD2 - PartDesign version, type 2 of geometry representation.
+  (not implemented yet)
+  Multi-body geometry...
+
+* PD3 - PartDesign version, type 3 of geometry representation.
+  (not implemented yet)
+  Small circular grooves as visual thread indication.
 
 Workbench for just two buttons does not make sense in the end. But for the developement of the tools it is most probably the easyest way how to do it. Someday in the future it will be good idea to merge it with some existing and more general work bench - Part or PartDesign I think. Or merge it with some other thread oriented work bench?
 
@@ -128,9 +153,7 @@ This tools are at early stage of developement. It is just presentation of the cu
 
 4. If You need, flip side orientation.
 
-5. There is no GUI yet for selecting of the thread type and dimensions. It will create M10 thread for now.
-
-6. You can check parameters of the feature.
+5. You can check parameters of the feature.
 
 Feedback is welcome. 
 
@@ -138,20 +161,18 @@ Feedback is welcome.
 
 # Known troubles
 
-1. There is just `internal cosmetic thread` function under developement yet. The `external cosmetic thread` will be equivalent, I just start with the internal for now.
+1. It is based on a Part objects now (P0). It means, there will be problems with PartDesign patterns and PD objects generally. But the threaded holes are wery offen arranged into patterns (linear, rectangular or polar). It means there will be good idea to rework it to the PartDesign approach.
 
-2. It is based on a Part objects now. It means, there will be problems with PartDesign patterns - not usable. But the threaded holes are wery offen arranged into patterns (linear, rectangular or polar). It means there will be good idea to rework it to the PartDesign approach. But there will be PartDesign specific problems too.
+2. The UI is not finished yet - under developement. There are some ** FIXME ** reports in the console.
 
-3. There is no GUI and no thread type and dimension selection menu. Yes, it's under developement, I'm learning how to do it right now.
+3. It will work just for simple holes perpendicular to starting plane. If the starting plane will be under angle to the hole axis, it will be a little bit wrong 3d representation.
 
-4. It will work just for simple holes perpendicular to starting plane. If the starting plane will be under angle to the hole axis, it will be a little bit wrong 3d representation.
+4. Not plannar starting surface is not supported (at least yet). No threads to the cylindrical shape or spherical or general surface... Yeas there will be work-aroud with additional circles or datums or lines as hole axis, but again the final representation will be not exactly correct.
 
-5. Not plannar starting surface is not supported (at least yet). No threads to the cylindrical shape or spherical or general surface... Yeas there will be work-aroud with additional circles or datums or lines as hole axis, but again the final representation will be not exactly correct.
+5. These problems are common for thread end too.
 
-6. These problems are common for thread end too.
+6. Hole to the thread will be not correct representation.
 
-7. Hole to the thread will be not correct representation.
+7. Icons are uggly. Who cares? It is just start of developement, icons are the last thing I care.
 
-8. Icons are uggly. Who cares? It is just start of developement, icons are the last thing I care.
-
-9. TechDraw problems. On the normal view, the thread major diameter is shown. It is not exactly according to ISO drawing standards, there is whole circle shown. Bigger problem is ViewSections. The ViewSections showns just bodies, faces and their edges are ignored. It means, the cosmetic thread is not shown on ViewSections at this moment.
+8. TechDraw problems. On the normal view, the thread major diameter is shown. It is not exactly according to ISO drawing standards, there is whole circle shown. Bigger problem is ViewSections. The ViewSections showns just bodies, faces and their edges are ignored. It means, the cosmetic thread is not shown on ViewSections at this moment.
