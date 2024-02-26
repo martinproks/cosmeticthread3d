@@ -87,34 +87,40 @@ class ct3di_params_class:
         self.length         = 18.0     # [float - mm] Thread length
         self.length_through = False    # [Bool]       Default value No. If Yes, thread does not have end shell.
         self.length_tol     = "H17"    # [string]     Length tolerance (empty string allowed). For example "H17" or "0/+1.8" or ""
-
+        #
+        return None
 
 
 # +---------------------------------------------------------+
 # |                                                         |
-# | internal() - create internal thread object and geometry |
+# | internal_p0() - create internal thread object and geometry |
 # |                                                         |
 # +---------------------------------------------------------+
-def internal(name='CosmeticThread3DInternal', ct3di_params=''):
+def internal_p0(name='CosmeticThread3DInternal', ct3di_params=None, aPart=None):
     """
-    internal(name, ct3di_params) -> obj
+    internal_p0(name, ct3di_params, aPart) -> obj
 
-    It creates Cosmetic Thread 3D Internal and returns obj.
+    It creates Cosmetic Thread 3D Internal (Part version, type 0)
+    and returns obj.
+
     This function is mentioned to be used for object creation.
 
     name         - [string]             name of the object in the model tree
     ct3di_params - [ct3di_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
     """
 
-    obj = ''
-    
-    if ct3di_params == '':
-        App.Console.PrintError('internal(name, ct3di_params) - Check ct3di_params .\n')
+    obj = None
+
+    if ct3di_params == None:
+        App.Console.PrintError('internal(name, ct3di_params) - Check ctide_params\n')
     else:
-        if name == '':
+        if name == None:
             name = ct3di_params.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        CosmeticThread3DInternal(obj, ct3di_params)
+        if aPart != None:
+            aPart.addObject(obj)
+        CosmeticThread3DInternal_p0(obj, ct3di_params)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
         App.ActiveDocument.recompute()
 
@@ -124,13 +130,13 @@ def internal(name='CosmeticThread3DInternal', ct3di_params=''):
 
 # +---------------------------------------------------------+
 # |                                                         |
-# | CosmeticThread3DInternal class.                         |
+# | CosmeticThread3DInternal_p0 class.                      |
 # |                                                         |
 # | The geometry and all handlers are defined here.         |
 # |                                                         |
 # +---------------------------------------------------------+
-class CosmeticThread3DInternal:
-    """CosmeticThread3DInternal class
+class CosmeticThread3DInternal_p0:
+    """CosmeticThread3DInternal_p0 class
 
     The geometry and all handlers are defined here.
     Service function for thread creation is internal() above.
@@ -143,7 +149,7 @@ class CosmeticThread3DInternal:
         constructor of a CosmeticThread3DInternal class / internall function
         """
         #
-        self.Type = 'CosmeticThread3DInternal'
+        self.Type = 'CosmeticThread3DInternal_p0'
         obj.Proxy = self
         # Description - Read and Write
         obj.addProperty('App::PropertyString', 'Description', 'Base', \
@@ -191,6 +197,8 @@ class CosmeticThread3DInternal:
                         = ct3di_params.length_tol 
         # Attachement extension
         self.makeAttachable(obj)
+        #
+        return None
 
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
@@ -198,12 +206,14 @@ class CosmeticThread3DInternal:
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) #non-readonly non-hidden
+        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
+        return None
 
     def execute(self, obj):
         """
@@ -244,8 +254,8 @@ class CosmeticThread3DInternal:
         # And assotiate it to the 'obj'
         # *****************************
         obj.Shape = r
-        
-        return
+        #
+        return None
 
 
 
@@ -264,18 +274,19 @@ class ViewProviderCosmeticThread3DInternal:
         Set this object to the proxy object of the actual view provider
         """
         obj.Proxy = self
+        return None
 
     def attach(self, obj):
         """
         Setup the scene sub-graph of the view provider, this method is mandatory
         """
-        return
+        return None
 
     def updateData(self, fp, prop):
         """
         If a property of the handled feature has changed we have the chance to handle this here
         """
-        return
+        return None
 
     def getDisplayModes(self,obj):
         """
@@ -302,13 +313,12 @@ class ViewProviderCosmeticThread3DInternal:
         Print the name of the property that has changed
         """
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return
+        return None
 
     def getIcon(self):
         """
         Return the icon in XMP format which will appear in the tree view. This method is optional and if not defined a default icon is shown.
         """
-
         return """
         /* XPM */
         static char * aaa_xpm[] = {
@@ -380,6 +390,8 @@ class ct3de_params_class:
         self.length         = 18.0     # [float - mm] Thread length
         self.length_through = False    # [Bool]       Default value No. If Yes, thread does not have end shell.
         self.length_tol     = "H17"    # [string]     Length tolerance (empty string allowed). For example "H17" or "0/+1.8" or ""
+        #
+        return None
 
 
 
@@ -388,26 +400,31 @@ class ct3de_params_class:
 # | external() - create external thread object and geometry |
 # |                                                         |
 # +---------------------------------------------------------+
-def external(name='CosmeticThread3DExternal', ct3de_params=''):
+def external_p0(name='CosmeticThread3DExternal', ct3de_params=None, aPart=None):
     """
     external(name, ct3de_params) -> obj
 
-    creates Cosmetic Thread 3D External and returns obj.
+    creates Cosmetic Thread 3D External (Part version, type 0)
+    and returns obj.
+
     This function is mentioned to be used for object creation.
 
     name         - [string]             name of the object in the model tree
     ct3de_params - [ct3de_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
     """
 
-    obj = ''
+    obj = None
     
-    if ct3de_params == '':
+    if ct3de_params == None:
         App.Console.PrintError('internal(name, ct3de_params) - Check ct3de_params\n')
     else:
-        if name == '':
+        if name == None:
             name = ct3de_params.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        CosmeticThread3DExternal(obj, ct3de_params)
+        if aPart != None:
+            aPart.addObject(obj)
+        CosmeticThread3DExternal_p0(obj, ct3de_params)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
         App.ActiveDocument.recompute()
 
@@ -417,12 +434,12 @@ def external(name='CosmeticThread3DExternal', ct3de_params=''):
 
 # +---------------------------------------------------------+
 # |                                                         |
-# | CosmeticThread3DExternal class.                         |
+# | CosmeticThread3DExternal_p0 class.                      |
 # |                                                         |
 # | The geometry and all handlers are defined here.         |
 # |                                                         |
 # +---------------------------------------------------------+
-class CosmeticThread3DExternal:
+class CosmeticThread3DExternal_p0:
     def __init__(self, obj, ct3de_params):
         """
         __init__(obj, ct3de_params)
@@ -430,7 +447,7 @@ class CosmeticThread3DExternal:
         constructor of a CosmeticThread3DExternal class / internall function
         """
         
-        self.Type = 'CosmeticThread3DExternal'
+        self.Type = 'CosmeticThread3DExternal_p0'
         obj.Proxy = self
         # Description - Read and Write
         obj.addProperty('App::PropertyString', 'Description', 'Base', \
@@ -474,20 +491,24 @@ class CosmeticThread3DExternal:
                         = ct3de_params.length_tol 
         # Attachement extension
         self.makeAttachable(obj)
-
+        #
+        return None
+        
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
             obj.addExtension('Part::AttachExtensionPython')
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) #non-readonly non-hidden
-
+        #
+        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
+        return None
 
     def execute(self, obj):
         """
@@ -528,8 +549,8 @@ class CosmeticThread3DExternal:
         # And assotiate it to the 'obj'
         # *****************************
         obj.Shape = r
-
-        return
+        #
+        return None
 
 
 
@@ -548,18 +569,19 @@ class ViewProviderCosmeticThread3DExternal:
         Set this object to the proxy object of the actual view provider
         """
         obj.Proxy = self
+        return None
 
     def attach(self, obj):
         """
         Setup the scene sub-graph of the view provider, this method is mandatory
         """
-        return
+        return None
 
     def updateData(self, fp, prop):
         """
         If a property of the handled feature has changed we have the chance to handle this here
         """
-        return
+        return None
 
     def getDisplayModes(self,obj):
         """
@@ -586,7 +608,7 @@ class ViewProviderCosmeticThread3DExternal:
         Print the name of the property that has changed
         """
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return
+        return None
 
     def getIcon(self):
         """

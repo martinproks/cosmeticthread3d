@@ -77,6 +77,7 @@ class ct3d_threadUI(QtGui.QDialog):
         #
         super(ct3d_threadUI, self).__init__()
         self.initUI()
+        return None
 
     def initUI(self):
         self.result = userCancelled
@@ -104,7 +105,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label1a.setFont('Courier')
         self.label1a.move(30, y)
         self.w_D_nom = QtGui.QLineEdit(self)
-        self.w_D_nom.setInputMask("####.###")
+        self.w_D_nom.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
         self.w_D_nom.setText(str(self.s_lst_threads.D_nominal[i]))
         self.w_D_nom.setFixedWidth(65)
         self.w_D_nom.setReadOnly(True)
@@ -119,7 +120,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label2a.setFont('Courier')
         self.label2a.move(30, y)
         self.w_pitch = QtGui.QLineEdit(self)
-        self.w_pitch.setInputMask("####.###")
+        self.w_pitch.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
         self.w_pitch.setText(str(self.s_lst_threads.pitch[i]))
         self.w_pitch.setFixedWidth(65)
         self.w_pitch.setReadOnly(True)
@@ -134,7 +135,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label3a.setFont('Courier')
         self.label3a.move(30, y)
         self.w_D = QtGui.QLineEdit(self)
-        self.w_D.setInputMask("####.###")
+        self.w_D.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
         self.w_D.setText(str(self.s_lst_threads.D[i]))
         self.w_D.setFixedWidth(65)
         self.w_D.setReadOnly(True)
@@ -149,7 +150,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label4a.setFont('Courier')
         self.label4a.move(30, y)
         self.w_D1 = QtGui.QLineEdit(self)
-        self.w_D1.setInputMask("####.###")
+        self.w_D1.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
         self.w_D1.setText(str(self.s_lst_threads.D1[i]))
         self.w_D1.setFixedWidth(65)
         self.w_D1.setReadOnly(True)
@@ -164,7 +165,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label5a.setFont('Courier')
         self.label5a.move(30, y)
         self.w_d3 = QtGui.QLineEdit(self)
-        self.w_d3.setInputMask("####.###")
+        self.w_d3.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
         self.w_d3.setText(str(self.s_lst_threads.d3[i]))
         self.w_d3.setFixedWidth(65)
         self.w_d3.setReadOnly(True)
@@ -179,7 +180,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label6a.setFont('Courier')
         self.label6a.move(30, y)
         self.w_D_drill = QtGui.QLineEdit(self)
-        self.w_D_drill.setInputMask("####.###")
+        self.w_D_drill.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
         self.w_D_drill.setText(str(self.s_lst_threads.D_drill[i]))
         self.w_D_drill.setFixedWidth(65)
         self.w_D_drill.setReadOnly(True)
@@ -234,7 +235,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label10a.setFont('Courier')
         self.label10a.move(10, y)
         self.w_len = QtGui.QLineEdit(self)
-        self.w_len.setInputMask("####.###")
+        self.w_len.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
         self.w_len.setText(str(self.s_lst_threads.D_drill[i] * 1.5)) # something for start, why not Dx1.5
         self.w_len.setFixedWidth(65)
         self.w_len.setReadOnly(False)
@@ -276,6 +277,7 @@ class ct3d_threadUI(QtGui.QDialog):
         okButton.clicked.connect(self.onOk)
         okButton.move(260, y)
         self.show()
+        # return None
 
     def onPopupThreadSel(self, selectedText):
         # user selected some thread type, fill widgets by values from self.s_lst_threads
@@ -289,7 +291,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_D_drill.setText(str(self.s_lst_threads.D_drill[i]))
         #
         # Rest of the values are independent on thread selection
-        return
+        # return None
 
     def onApply(self):
         i = self.w_name.currentIndex()
@@ -311,18 +313,18 @@ class ct3d_threadUI(QtGui.QDialog):
         self.s_obj.length_tol  = self.w_len_tol.displayText() # do not remmove white chars - displayText
         #
         self.s_obj.recompute()
-        return
-        
+        # return None
+
     def onCancel(self):
         self.result = userCancelled
         self.close()
-        return
+        # return None
 
     def onOk(self):
         self.result = userOk
         self.onApply()
         self.close()
-        return
+        # return None
 
 
 
@@ -339,8 +341,8 @@ class arrow_direction():
         """__init__() - internal initialization function."""
         #
         # empty
-        return
-    
+        return None
+
     def create():
         """create() -> obj
 
@@ -351,9 +353,16 @@ class arrow_direction():
         obj.Radius1 = '1.0 mm'
         obj.Radius2 = '0.0 mm'
         obj.Height  = '2.5 mm'
+        #
+        # Move it into Active Part - if ActivePart exists
+        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
+        if aPart != None:
+            aPart.addObject(obj)
+        #
         obj.recompute()
+        #
         return obj
-    
+
     def scale(obj, hole_diameter):
         """scale(obj, hole_diameter)
 
@@ -364,7 +373,7 @@ class arrow_direction():
         obj.Radius2 = 0.0
         obj.Height  = 2.5 * obj.Radius1
         obj.recompute()
-        return
+        return None
 
 
 
@@ -385,7 +394,7 @@ def copy_attachment(obj_from, obj_to):
     obj_to.MapPathParameter = obj_from.MapPathParameter
     obj_to.MapMode          = obj_from.MapMode
     #
-    return
+    return None
 
 
 
@@ -394,8 +403,8 @@ def copy_attachment(obj_from, obj_to):
 # | Command for UI creating internal thread - Part version |
 # |                                                        |
 # +--------------------------------------------------------+
-class ct3di_menu_command():
-    """Command UI - cosmetic thread internal.
+class ct3di_p0_menu_command():
+    """Command UI - cosmetic thread internal - Part version - type 0.
     This command is called from workbench menu or tool banner.
     """
 
@@ -405,14 +414,14 @@ class ct3di_menu_command():
         #
         # The name of a svg file available in the resources
         ct3d_path = cosmeticthread3d.get_module_path()
-        App.Console.PrintMessage("*** FIXME *** ct3di_menu_command.GetResources() - icon to svg\n")
+        App.Console.PrintMessage('*** FIXME *** ct3di_p0_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'internal_thread.xpm')
-        Menu_text  = "internal cosmetic thread"
-        Tool_tip   = "Create cosmetic thread geometry and parameters"
-        return {"Pixmap"  : Pixmap_icon,
-                # "Accel"   : "Shift+S", # a default shortcut (optional)
-                "MenuText": Menu_text,
-                "ToolTip" : Tool_tip}
+        Menu_text  = 'internal cosmetic thread P0'
+        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 0)'
+        return {'Pixmap'  : Pixmap_icon,
+                # 'Accel'   : 'Shift+S', # a default shortcut (optional)
+                'MenuText': Menu_text,
+                'ToolTip' : Tool_tip}
 
     def Activated(self):
         """Button pressed - do the working action here - call UI components..."""
@@ -465,7 +474,8 @@ class ct3di_menu_command():
         ct3d_params.length_tol = "H17"
 
         # Cosmetic thread creation
-        obj = cosmeticthread3d.internal('CosmeticThread3DInternal', ct3d_params)
+        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
+        obj = cosmeticthread3d.internal_p0('CosmeticThread3DInternal', ct3d_params, aPart)
         # Attachement apply from temporary object to cosmetic thread
         copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -485,6 +495,7 @@ class ct3di_menu_command():
         # clean up...
         del(lst_threads)
         del(ct3d_params)
+        del(aPart)
         del(D_hole)
         del(obj)
 
@@ -498,12 +509,12 @@ class ct3di_menu_command():
 
     def eA_apply(self):
         """Reaction to editAttachment - APPLY has been pressed """
-        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.eA_apply() - estimate hole diameter and scale cone.\n")
+        App.Console.PrintMessage('*** FIXME *** cosmeticthread3d_Gui.eA_apply() - estimate hole diameter and scale cone.\n')
         D_hole = 8.5 # FIXME - estimate it correctly...
         arrow_direction.scale(self.obj_tmp, D_hole)
         return
 
-Gui.addCommand("internal_cosmetic_thread", ct3di_menu_command())
+Gui.addCommand('internal_cosmetic_thread_p0', ct3di_p0_menu_command())
 
 
 
@@ -512,8 +523,8 @@ Gui.addCommand("internal_cosmetic_thread", ct3di_menu_command())
 # | Command for UI creating external thread - Part version |
 # |                                                        |
 # +--------------------------------------------------------+
-class ct3de_menu_command():
-    """Command external cosmetic thread - UI.
+class ct3de_p0_menu_command():
+    """Command UI - cosmetic thread external - Part version - type 0.
     This command is called from workbench menu or tool banner.
     """
   
@@ -525,10 +536,10 @@ class ct3de_menu_command():
         ct3d_path = cosmeticthread3d.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3de_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
-        Menu_text  = 'external cosmetic thread'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters'
+        Menu_text  = 'external cosmetic thread P0'
+        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 0)'
         return {'Pixmap'  : Pixmap_icon,
-                # "Accel"   : "Shift+S", # a default shortcut (optional)
+                # 'Accel'   : 'Shift+S', # a default shortcut (optional)
                 'MenuText': Menu_text,
                 'ToolTip' : Tool_tip}
 
@@ -582,7 +593,8 @@ class ct3de_menu_command():
         ct3d_params.length_tol = "H17"
 
         # Cosmetic thread creation
-        obj = cosmeticthread3d.external('CosmeticThread3DExternal', ct3d_params)
+        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
+        obj = cosmeticthread3d.external_p0('CosmeticThread3DExternal', ct3d_params, aPart)
         # Attachement apply from temporary object to cosmetic thread
         copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -602,22 +614,24 @@ class ct3de_menu_command():
         # clean up...
         del(lst_threads)
         del(ct3d_params)
+        del(aPart)
         del(D_shaft)
         del(obj)
-
-        return
+        #
+        return None
 
     def eA_cancel(self):
         """Reaction to editAttachment - CANCEL has been pressed """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return
+        return None
 
     def eA_apply(self):
         """Reaction to editAttachment - APPLY has been pressed """
-        App.Console.PrintMessage("*** FIXME *** ct3de_menu_command.eA_apply() - estimate D_shaft and scale cone.\n")
+        App.Console.PrintMessage('*** FIXME *** ct3de_menu_command.eA_apply() - estimate D_shaft and scale cone.\n')
         D_shaft = 10 # FIXME - estimate it correctly...
         arrow_direction.scale(self.obj_tmp, D_shaft)
-        return
+        return None
 
-Gui.addCommand("external_cosmetic_thread", ct3de_menu_command())
+Gui.addCommand('external_cosmetic_thread_p0', ct3de_p0_menu_command())
+
