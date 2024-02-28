@@ -42,10 +42,10 @@ import os
 from PySide import QtCore, QtGui
 import FreeCAD as App
 import FreeCADGui as Gui
+import Part
 from AttachmentEditor import Commands
 import cosmeticthread3d
 import MetricCoarse1st
-
 
 
 # UI constants - results of modal dialogs
@@ -68,13 +68,55 @@ class ct3d_threadUI(QtGui.QDialog):
     # https://doc.qt.io/qt-5/qcombobox.html
     # https://doc.qt.io/qt-5/qlineedit.html
     def __init__(self, obj, Dobj, lst_threads):
+        """__init__(obj, Dobj, lst_thread)
+        
+        Create UI for thread dimensions and parameters definition
+        and copy the values to the obj properties.
+
+        obj         - [text link]            Object with thread parameters...
+        Dobj       - [mm]                    Hole or shaft diameter for preliminary thread estimation.
+        lst_thread - [class list of threads] List of threads with tabularized values
+        """
+        
         # the obj ans lst_threads pointers are copied to internal variables accessible from other methods
         self.s_obj = obj
-        self.s_Dobj = Dobj # diameter of hole or shaft - it depends on obj if it has parameters d3 (external) or D1 (internal)
         self.s_lst_threads = lst_threads
-        App.Console.PrintMessage("*** FIXME *** cosmeticthread3d_Gui.ct3d_threadUI.__init__() - Dobj -> thread estimation - s_lstCurrentIndex\n")
-        self.s_lstCurrentIndex = 0
-        #
+
+        # Estimate/guess thread according the best matching Dobj
+        n = len(self.s_lst_threads.name)
+        # internal thread
+        if hasattr(self.s_obj, 'D1'):
+            i = 0
+            deviance = abs(self.s_lst_threads.D_drill[i] - Dobj) / self.s_lst_threads.D_drill[i]
+            self.s_lstCurrentIndex = 0
+            while i < n-1:
+                deviance_next = abs(self.s_lst_threads.D_drill[i+1] - Dobj) / self.s_lst_threads.D_drill[i+1]
+                if deviance > deviance_next: # while the deviance is descending (deviance > deviance_next), [i+1] is matching better than [i].
+                    self.s_lstCurrentIndex = i+1
+                else:  # STOP, the [i] matched better than [i+1]
+                    i = n-2 # this will force to stop
+                i += 1 # move i for nex turn...
+                deviance = deviance_next # and actualize appropriate deviance                    
+        # external thread
+        if hasattr(self.s_obj, 'd3'):
+            i = 0
+            deviance = abs(self.s_lst_threads.D[i] - Dobj) / self.s_lst_threads.D[i]
+            self.s_lstCurrentIndex = 0
+            while i < n-1:
+                deviance_next = abs(self.s_lst_threads.D[i+1] - Dobj) / self.s_lst_threads.D[i+1]
+                if deviance > deviance_next: # while the deviance is descending, [i+1] is matching better than [i].
+                    self.s_lstCurrentIndex = i+1
+                else:  # STOP, the [i] matched better than [i+1]
+                    i = n-2 # this will force to stop
+                i += 1 # move i for nex turn...
+                deviance = deviance_next # and actualize appropriate deviance
+        del(Dobj)
+        del(deviance)
+        del(deviance_next)
+        del(i)
+        del(n)
+
+        # UI itself...
         super(ct3d_threadUI, self).__init__()
         self.initUI()
         return None
@@ -277,6 +319,8 @@ class ct3d_threadUI(QtGui.QDialog):
         okButton.clicked.connect(self.onOk)
         okButton.move(260, y)
         self.show()
+        self.onApply()
+        #
         # return None
 
     def onPopupThreadSel(self, selectedText):
@@ -339,7 +383,6 @@ class arrow_direction():
 
     def __init__(self):
         """__init__() - internal initialization function."""
-        #
         # empty
         return None
 
@@ -395,6 +438,37 @@ def copy_attachment(obj_from, obj_to):
     obj_to.MapMode          = obj_from.MapMode
     #
     return None
+
+
+
+def diameter_from_attachment(obj):
+    """diameter_from_attachment(obj) -> D
+
+    Try to estimate diameter from obj.Support.
+    
+    Return Diameter or 0 if is it unsucesfull."""
+
+    D = 0.0
+    # https://forum.freecad.org/viewtopic.php?p=743699#p743699
+    #     [[Part.getShape(feature, sub, needSubElement = True) for sub in subs] for feature, subs in obj.Support]
+    #     edge.Curve.Radius
+    for feature, subs in obj.Support:
+        for sub in subs:
+            # Look just for first circular element and estimate diameter from it. Circle or cylinder.
+            if D == 0:
+                shp = Part.getShape(feature, sub, needSubElement = True)
+                if hasattr(shp, 'Curve'):
+                    try:
+                        D = 2.0 * shp.Curve.Radius
+                    except:
+                        pass
+                elif hasattr(shp, 'Surface'):
+                    try:
+                        D = 2.0 * shp.Surface.Radius
+                    except:
+                        pass
+    return D
+
 
 
 
@@ -458,8 +532,7 @@ class ct3di_p0_menu_command():
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_params = cosmeticthread3d.ct3di_params_class()
 
-        App.Console.PrintMessage("*** FIXME *** ct3di_menu_command.eA_ok() - estimate hole diameter D_hole\n")
-        D_hole = 8.5
+        D_hole = diameter_from_attachment(self.obj_tmp)
         ct3d_params.name = lst_threads.name[0]
         ct3d_params.D_nominal = lst_threads.D_nominal[0]
         ct3d_params.pitch = lst_threads.pitch[0]
@@ -509,8 +582,7 @@ class ct3di_p0_menu_command():
 
     def eA_apply(self):
         """Reaction to editAttachment - APPLY has been pressed """
-        App.Console.PrintMessage('*** FIXME *** cosmeticthread3d_Gui.eA_apply() - estimate hole diameter and scale cone.\n')
-        D_hole = 8.5 # FIXME - estimate it correctly...
+        D_hole = diameter_from_attachment(self.obj_tmp)
         arrow_direction.scale(self.obj_tmp, D_hole)
         return
 
@@ -534,7 +606,7 @@ class ct3de_p0_menu_command():
         #
         # The name of a svg file available in the resources
         ct3d_path = cosmeticthread3d.get_module_path()
-        App.Console.PrintMessage('*** FIXME *** ct3de_menu_command.GetResources() - icon to svg\n')
+        App.Console.PrintMessage('*** FIXME *** ct3de_p0_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
         Menu_text  = 'external cosmetic thread P0'
         Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 0)'
@@ -577,8 +649,7 @@ class ct3de_p0_menu_command():
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_params = cosmeticthread3d.ct3de_params_class()
 
-        App.Console.PrintMessage("*** FIXME *** ct3de_menu_command.eA_ok() - estimate shaft diameter D_shaft\n")
-        D_shaft = 10
+        D_shaft = diameter_from_attachment(self.obj_tmp)
         ct3d_params.name = lst_threads.name[0]
         ct3d_params.D_nominal = lst_threads.D_nominal[0]
         ct3d_params.pitch = lst_threads.pitch[0]
@@ -628,8 +699,7 @@ class ct3de_p0_menu_command():
 
     def eA_apply(self):
         """Reaction to editAttachment - APPLY has been pressed """
-        App.Console.PrintMessage('*** FIXME *** ct3de_menu_command.eA_apply() - estimate D_shaft and scale cone.\n')
-        D_shaft = 10 # FIXME - estimate it correctly...
+        D_shaft = diameter_from_attachment(self.obj_tmp)
         arrow_direction.scale(self.obj_tmp, D_shaft)
         return None
 
