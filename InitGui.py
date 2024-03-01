@@ -23,7 +23,6 @@
 #* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  *
 #* USA                                                                        *
 #******************************************************************************
- 
 """
 In the InitGui.py file you usually define a workbench, which contains a name,
 an icon, and a series of FreeCAD commands (see below). That python file also
@@ -48,10 +47,10 @@ class CosmeticThread3D (Workbench):
 
     def __init__(self):
         import os
-        import cosmeticthread3d
+        import ct3d_params
         self.__class__.MenuText = 'Cosmetic Thread 3D'
         self.__class__.ToolTip = 'Create cosmetic thread at model space - holes and rods'
-        self.__class__.Icon = os.path.join(cosmeticthread3d.get_module_path(), 'icons', 'CosmeticThread3D_WB.png')
+        self.__class__.Icon = os.path.join(ct3d_params.get_module_path(), 'icons', 'CosmeticThread3D_WB.png')
         return None
         
     def Initialize(self):
@@ -65,7 +64,9 @@ class CosmeticThread3D (Workbench):
         #
         # a list of command names created in the line above
         self.list = ['internal_cosmetic_thread_p0',
-                     'external_cosmetic_thread_p0']
+                     'external_cosmetic_thread_p0',
+                     'internal_cosmetic_thread_p1',
+                     'external_cosmetic_thread_p1']
         #
         # creates a new toolbar with your commands
         # self.appendToolbar("Cosmetic_Thread_3D", self.list) # toolbar not necessary, this workbench is for developement and testing of tools

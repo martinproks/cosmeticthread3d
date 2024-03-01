@@ -1,6 +1,6 @@
 # CosmeticThread3D
 
-Version: 0.0 - just first preview
+Version: 0.1
 
 Author: Martin Prokš
 
@@ -16,9 +16,9 @@ FreeCAD tool - cosmetic thread for 3D geometry - experimental.
 
 This tool should make 3D representation and important parameters of cosmetic threads (internal and external) for basic metric standard threads to the FreeCAD.
 
-Goal of this macro is not bring final version of the cosmetic threads, but explore ways how to do it and prepare background for more stable and better codded solution. This macro is just first approach. But still, it could be helpfull I hope.
+Goal of this macro is not bring final version of the cosmetic threads, but explore ways how to do it and prepare background for more stable
 
-I'm not a programmer, I'm a learning python/FreeCAD techniques and I'm fighting with GIT - a lot. Be patient with this code and with me please.
+![Cosmetic Thread 3D - internal and external examples](https://github.com/martinproks/cosmeticthread3d/doc/img/test_2024-03-01.png)
 
 ---
 
@@ -34,33 +34,39 @@ This tool should support at least standard metric threads with coarse pitch. It 
 
 ## Visual representation
 
-There will be more types of Cosmetic Threads for tests and comparison what type is/are the best for further implementation.
+There will be more types of Cosmetic Threads for tests and comparison what type is/are the best for further implementation. Generally it is important  to see in 3D:
 
-* Type 0 - for 3D representation it is good to see for threaded parts:
-  
-  * Length of the thread.
-  
-  * Small and big diameter of the thread.
-  
-  * Helix with appropriate pitch.
+* Length of the thread.
+
+* Major and minor diameters of the thread.
+
+* Optionally some helpfull geometry to better visualisation of the thread (e.g. helix with correct pitch).
 
 ## FreeCAD geometric and parameter representation
 
-- Type 0 - Internal thread geometric representation:
-  
-  * Shell of end of thread and shell of nominal diameter.
-  
-  * Helix (right handed) on the drilled hole diameter with thread pitch.
+### Type 0 geometric representation
 
-- Type 0 - External thread geometric representation:
-  
-  - Shell of end of thread and shell of small diameter.
-  
-  - Helix (right handed) on nominal diameter with thread pitch.
+Shell of end of thread and shell of major/minor diameter.
 
-The cosmetic thread geometry should be wrapped into one FreeCAD feature or object with parameters for possibility to advanced usage - for example for TechDraw.
+Helix (right handed) on the drilled hole diameter with thread pitch.
 
-The parameters should be:
+### Type 1 geometric representation
+
+Shell of end of thread and shell of major/minor diameter.
+
+### Type 2 geometric representation
+
+Separate body (tube) representing major/minor diameter and length of the thread.
+
+### Type 3 geometric representation
+
+Circular shallow groves with distance = pitch between groves.
+
+### Parameters of FreeCAD thread feature
+
+The cosmetic thread geometry is wrapped into one FreeCAD feature (python feature) with parameters for possibility to advanced usage - for example for TechDraw.
+
+The parameters are:
 
 * Thread designation (for example M10).
 
@@ -86,19 +92,27 @@ The parameters should be:
 
 ## File structure - what is what
 
+- `doc/` - documentation...
+
 - `icons/` - icon folder...
 
 - `tests_and_examples/` - just some junk-yard...
 
-- `Init.pi` - this file is loaded when FreeCAD starts. It is import of the `cosmeticthread3d` class there.
+- `Init.py` - this file is loaded when FreeCAD starts. It is import of the `cosmeticthread3d` class there.
 
 - `InitGui.py` - the workbench GUI, menus and toolbar buttons.
 
 - `__init__.py` - rest of macro version of the scripts I started. Not relevant for workbench.
 
-- `cosmeticthread3d.py` - all the working code for console mode.
+- `ct3d_params.py` - common parameters definition for all thread versions and types.
 
-- `cosmeticthread3d_Gui.py` - GUI part of the macro called from work bench buttons and menus.
+- `cosmeticthread3d_part.py` - all the working code for console mode for Part version of threads.
+
+- `cosmeticthread3d_Gui.py` - GUI buttons and menus called from InitGui.py.
+
+- `ct3dGuiTools.py` - tools for cosmeticthread3d_Gui.
+
+- `MetricCoarse1st.py` - tabularized parameters for metric coarse threads, preffered selection (1st) according to ISO 261
 
 ## Notes to implementation
 
@@ -108,7 +122,6 @@ There are more functions and classes for threads (at least it is planned).
   The whole work is based on Part objects and it is dedicated to be used on Part geometry. Do not mix it with PartDesign, there are non-compatible problems.
 
 * P1 - Part version, type 1 of geometry representation.
-  (not implemented yet)
   Simmilar as P0, but without the helix.
 
 * PD0 - PartDesign version, type 0 of geometry representation.
@@ -154,6 +167,8 @@ This tools are at early stage of developement. It is just presentation of the cu
 4. If You need, flip side orientation.
 
 5. You can check parameters of the feature.
+
+![Cosmetic Thread 3D internal - how to use it.](https://github.com/martinproks/cosmeticthread3d/doc/img/ct3d__first_test.gif)
 
 Feedback is welcome. 
 
