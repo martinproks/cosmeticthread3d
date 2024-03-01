@@ -23,7 +23,6 @@
 #* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  *
 #* USA                                                                        *
 #******************************************************************************
-
 """
 Add a couple of things used even when FreeCAD works in console mode.
 This file is called when FreeCAD starts.
@@ -36,5 +35,6 @@ __url__     = 'https://github.com/martinproks/cosmeticthread3d'
 
 
 
-import cosmeticthread3d
+import cosmeticthread3d_part
+# import cosmeticthread3d_partdesign
 
