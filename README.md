@@ -16,9 +16,9 @@ FreeCAD tool - cosmetic thread for 3D geometry - experimental.
 
 This tool should make 3D representation and important parameters of cosmetic threads (internal and external) for basic metric standard threads to the FreeCAD.
 
-Goal of this macro is not bring final version of the cosmetic threads, but explore ways how to do it and prepare background for more stable
+Goal of this macro is not bring final version of the cosmetic threads, but explore ways how to do it and prepare background for more stable and good final implementation.
 
-![Cosmetic Thread 3D - internal and external examples](https://github.com/martinproks/cosmeticthread3d/doc/img/test_2024-03-01.png)
+![Cosmetic Thread 3D - internal and external examples](http://proks-martin.cz/FreeCAD/ct3d/ct3d__first_test.gif)
 
 ---
 
@@ -30,7 +30,7 @@ True shape of the thread is not necessary to see and the true shape is potential
 
 ## Supported threads
 
-This tool should support at least standard metric threads with coarse pitch. It means threads M1.6 to M64 at least. I hope it will be not big problem to support more thread types and pitch.
+This tool should support at least standard metric threads with coarse pitch. It means threads M1 to M280 at least. I hope it will be not big problem to support more thread types and pitch.
 
 ## Visual representation
 
@@ -118,26 +118,29 @@ The parameters are:
 
 There are more functions and classes for threads (at least it is planned).
 
-* P0 - Part version, type 0 of geometry representation.
+* **P0** - **Part** version, **type 0** of geometry representation.
   The whole work is based on Part objects and it is dedicated to be used on Part geometry. Do not mix it with PartDesign, there are non-compatible problems.
 
-* P1 - Part version, type 1 of geometry representation.
+* **P1** - **Part** version, **type 1** of geometry representation.
   Simmilar as P0, but without the helix.
 
-* PD0 - PartDesign version, type 0 of geometry representation.
+* **P2** - **Part** version, **type 2** of geometry representation.
+  Thread is simulated by tube D-D1-length / D-d3-length.
+
+* **PD0** - **PartDesign** version, **type 0** of geometry representation.
   (not implemented yet)
   Geometric identical or verry simmilar to P0.
 
-* PD1 - PartDesign version, type 1 of geometry representation.
-  (not implemented yet)
+* **PD1** - **PartDesign** version, **type 1** of geometry representation.
+  (*not implemented yet*)
   Simmilar as PD0, but without the helix.
 
-* PD2 - PartDesign version, type 2 of geometry representation.
-  (not implemented yet)
+* **PD2** - **PartDesign** version, **type 2** of geometry representation.
+  (*not implemented yet*)
   Multi-body geometry...
 
-* PD3 - PartDesign version, type 3 of geometry representation.
-  (not implemented yet)
+* **PD3** - **PartDesign** version, **type 3** of geometry representation.
+  (*not implemented yet*)
   Small circular grooves as visual thread indication.
 
 Workbench for just two buttons does not make sense in the end. But for the developement of the tools it is most probably the easyest way how to do it. Someday in the future it will be good idea to merge it with some existing and more general work bench - Part or PartDesign I think. Or merge it with some other thread oriented work bench?
@@ -168,13 +171,13 @@ This tools are at early stage of developement. It is just presentation of the cu
 
 5. You can check parameters of the feature.
 
-![Cosmetic Thread 3D internal - how to use it.](https://github.com/martinproks/cosmeticthread3d/doc/img/ct3d__first_test.gif)
+![Cosmetic Thread 3D internal - how to use it.](http://proks-martin.cz/FreeCAD/ct3d/test_2024-03-01.png)
 
 Feedback is welcome. 
 
 ---
 
-# Known troubles
+
 
 1. It is based on a Part objects now (P0). It means, there will be problems with PartDesign patterns and PD objects generally. But the threaded holes are wery offen arranged into patterns (linear, rectangular or polar). It means there will be good idea to rework it to the PartDesign approach.
 
