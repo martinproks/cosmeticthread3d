@@ -46,6 +46,7 @@ ct3de  - Cosmetic Thread 3D External
 
 import os
 from PySide import QtCore, QtGui
+from PySide.QtGui import QFrame
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part
@@ -101,7 +102,8 @@ class ct3d_threadUI(QtGui.QDialog):
         # the obj ans lst_threads pointers are copied to internal variables accessible from other methods
         self.s_obj = obj
         self.s_lst_threads = lst_threads
-
+        self.useGroup = False
+        
         # Estimate/guess thread according the best matching Dobj
         n = len(self.s_lst_threads.name)
         # internal thread
@@ -146,13 +148,13 @@ class ct3d_threadUI(QtGui.QDialog):
         i = self.s_lstCurrentIndex # too long name for use, just call it 'i' for now
  	# create our window
 	# define window  xLoc,yLoc,xDim,yDim
-        self.setGeometry(250, 250, 400, 420)
-        self.setWindowTitle("Cosmetic Thread 3D")
+        self.setGeometry(250, 250, 400, 480)
+        self.setWindowTitle('Cosmetic Thread 3D')
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
         #
         # Widget name (it means Thread selection)
         y = 10
-        self.label0a = QtGui.QLabel("Thread selected", self)
+        self.label0a = QtGui.QLabel('Thread selected', self)
         self.label0a.setFont('Courier')
         self.label0a.move(10, y)
         self.w_name = QtGui.QComboBox(self)
@@ -163,7 +165,7 @@ class ct3d_threadUI(QtGui.QDialog):
         #
         # Widget D_nominal
         y += 30
-        self.label1a = QtGui.QLabel("D nominal", self)
+        self.label1a = QtGui.QLabel('D nominal', self)
         self.label1a.setFont('Courier')
         self.label1a.move(30, y)
         self.w_D_nom = QtGui.QLineEdit(self)
@@ -172,13 +174,13 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_D_nom.setFixedWidth(65)
         self.w_D_nom.setReadOnly(True)
         self.w_D_nom.move(210, y)
-        self.label1b = QtGui.QLabel("mm", self)
+        self.label1b = QtGui.QLabel('mm', self)
         self.label1b.setFont('Courier')
         self.label1b.move(290, y)
         #
         # Widget pitch
         y += 30
-        self.label2a = QtGui.QLabel("Pitch", self)
+        self.label2a = QtGui.QLabel('Pitch', self)
         self.label2a.setFont('Courier')
         self.label2a.move(30, y)
         self.w_pitch = QtGui.QLineEdit(self)
@@ -187,13 +189,13 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_pitch.setFixedWidth(65)
         self.w_pitch.setReadOnly(True)
         self.w_pitch.move(210, y)
-        self.label2b = QtGui.QLabel("mm", self)
+        self.label2b = QtGui.QLabel('mm', self)
         self.label2b.setFont('Courier')
         self.label2b.move(290, y)
         #
         # Widget D
         y += 30
-        self.label3a = QtGui.QLabel("D", self)
+        self.label3a = QtGui.QLabel('D', self)
         self.label3a.setFont('Courier')
         self.label3a.move(30, y)
         self.w_D = QtGui.QLineEdit(self)
@@ -202,13 +204,13 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_D.setFixedWidth(65)
         self.w_D.setReadOnly(True)
         self.w_D.move(210, y)
-        self.label3b = QtGui.QLabel("mm", self)
+        self.label3b = QtGui.QLabel('mm', self)
         self.label3b.setFont('Courier')
         self.label3b.move(290, y)
         #
         # Widget D1
         y += 30
-        self.label4a = QtGui.QLabel("D1", self)
+        self.label4a = QtGui.QLabel('D1', self)
         self.label4a.setFont('Courier')
         self.label4a.move(30, y)
         self.w_D1 = QtGui.QLineEdit(self)
@@ -217,13 +219,13 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_D1.setFixedWidth(65)
         self.w_D1.setReadOnly(True)
         self.w_D1.move(210, y)
-        self.label4b = QtGui.QLabel("mm", self)
+        self.label4b = QtGui.QLabel('mm', self)
         self.label4b.setFont('Courier')
         self.label4b.move(290, y)
         #
         # Widget d3
         y += 30
-        self.label5a = QtGui.QLabel("d3", self)
+        self.label5a = QtGui.QLabel('d3', self)
         self.label5a.setFont('Courier')
         self.label5a.move(30, y)
         self.w_d3 = QtGui.QLineEdit(self)
@@ -232,13 +234,13 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_d3.setFixedWidth(65)
         self.w_d3.setReadOnly(True)
         self.w_d3.move(210, y)
-        self.label5b = QtGui.QLabel("mm", self)
+        self.label5b = QtGui.QLabel('mm', self)
         self.label5b.setFont('Courier')
         self.label5b.move(290, y)
         #
         # Widget D_drill
         y += 30
-        self.label6a = QtGui.QLabel("D drill recommended", self)
+        self.label6a = QtGui.QLabel('D drill recommended', self)
         self.label6a.setFont('Courier')
         self.label6a.move(30, y)
         self.w_D_drill = QtGui.QLineEdit(self)
@@ -247,13 +249,13 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_D_drill.setFixedWidth(65)
         self.w_D_drill.setReadOnly(True)
         self.w_D_drill.move(210, y)
-        self.label6b = QtGui.QLabel("mm", self)
+        self.label6b = QtGui.QLabel('mm', self)
         self.label6b.setFont('Courier')
         self.label6b.move(290, y)
         #
         # Widget thr_tol
         y += 30
-        self.label7a = QtGui.QLabel("Thread tolerances", self)
+        self.label7a = QtGui.QLabel('Thread tolerances', self)
         self.label7a.setFont('Courier')
         self.label7a.move(10, y)
         self.w_thr_tol = QtGui.QLineEdit(self)
@@ -262,13 +264,13 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_thr_tol.setFixedWidth(80)
         self.w_thr_tol.setReadOnly(False)
         self.w_thr_tol.move(180, y)
-        self.label7b = QtGui.QLabel("e.g. 6H or 6g", self)
+        self.label7b = QtGui.QLabel('e.g. 6H or 6g', self)
         self.label7b.setFont('Courier')
         self.label7b.move(270, y)
         #
         # Widget thr_rgh
         y += 30
-        self.label8a = QtGui.QLabel("Thread roughness", self)
+        self.label8a = QtGui.QLabel('Thread roughness', self)
         self.label8a.setFont('Courier')
         self.label8a.move(10, y)
         self.w_thr_rgh = QtGui.QLineEdit(self)
@@ -277,23 +279,24 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_thr_rgh.setFixedWidth(80)
         self.w_thr_rgh.setReadOnly(False)
         self.w_thr_rgh.move(180, y)
-        self.label8b = QtGui.QLabel("e.g. Ra 1.6", self)
+        self.label8b = QtGui.QLabel('e.g. Ra 1.6', self)
         self.label8b.setFont('Courier')
         self.label8b.move(270, y)
         #
         # Widget thr_through
         y += 30
-        self.label9a = QtGui.QLabel("Thread through hole", self)
+        self.label9a = QtGui.QLabel('Thread through hole/bolt', self)
         self.label9a.setFont('Courier')
         self.label9a.move(10, y)
-        self.w_thr_through = QtGui.QCheckBox("(full length)", self)
+        self.w_thr_through = QtGui.QCheckBox('(full length)', self)
+        self.w_thr_through.setFont('Courier')
         # self.w_thr_through.clicked.connect(self.onCheckbox1) # on, I do not wan connect anything. I read isChecked at the end...
         self.w_thr_through.setChecked(False)
-        self.w_thr_through.move(180,y)
+        self.w_thr_through.move(250,y)
         #
         # Widget len
         y += 30
-        self.label10a = QtGui.QLabel("Thread length", self)
+        self.label10a = QtGui.QLabel('Thread length', self)
         self.label10a.setFont('Courier')
         self.label10a.move(10, y)
         self.w_len = QtGui.QLineEdit(self)
@@ -302,13 +305,13 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_len.setFixedWidth(65)
         self.w_len.setReadOnly(False)
         self.w_len.move(180, y)
-        self.label10b = QtGui.QLabel("mm", self)
+        self.label10b = QtGui.QLabel('mm', self)
         self.label10b.setFont('Courier')
         self.label10b.move(270, y)
         #
         # Widget len_tol
         y += 30
-        self.label11a = QtGui.QLabel("Length tolerances", self)
+        self.label11a = QtGui.QLabel('Length tolerances', self)
         self.label11a.setFont('Courier')
         self.label11a.move(10, y)
         self.w_len_tol = QtGui.QLineEdit(self)
@@ -317,10 +320,32 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_len_tol.setFixedWidth(80)
         self.w_len_tol.setReadOnly(False)
         self.w_len_tol.move(180, y)
-        self.label11b = QtGui.QLabel("e.g. 0/+2.0", self)
+        self.label11b = QtGui.QLabel('e.g. 0/+2.0', self)
         self.label11b.setFont('Courier')
         self.label11b.move(270, y)
         #
+        # y += 30
+        # Horizontal line...
+        # self.label12a = QtGui.QLabel(self)
+        # self.label12a.setFrameShape(QFrame.HLine)
+        # self.label12a.setFrameShadow(QFrame.Raised)
+        # self.label12a.setMinimumWidth(1)
+        # self.label12a.setFixedHeight(3)
+        # self.label12a.move(10, y)
+        #
+        y += 50
+        self.label13a = QtGui.QLabel('Use Threads group', self)
+        self.label13a.setFont('Courier')
+        self.label13a.move(10, y)
+        self.w_useGroup = QtGui.QCheckBox('', self)
+        self.w_useGroup.setFont('Courier')
+        # self.w_useGroup.clicked.connect(self.onCheckbox1) # no, I do not wan connect anything. I read isChecked at the end...
+        self.w_useGroup.setChecked(False)
+        self.w_useGroup.move(180,y)
+        #
+        # y += 30
+        # Horizontal line...
+
         # apply button
         y += 50
         applyButton = QtGui.QPushButton('Apply', self)
@@ -375,8 +400,10 @@ class ct3d_threadUI(QtGui.QDialog):
         self.s_obj.length_through =  self.w_thr_through.isChecked()
         self.s_obj.length      = float(self.w_len.text())
         self.s_obj.length_tol  = self.w_len_tol.displayText() # do not remmove white chars - displayText
+        self.useGroup          =  self.w_useGroup.isChecked()
         #
         self.s_obj.recompute()
+        #
         # return None
 
     def onCancel(self):
@@ -411,8 +438,8 @@ class arrow_direction():
 
         Create directional symbol / arrow / cone and return textlink (obj) at it."""
         #
-        obj = App.ActiveDocument.addObject("Part::Cone","ThreadOrientation")
-        obj.Label = "ThreadOrientation"
+        obj = App.ActiveDocument.addObject('Part::Cone','ThreadOrientation')
+        obj.Label = 'ThreadOrientation'
         obj.Radius1 = '1.0 mm'
         obj.Radius2 = '0.0 mm'
         obj.Height  = '2.5 mm'
@@ -493,4 +520,56 @@ def diameter_from_attachment(obj):
                     except:
                         pass
     return D
+
+
+
+# /***********************************************************************/
+# /                                                                       /
+# / useGroupThreads() - Move object obj into Threads group/folder in      /
+# /     active part aPart (if active part exists)                         /
+# /                                                                       /
+# /***********************************************************************/
+def useGroupThreads(obj, aPart):
+    """
+    useGroupThreads() -> None
+    
+    Move object obj into Threads group/folder in active part aPart (if active part exists)
+    """
+
+    groupThreadsName = 'Threads'
+
+    doc = App.ActiveDocument
+    groupObj = None
+    if aPart == None:
+        # There is no active Part, look for group 'Threads' inside active document top level
+        for tmpObj in doc.Objects:
+            if tmpObj.TypeId == 'App::DocumentObjectGroup':
+                if tmpObj.Label == groupThreadsName:
+                    # Ok, I have SOME group 'Threads'. But I need top level one, no parents...
+                    if len(tmpObj.Parents) == 0:
+                        groupObj = tmpObj
+                        break
+        # If the group 'Threads' does not exists, create a new one
+        if groupObj == None:
+            groupObj = doc.addObject('App::DocumentObjectGroup','GroupThreads')
+            groupObj.Label = groupThreadsName
+    else:
+        # look for group 'Threads' inside active Part
+        for tmpObj in aPart.Group:
+            if tmpObj.TypeId == 'App::DocumentObjectGroup':
+                if tmpObj.Label == groupThreadsName:
+                    groupObj = tmpObj
+                    break
+        # If the group 'Threads' does not exists, create a new one
+        if groupObj == None:
+            groupObj = doc.addObject('App::DocumentObjectGroup','GroupThreads')
+            groupObj.Label = groupThreadsName
+            aPart.addObject(groupObj)
+        # Remove object obj from active part
+        aPart.removeObject(obj)
+
+    # Move object obj into the group 'Threads'
+    groupObj.addObject(obj)
+    
+    return None
 

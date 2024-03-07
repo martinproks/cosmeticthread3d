@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html" charset="UTF-8" />
+  <meta name="author" content="Ing. Martin Prokš" />
+  <title>Martin Prokš</title>
+</head>
+
+<body>
+  <h1>Cosmetic Thread 3D from python console</h1>
+
+  <p>
+    At this moment (2024/03/07) I do not know how to make FreeCAD standard
+    command copy to Python console. Therefore I have to describe how to use it.
+  </p>
+
+  <p>
+    There is no one thread function, there are more types of threads.
+    There are internal cosmetic threads and external cosmetic threads.
+    There are Part WB type thread and (will be) PartDesign type threads.
+    And there are more versions of geometrical representation of threads.
+  </p>
+
+
+  <h2>Internal thread, part version, type 0 </h2>
+
+  <p>
+  Minimal usage - create some thread object at 0,0,0, without attachment and
+  with default parameters and without Thread group.
+  </p>
+  
+  <code>
+import ct3d_params<br />
+import cosmeticthread3d_part as ct3d<br />
+<br />
+tp = ct3d_params.ct3di_params_class()<br />
+obj = ct3d.internal_p0('My New Thread', tp)<br />
+</code>
+
+  <p>
+    Module with parameters definition is common for internal and
+    external threads. But the parameters differ for internal and
+    external threads. Do not overlook the
+    ct3d<b>i</b>_params_class() - the <em>i</em> letter for internal one.
+  </p>
+
+  <p>Once You have thread created, You can modiffy it. You can
+    apply Attachment, You can edit parameters and You can move
+    it to active part or group.
+  </p>
+
+  <p>
+    Help for the internal thread command.
+  </p>
+
+  <code>
+def internal_p0(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):<br />
+    """<br />
+    internal_p0(name, ct3di_prms, aPart) -> obj<br />
+<br />
+    It creates Cosmetic Thread 3D Internal (Part version, type 0)<br />
+    and returns obj.<br />
+<br />
+    This function is mentioned to be used for object creation.<br />
+<br />
+    name       - [string]               name of the object in the model tree<br />
+    ct3di_prms - [ct3di_params_class]   parameters of the cosmetic thread<br />
+    aPart      - [text link]            active Part object<br />
+    """<br />
+  </code>
+
+
+  
+  <h2>External thread, part version, type 0 </h2>
+
+  <p>
+  Minimal usage - create some thread object at 0,0,0, without attachment and
+  with default parameters and without Thread group.
+  </p>
+  
+  <code>
+import ct3d_params<br />
+import cosmeticthread3d_part as ct3d<br />
+<br />
+tp = ct3d_params.ct3de_params_class()<br />
+ct3d.external_p0('My New Thread', tp)<br />
+  </code>
+
+  <p>
+  Do not overlook the ct3d<b>e</b>_params_class() - the <em>e</em> letter.
+  </p>
+
+  
+</body>
+</html>

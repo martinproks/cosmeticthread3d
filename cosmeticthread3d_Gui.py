@@ -151,8 +151,8 @@ class ct3di_p0_menu_command():
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        # elif form.result == userOk:
-        #    obj.recompute()
+        elif form.useGroup == True:
+            ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
         del(lst_threads)
@@ -268,8 +268,8 @@ class ct3de_p0_menu_command():
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        # elif form.result == userOk:
-        #    obj.recompute()
+        elif form.useGroup == True:
+            ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
         del(lst_threads)
@@ -394,8 +394,8 @@ class ct3di_p1_menu_command():
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        # elif form.result == userOk:
-        #    obj.recompute()
+        elif form.useGroup == True:
+            ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
         del(lst_threads)
@@ -511,8 +511,8 @@ class ct3de_p1_menu_command():
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        # elif form.result == userOk:
-        #    obj.recompute()
+        elif form.useGroup == True:
+            ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
         del(lst_threads)
@@ -638,8 +638,8 @@ class ct3di_p2_menu_command():
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        # elif form.result == userOk:
-        #    obj.recompute()
+        elif form.useGroup == True:
+            ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
         del(lst_threads)
@@ -755,8 +755,8 @@ class ct3de_p2_menu_command():
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        # elif form.result == userOk:
-        #    obj.recompute()
+        elif form.useGroup == True:
+            ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
         del(lst_threads)
