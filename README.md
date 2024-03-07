@@ -18,11 +18,43 @@ This tool should make 3D representation and important parameters of cosmetic thr
 
 Goal of this macro is not bring final version of the cosmetic threads, but explore ways how to do it and prepare background for more stable and good final implementation.
 
-![Cosmetic Thread 3D - internal and external examples](http://proks-martin.cz/FreeCAD/ct3d/ct3d__first_test.gif)
+![Cosmetic Thread 3D - internal and external examples](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/test_2024-03-01.png?raw=true)
 
 ---
 
-# Main ideas
+# How to use it
+
+## Workbench installation
+
+Find path to Your FreeCAD `Mod` directory. You can find it by typing command `App.getUserAppDataDir()` in the [Python console](https://wiki.freecad.org/Python_console "Python console").
+
+Create folder `Mod/CosmeticThread3D` and copy there all data from this git repository.
+
+Restart FreeCAD and the workbench should be there.
+
+This tools are at early stage of developement. It is just presentation of the current stage and the direction it is heading. It is not usable for real work yet.
+
+## Usage
+
+1. Open some document (`tests_and_examples/testing_model.FCStd` for example)
+
+2. Press Internal cosmetic thread button (from menu or from tool buttons). It should create cone and attachment editor. It represent thread orientation.
+
+3. Select hole edge (circle) as first attachment and select "Concentric".
+
+4. If You need, flip side orientation.
+
+5. Set thread parameters.
+
+6. Press OK.
+
+![Cosmetic Thread 3D internal  how to use it](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/ct3d__first_test.gif?raw=true)
+
+Feedback is welcome.
+
+---
+
+# Main idea
 
 Some users (and 3D geometry) does not need true shape of threads in the model. We need just clear visual information like: this hole is not simple hole, this is threaded hole with thread nominal dimension MX and length Y mm. Or this cylindrical end of shaft/bolt/pin/whatever is threaded MX length Y mm. This level of information is enought for drawing making and later machining. (Plus informations about required tolerances and roughness.) And it is enought to visual check if the nominal diameters and lenghts of threads are OK in the mating parts like bolt+nut in an assembly.
 
@@ -145,52 +177,22 @@ There are more functions and classes for threads (at least it is planned).
 
 Workbench for just two buttons does not make sense in the end. But for the developement of the tools it is most probably the easyest way how to do it. Someday in the future it will be good idea to merge it with some existing and more general work bench - Part or PartDesign I think. Or merge it with some other thread oriented work bench?
 
----
+# Known issues
 
-# How to use it
+1. It is based on a Part objects now and it works well with geometry based on Part Work Bench. It means, there will be problems with PartDesign objects.
 
-## Workbench installation
+2. It will work just for simple holes perpendicular to starting plane. If the starting plane will be under angle to the hole axis, it will be a little bit wrong 3d representation.
 
-Find path to Your FreeCAD `Mod` directory. You can find it by typing command `App.getUserAppDataDir()` in the [Python console](https://wiki.freecad.org/Python_console "Python console").
+3. Not plannar starting surface is not supported (at least yet). No threads to the cylindrical shape or spherical or general surface... Yeas there will be work-aroud with additional circles or datums or lines as hole axis, but again the final representation will be not exactly correct.
 
-Create folder `Mod/CosmeticThread3D` and copy there all data from this git repository.
+4. These problems are common for thread terminantion too.
 
-Restart FreeCAD and the workbench should be there.
+5. Hole to the thread will be not correct representation.
 
-This tools are at early stage of developement. It is just presentation of the current stage and the direction it is heading. It is not usable for real work yet.
+6. Icons are uggly. Who cares? It is just start of developement, icons are the last thing I care.
 
-## Current usage
+7. TechDraw problems. On the normal view, the thread major diameter is shown. It is not exactly according to ISO drawing standards, there is whole circle shown. Bigger problem is ViewSections. The ViewSections showns just bodies, faces and their edges are ignored. It means, the cosmetic thread is not shown on ViewSections at this moment.
 
-1. Open some document (`tests_and_examples/testing_model.FCStd` ideally)
+8. There is no python report what functions are called on background.
 
-2. Press Internal cosmetic thread button (from menu or from tool buttons). It should create cone and attachment editor. It represent thread orientation.
-
-3. Select hole edge (circle) as first attachment and select "Concentric".
-
-4. If You need, flip side orientation.
-
-5. You can check parameters of the feature.
-
-![Cosmetic Thread 3D internal - how to use it.](http://proks-martin.cz/FreeCAD/ct3d/test_2024-03-01.png)
-
-Feedback is welcome. 
-
----
-
-
-
-1. It is based on a Part objects now (P0). It means, there will be problems with PartDesign patterns and PD objects generally. But the threaded holes are wery offen arranged into patterns (linear, rectangular or polar). It means there will be good idea to rework it to the PartDesign approach.
-
-2. The UI is not finished yet - under developement. There are some ** FIXME ** reports in the console.
-
-3. It will work just for simple holes perpendicular to starting plane. If the starting plane will be under angle to the hole axis, it will be a little bit wrong 3d representation.
-
-4. Not plannar starting surface is not supported (at least yet). No threads to the cylindrical shape or spherical or general surface... Yeas there will be work-aroud with additional circles or datums or lines as hole axis, but again the final representation will be not exactly correct.
-
-5. These problems are common for thread end too.
-
-6. Hole to the thread will be not correct representation.
-
-7. Icons are uggly. Who cares? It is just start of developement, icons are the last thing I care.
-
-8. TechDraw problems. On the normal view, the thread major diameter is shown. It is not exactly according to ISO drawing standards, there is whole circle shown. Bigger problem is ViewSections. The ViewSections showns just bodies, faces and their edges are ignored. It means, the cosmetic thread is not shown on ViewSections at this moment.
+9. There is no language localization, it works in English only.
