@@ -181,7 +181,7 @@ def internal_p0(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
     obj = None
 
     if ct3di_prms == None:
-        App.Console.PrintError('internal(name, ct3di_prms) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_p0(name, ct3di_prms, aPart) - Check ct3di_prms\n')
     else:
         if name == None:
             name = ct3di_prms.name
@@ -214,7 +214,7 @@ class CosmeticThread3DInternal_p0:
         """
         __init__(obj, ct3di_prms)
         
-        constructor of a CosmeticThread3DInternal class / internall function
+        constructor of a CosmeticThread3DInternal_p0 class / internall function
         """
         #
         self.Type = 'CosmeticThread3DInternal_p0'
@@ -301,7 +301,7 @@ def internal_p1(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
     obj = None
 
     if ct3di_prms == None:
-        App.Console.PrintError('internal(name, ct3di_prms) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_p1(name, ct3di_prms, aPart) - Check ct3di_prms\n')
     else:
         if name == None:
             name = ct3di_prms.name
@@ -334,7 +334,7 @@ class CosmeticThread3DInternal_p1:
         """
         __init__(obj, ct3di_prms)
         
-        constructor of a CosmeticThread3DInternal class / internall function
+        constructor of a CosmeticThread3DInternal_p1 class / internall function
         """
         #
         self.Type = 'CosmeticThread3DInternal_p1'
@@ -418,7 +418,7 @@ def internal_p2(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
     obj = None
 
     if ct3di_prms == None:
-        App.Console.PrintError('internal(name, ct3di_prms) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_p2(name, ct3di_prms, aPart) - Check ct3di_prms\n')
     else:
         if name == None:
             name = ct3di_prms.name
@@ -451,7 +451,7 @@ class CosmeticThread3DInternal_p2:
         """
         __init__(obj, ct3di_prms)
         
-        constructor of a CosmeticThread3DInternal class / internall function
+        constructor of a CosmeticThread3DInternal_p2 class / internall function
         """
         #
         self.Type = 'CosmeticThread3DInternal_p2'
@@ -650,7 +650,7 @@ def external_p0(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
     obj = None
     
     if ct3de_prms == None:
-        App.Console.PrintError('external_p0(name, ct3de_prms) - Check ct3de_prms\n')
+        App.Console.PrintError('external_p0(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
         if name == None:
             name = ct3de_prms.name
@@ -677,7 +677,7 @@ class CosmeticThread3DExternal_p0:
         """
         __init__(obj, ct3de_prms)
         
-        constructor of a CosmeticThread3DExternal class / internall function
+        constructor of a CosmeticThread3DExternal_p0 class / internall function
         """
         
         self.Type = 'CosmeticThread3DExternal_p0'
@@ -764,7 +764,7 @@ def external_p1(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
     obj = None
     
     if ct3de_prms == None:
-        App.Console.PrintError('external_p1(name, ct3de_prms) - Check ct3de_prms\n')
+        App.Console.PrintError('external_p1(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
         if name == None:
             name = ct3de_prms.name
@@ -791,7 +791,7 @@ class CosmeticThread3DExternal_p1:
         """
         __init__(obj, ct3de_prms)
         
-        constructor of a CosmeticThread3DExternal class / internall function
+        constructor of a CosmeticThread3DExternal_p1 class / internall function
         """
         
         self.Type = 'CosmeticThread3DExternal_p1'
@@ -875,7 +875,7 @@ def external_p2(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
     obj = None
     
     if ct3de_prms == None:
-        App.Console.PrintError('external_p2(name, ct3de_prms) - Check ct3de_prms\n')
+        App.Console.PrintError('external_p2(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
         if name == None:
             name = ct3de_prms.name
@@ -902,7 +902,7 @@ class CosmeticThread3DExternal_p2:
         """
         __init__(obj, ct3de_prms)
         
-        constructor of a CosmeticThread3DExternal class / internall function
+        constructor of a CosmeticThread3DExternal_p2 class / internall function
         """
         
         self.Type = 'CosmeticThread3DExternal_p2'

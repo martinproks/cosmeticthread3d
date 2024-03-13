@@ -484,6 +484,15 @@ def copy_attachment(obj_from, obj_to):
     obj_to.MapPathParameter = obj_from.MapPathParameter
     obj_to.MapMode          = obj_from.MapMode
     #
+    # Work-around https://forum.freecad.org/viewtopic.php?t=86029
+    # Reset obj_to.AttachmentOfset = point[0,0,0], rotation[0,0,0]
+    # Calculate global position of obj_to.Support
+    # Calculate global position of obj_to
+    # Compare them and if they do not match:
+    #     Calculate delta between them - obj_to.Support -> obj_to
+    #     Apply the delta to obj_to.AttachmentOffset
+    
+    
     return None
 
 
@@ -568,8 +577,12 @@ def useGroupThreads(obj, aPart):
         # Remove object obj from active part
         aPart.removeObject(obj)
 
-    # Move object obj into the group 'Threads'
-    groupObj.addObject(obj)
-    
+    tmpSupport = obj.Support # work-around https://forum.freecad.org/viewtopic.php?t=86029
+    obj.Support = None       # work-around https://forum.freecad.org/viewtopic.php?t=86029
+    #
+    groupObj.addObject(obj)  # Move object obj into the group 'Threads'
+    #
+    obj.Support = tmpSupport # work-around https://forum.freecad.org/viewtopic.php?t=86029
+
     return None
 
