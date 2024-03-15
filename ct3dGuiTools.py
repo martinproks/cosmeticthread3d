@@ -577,12 +577,7 @@ def useGroupThreads(obj, aPart):
         # Remove object obj from active part
         aPart.removeObject(obj)
 
-    tmpSupport = obj.Support # work-around https://forum.freecad.org/viewtopic.php?t=86029
-    obj.Support = None       # work-around https://forum.freecad.org/viewtopic.php?t=86029
-    #
     groupObj.addObject(obj)  # Move object obj into the group 'Threads'
-    #
-    obj.Support = tmpSupport # work-around https://forum.freecad.org/viewtopic.php?t=86029
 
     return None
 
