@@ -68,7 +68,9 @@ class CosmeticThread3D (Workbench):
                      'internal_cosmetic_thread_p1',
                      'external_cosmetic_thread_p1',
                      'internal_cosmetic_thread_p2',
-                     'external_cosmetic_thread_p2']
+                     'external_cosmetic_thread_p2',
+                     'internal_cosmetic_thread_p4',
+                     'external_cosmetic_thread_p4']
         #
         # creates a new toolbar with your commands
         # self.appendToolbar("Cosmetic_Thread_3D", self.list) # toolbar not necessary, this workbench is for developement and testing of tools
