@@ -16,7 +16,7 @@ FreeCAD tool - cosmetic thread for 3D geometry - experimental.
 
 This tool should make 3D representation and important parameters of cosmetic threads (internal and external) for basic metric standard threads to the FreeCAD.
 
-Goal of this macro is not bring final version of the cosmetic threads, but explore ways how to do it and prepare background for more stable and good final implementation.
+Goal of this tool is not bring final version of the cosmetic threads (not yet), but explore ways how to do it and prepare background for more stable and good final implementation.
 
 ![Cosmetic Thread 3D - internal and external examples](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/test_2024-03-01.png?raw=true)
 
@@ -32,7 +32,7 @@ Create folder `Mod/CosmeticThread3D` and copy there all data from this git repos
 
 Restart FreeCAD and the workbench should be there.
 
-This tools are at early stage of developement. It is just presentation of the current stage and the direction it is heading. It is not usable for real work yet.
+This tool is early stage of developement. It is not usable for real work yet.
 
 ## Usage
 
@@ -62,11 +62,11 @@ True shape of the thread is not necessary to see and the true shape is potential
 
 ## Supported threads
 
-This tool should support at least standard metric threads with coarse pitch. It means threads M1 to M280 at least. I hope it will be not big problem to support more thread types and pitch.
+This tool should support at least standard metric threads with coarse pitch. It means threads M1 to M280 at least. I hope it will be not big problem to support more thread types and pitch in a future. But at this moment, there is just Metric coarse thread (1st selection) supported.
 
 ## Visual representation
 
-There will be more types of Cosmetic Threads for tests and comparison what type is/are the best for further implementation. Generally it is important  to see in 3D:
+There are more types of Cosmetic Threads for tests and comparison what type is the best for further implementation. Generally it is important  to see in 3D:
 
 * Length of the thread.
 
@@ -93,6 +93,10 @@ Separate body (tube) representing major/minor diameter and length of the thread.
 ### Type 3 geometric representation
 
 Circular shallow groves with distance = pitch between groves.
+
+### Type 4 geometric representation
+
+Shell of major/minor diameter with simple texture.
 
 ### Parameters of FreeCAD thread feature
 
@@ -159,6 +163,9 @@ There are more functions and classes for threads (at least it is planned).
 * **P2** - **Part** version, **type 2** of geometry representation.
   Thread is simulated by tube D-D1-length / D-d3-length.
 
+* **P4** - **Part** version, **type 4** of geometry representation.
+  Shell with texture.
+
 * **PD0** - **PartDesign** version, **type 0** of geometry representation.
   (not implemented yet)
   Geometric identical or verry simmilar to P0.
@@ -175,11 +182,15 @@ There are more functions and classes for threads (at least it is planned).
   (*not implemented yet*)
   Small circular grooves as visual thread indication.
 
+* **PD4** - **PartDesign** version, **type 4** of geometry representation.
+  (*not implemented yet*)
+  Shell with texture.
+
 Workbench for just two buttons does not make sense in the end. But for the developement of the tools it is most probably the easyest way how to do it. Someday in the future it will be good idea to merge it with some existing and more general work bench - Part or PartDesign I think. Or merge it with some other thread oriented work bench?
 
 # Known issues
 
-1. It is based on a Part objects now and it works well with geometry based on Part Work Bench. It means, there will be problems with PartDesign objects.
+1. It is based on a Part objects now and it works well with geometry based on Part Work Bench.For using with PartDesign objects it is necessary to use ShapeBinder or SubShapeBinder.
 
 2. It will work just for simple holes perpendicular to starting plane. If the starting plane will be under angle to the hole axis, it will be a little bit wrong 3d representation.
 
@@ -196,3 +207,5 @@ Workbench for just two buttons does not make sense in the end. But for the devel
 8. There is no python report what functions are called on background.
 
 9. There is no language localization, it works in English only.
+
+10. 
