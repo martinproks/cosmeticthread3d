@@ -118,22 +118,23 @@ class ct3di_p0_menu_command():
     def eA_ok(self):
         """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
 
+        # lst_threads = MetricCoarse1st.MetricCoarse1st()
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
 
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.name[0]
-        ct3d_prms.D_nominal = lst_threads.D_nominal[0]
-        ct3d_prms.pitch = lst_threads.pitch[0]
-        ct3d_prms.D = lst_threads.D[0]
-        ct3d_prms.D1 = lst_threads.D1[0]
-        # ct3d_prms.d3 = lst_threads.d3[0] # internal thread doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.D_drill[0]
-        ct3d_prms.tolerance = '6H'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
+        ct3d_prms.name           = lst_threads.getName(0)
+        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
+        ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name)
+        # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
+        ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name)
+        ct3d_prms.tolerance      = '6H'
+        ct3d_prms.roughness      = 'Ra 1.6'
+        ct3d_prms.length         = 1.5 * ct3d_prms.D_nominal
         ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
+        ct3d_prms.length_tol     = "H17"
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
@@ -193,7 +194,7 @@ class ct3de_p0_menu_command():
         """Mandatory method for WorkBench Menu/tools button.
         It returns icon, menu text and tool tip."""
         #
-        # The name of a svg file available in the resources
+        # The name of a svg file available in the resourc  es
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3de_p0_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
@@ -239,13 +240,13 @@ class ct3de_p0_menu_command():
         ct3d_prms = ct3d_params.ct3de_params_class()
 
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.name[0]
-        ct3d_prms.D_nominal = lst_threads.D_nominal[0]
-        ct3d_prms.pitch = lst_threads.pitch[0]
-        ct3d_prms.D = lst_threads.D[0]
-        # ct3d_prms.D1 = lst_threads.D1[0] # external thread doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.d3[0]
-        # ct3d_prms.D_drill = lst_threads.D_drill[0] # external thread doesn't have this parameter
+        ct3d_prms.name           = lst_threads.getName(0)
+        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
+        # ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name) # external thread doesn't have this parameter
+        ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name)
+        # ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name) # external thread doesn't have this parameter
         ct3d_prms.tolerance = '6g'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -365,13 +366,13 @@ class ct3di_p1_menu_command():
         ct3d_prms = ct3d_params.ct3di_params_class()
 
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.name[0]
-        ct3d_prms.D_nominal = lst_threads.D_nominal[0]
-        ct3d_prms.pitch = lst_threads.pitch[0]
-        ct3d_prms.D = lst_threads.D[0]
-        ct3d_prms.D1 = lst_threads.D1[0]
-        # ct3d_prms.d3 = lst_threads.d3[0] # internal thread doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.D_drill[0]
+        ct3d_prms.name           = lst_threads.getName(0)
+        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
+        ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name)
+        # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
+        ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name)
         ct3d_prms.tolerance = '6H'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -482,13 +483,13 @@ class ct3de_p1_menu_command():
         ct3d_prms = ct3d_params.ct3de_params_class()
 
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.name[0]
-        ct3d_prms.D_nominal = lst_threads.D_nominal[0]
-        ct3d_prms.pitch = lst_threads.pitch[0]
-        ct3d_prms.D = lst_threads.D[0]
-        # ct3d_prms.D1 = lst_threads.D1[0] # external thread doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.d3[0]
-        # ct3d_prms.D_drill = lst_threads.D_drill[0] # external thread doesn't have this parameter
+        ct3d_prms.name           = lst_threads.getName(0)
+        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
+        # ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name) # external thread doesn't have this parameter
+        ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name)
+        # ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name) # external thread doesn't have this parameter
         ct3d_prms.tolerance = '6g'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -609,13 +610,13 @@ class ct3di_p2_menu_command():
         ct3d_prms = ct3d_params.ct3di_params_class()
 
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.name[0]
-        ct3d_prms.D_nominal = lst_threads.D_nominal[0]
-        ct3d_prms.pitch = lst_threads.pitch[0]
-        ct3d_prms.D = lst_threads.D[0]
-        ct3d_prms.D1 = lst_threads.D1[0]
-        # ct3d_prms.d3 = lst_threads.d3[0] # internal thread doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.D_drill[0]
+        ct3d_prms.name           = lst_threads.getName(0)
+        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
+        ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name)
+        # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
+        ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name)
         ct3d_prms.tolerance = '6H'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -726,13 +727,13 @@ class ct3de_p2_menu_command():
         ct3d_prms = ct3d_params.ct3de_params_class()
 
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.name[0]
-        ct3d_prms.D_nominal = lst_threads.D_nominal[0]
-        ct3d_prms.pitch = lst_threads.pitch[0]
-        ct3d_prms.D = lst_threads.D[0]
-        # ct3d_prms.D1 = lst_threads.D1[0] # external thread doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.d3[0]
-        # ct3d_prms.D_drill = lst_threads.D_drill[0] # external thread doesn't have this parameter
+        ct3d_prms.name           = lst_threads.getName(0)
+        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
+        # ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name) # external thread doesn't have this parameter
+        ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name)
+        # ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name) # external thread doesn't have this parameter
         ct3d_prms.tolerance = '6g'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -853,13 +854,13 @@ class ct3di_p4_menu_command():
         ct3d_prms = ct3d_params.ct3di_params_class()
 
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.name[0]
-        ct3d_prms.D_nominal = lst_threads.D_nominal[0]
-        ct3d_prms.pitch = lst_threads.pitch[0]
-        ct3d_prms.D = lst_threads.D[0]
-        ct3d_prms.D1 = lst_threads.D1[0]
-        # ct3d_prms.d3 = lst_threads.d3[0] # internal thread doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.D_drill[0]
+        ct3d_prms.name           = lst_threads.getName(0)
+        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
+        ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name)
+        # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
+        ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name)
         ct3d_prms.tolerance = '6H'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -970,13 +971,13 @@ class ct3de_p4_menu_command():
         ct3d_prms = ct3d_params.ct3de_params_class()
 
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.name[0]
-        ct3d_prms.D_nominal = lst_threads.D_nominal[0]
-        ct3d_prms.pitch = lst_threads.pitch[0]
-        ct3d_prms.D = lst_threads.D[0]
-        # ct3d_prms.D1 = lst_threads.D1[0] # external thread doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.d3[0]
-        # ct3d_prms.D_drill = lst_threads.D_drill[0] # external thread doesn't have this parameter
+        ct3d_prms.name           = lst_threads.getName(0)
+        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
+        # ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name) # external thread doesn't have this parameter
+        ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name)
+        # ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name) # external thread doesn't have this parameter
         ct3d_prms.tolerance = '6g'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -1024,5 +1025,4 @@ class ct3de_p4_menu_command():
         return None
 
 Gui.addCommand('external_cosmetic_thread_p4', ct3de_p4_menu_command())
-
 
