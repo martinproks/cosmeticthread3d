@@ -101,37 +101,42 @@ class ct3d_threadUI(QtGui.QDialog):
         
         # the obj ans lst_threads pointers are copied to internal variables accessible from other methods
         self.s_obj = obj
-        self.s_lst_threads = lst_threads
+        self.s_lthr = lst_threads
         self.useGroup = False
+        self.s_lstCurrentIndex = 0
         
         # Estimate/guess thread according the best matching Dobj
-        n = len(self.s_lst_threads.name)
+        n = len(self.s_lthr.getLstNames())
         # internal thread
         if hasattr(self.s_obj, 'D1'):
             i = 0
-            deviance = abs(self.s_lst_threads.D_drill[i] - Dobj) / self.s_lst_threads.D_drill[i]
-            self.s_lstCurrentIndex = 0
+            Ddrill = self.s_lthr.getD_drill(self.s_lthr.getName(i))
+            deviance = abs(Ddrill - Dobj) / Ddrill # relative value based on D_drill
             while i < n-1:
-                deviance_next = abs(self.s_lst_threads.D_drill[i+1] - Dobj) / self.s_lst_threads.D_drill[i+1]
+                Ddrill = self.s_lthr.getD_drill(self.s_lthr.getName(i+1))
+                deviance_next = abs(Ddrill - Dobj) / Ddrill # relative value based on D_drill
                 if deviance > deviance_next: # while the deviance is descending (deviance > deviance_next), [i+1] is matching better than [i].
                     self.s_lstCurrentIndex = i+1
                 else:  # STOP, the [i] matched better than [i+1]
                     i = n-2 # this will force to stop
                 i += 1 # move i for nex turn...
-                deviance = deviance_next # and actualize appropriate deviance                    
+                deviance = deviance_next # and actualize appropriate deviance
+            del(Ddrill)
         # external thread
         if hasattr(self.s_obj, 'd3'):
             i = 0
-            deviance = abs(self.s_lst_threads.D[i] - Dobj) / self.s_lst_threads.D[i]
-            self.s_lstCurrentIndex = 0
+            Dtmp = self.s_lthr.getD(self.s_lthr.getName(i))
+            deviance = abs(Dtmp - Dobj) / Dtmp # relative value based on D
             while i < n-1:
-                deviance_next = abs(self.s_lst_threads.D[i+1] - Dobj) / self.s_lst_threads.D[i+1]
+                Dtmp = self.s_lthr.getD(self.s_lthr.getName(i+1))
+                deviance_next = abs(Dtmp - Dobj) / Dtmp # relative value based on D
                 if deviance > deviance_next: # while the deviance is descending, [i+1] is matching better than [i].
                     self.s_lstCurrentIndex = i+1
                 else:  # STOP, the [i] matched better than [i+1]
                     i = n-2 # this will force to stop
                 i += 1 # move i for nex turn...
                 deviance = deviance_next # and actualize appropriate deviance
+            del(Dtmp)
         del(Dobj)
         del(deviance)
         del(deviance_next)
@@ -146,6 +151,7 @@ class ct3d_threadUI(QtGui.QDialog):
     def initUI(self):
         self.result = userCancelled
         i = self.s_lstCurrentIndex # too long name for use, just call it 'i' for now
+        name = self.s_lthr.getName(i)
  	# create our window
 	# define window  xLoc,yLoc,xDim,yDim
         self.setGeometry(250, 250, 400, 480)
@@ -158,7 +164,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label0a.setFont('Courier')
         self.label0a.move(10, y)
         self.w_name = QtGui.QComboBox(self)
-        self.w_name.addItems(self.s_lst_threads.name)
+        self.w_name.addItems(self.s_lthr.getLstNames())
         self.w_name.setCurrentIndex(self.s_lstCurrentIndex)
         self.w_name.activated[str].connect(self.onPopupThreadSel)
         self.w_name.move(180, y)
@@ -170,7 +176,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label1a.move(30, y)
         self.w_D_nom = QtGui.QLineEdit(self)
         self.w_D_nom.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
-        self.w_D_nom.setText(str(self.s_lst_threads.D_nominal[i]))
+        self.w_D_nom.setText(str(self.s_lthr.getD_nominal(name)))
         self.w_D_nom.setFixedWidth(65)
         self.w_D_nom.setReadOnly(True)
         self.w_D_nom.move(210, y)
@@ -185,7 +191,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label2a.move(30, y)
         self.w_pitch = QtGui.QLineEdit(self)
         self.w_pitch.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
-        self.w_pitch.setText(str(self.s_lst_threads.pitch[i]))
+        self.w_pitch.setText(str(self.s_lthr.getpitch(name)))
         self.w_pitch.setFixedWidth(65)
         self.w_pitch.setReadOnly(True)
         self.w_pitch.move(210, y)
@@ -200,7 +206,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label3a.move(30, y)
         self.w_D = QtGui.QLineEdit(self)
         self.w_D.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
-        self.w_D.setText(str(self.s_lst_threads.D[i]))
+        self.w_D.setText(str(self.s_lthr.getD(name)))
         self.w_D.setFixedWidth(65)
         self.w_D.setReadOnly(True)
         self.w_D.move(210, y)
@@ -215,7 +221,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label4a.move(30, y)
         self.w_D1 = QtGui.QLineEdit(self)
         self.w_D1.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
-        self.w_D1.setText(str(self.s_lst_threads.D1[i]))
+        self.w_D1.setText(str(self.s_lthr.getD1(name)))
         self.w_D1.setFixedWidth(65)
         self.w_D1.setReadOnly(True)
         self.w_D1.move(210, y)
@@ -230,7 +236,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label5a.move(30, y)
         self.w_d3 = QtGui.QLineEdit(self)
         self.w_d3.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
-        self.w_d3.setText(str(self.s_lst_threads.d3[i]))
+        self.w_d3.setText(str(self.s_lthr.getd3(name)))
         self.w_d3.setFixedWidth(65)
         self.w_d3.setReadOnly(True)
         self.w_d3.move(210, y)
@@ -245,7 +251,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label6a.move(30, y)
         self.w_D_drill = QtGui.QLineEdit(self)
         self.w_D_drill.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
-        self.w_D_drill.setText(str(self.s_lst_threads.D_drill[i]))
+        self.w_D_drill.setText(str(self.s_lthr.getD_drill(name)))
         self.w_D_drill.setFixedWidth(65)
         self.w_D_drill.setReadOnly(True)
         self.w_D_drill.move(210, y)
@@ -301,7 +307,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label10a.move(10, y)
         self.w_len = QtGui.QLineEdit(self)
         self.w_len.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
-        self.w_len.setText(str(self.s_lst_threads.D_drill[i] * 1.5)) # something for start, why not Dx1.5
+        self.w_len.setText(str(self.s_lthr.getD_drill(name) * 1.5)) # something for start, why not Dx1.5
         self.w_len.setFixedWidth(65)
         self.w_len.setReadOnly(False)
         self.w_len.move(180, y)
@@ -369,21 +375,23 @@ class ct3d_threadUI(QtGui.QDialog):
         # return None
 
     def onPopupThreadSel(self, selectedText):
-        # user selected some thread type, fill widgets by values from self.s_lst_threads
-        i = self.w_name.currentIndex()
-        self.s_lstCurrentIndex = i
-        self.w_D_nom.setText(str(self.s_lst_threads.D_nominal[i]))
-        self.w_pitch.setText(str(self.s_lst_threads.pitch[i]))
-        self.w_D.setText(str(self.s_lst_threads.D[i]))
-        self.w_D1.setText(str(self.s_lst_threads.D1[i]))
-        self.w_d3.setText(str(self.s_lst_threads.d3[i]))
-        self.w_D_drill.setText(str(self.s_lst_threads.D_drill[i]))
+        # user selected some thread type, fill widgets by values from self.s_lthr
+        self.s_lstCurrentIndex = self.w_name.currentIndex()
+        name = self.s_lthr.getName(self.s_lstCurrentIndex)
+        #
+        self.w_D_nom.setText(str(self.s_lthr.getD_nominal(name)))
+        self.w_pitch.setText(str(self.s_lthr.getpitch(name)))
+        self.w_D.setText(str(self.s_lthr.getD(name)))
+        self.w_D1.setText(str(self.s_lthr.getD1(name)))
+        self.w_d3.setText(str(self.s_lthr.getd3(name)))
+        self.w_D_drill.setText(str(self.s_lthr.getD_drill(name)))
         #
         # Rest of the values are independent on thread selection
+        #
+        del(name)
         # return None
 
     def onApply(self):
-        i = self.w_name.currentIndex()
         self.s_obj.Label       = self.w_name.currentText()
         self.s_obj.Description = self.w_name.currentText()
         self.s_obj.D_nominal   = float(self.w_D_nom.text())
