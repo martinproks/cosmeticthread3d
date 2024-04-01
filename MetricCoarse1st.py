@@ -49,6 +49,11 @@ class MetricCoarse1st:
     __D_drill = []
 
     def __init__(self):
+        self.__name      = []
+        self.__D_nominal = []
+        self.__pitch     = []
+        self.__D_drill   = []
+
         self.__name.append('M1')
         self.__D_nominal.append(1)
         self.__pitch.append(0.25)

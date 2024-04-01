@@ -118,7 +118,6 @@ class ct3di_p0_menu_command():
     def eA_ok(self):
         """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
 
-        # lst_threads = MetricCoarse1st.MetricCoarse1st()
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
 
@@ -148,11 +147,11 @@ class ct3di_p0_menu_command():
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3dGuiTools.ct3d_threadUI(obj, D_hole, lst_threads)
+        form = ct3dGuiTools.ct3d_threadUI(obj, D_hole)
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        elif form.useGroup == True:
+        elif form.useGroup is True:
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
@@ -265,11 +264,11 @@ class ct3de_p0_menu_command():
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3dGuiTools.ct3d_threadUI(obj, D_shaft, lst_threads)
+        form = ct3dGuiTools.ct3d_threadUI(obj, D_shaft)
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        elif form.useGroup == True:
+        elif form.useGroup is True:
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
@@ -391,11 +390,11 @@ class ct3di_p1_menu_command():
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3dGuiTools.ct3d_threadUI(obj, D_hole, lst_threads)
+        form = ct3dGuiTools.ct3d_threadUI(obj, D_hole)
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        elif form.useGroup == True:
+        elif form.useGroup is True:
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
@@ -508,11 +507,11 @@ class ct3de_p1_menu_command():
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3dGuiTools.ct3d_threadUI(obj, D_shaft, lst_threads)
+        form = ct3dGuiTools.ct3d_threadUI(obj, D_shaft)
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        elif form.useGroup == True:
+        elif form.useGroup is True:
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
@@ -635,11 +634,11 @@ class ct3di_p2_menu_command():
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3dGuiTools.ct3d_threadUI(obj, D_hole, lst_threads)
+        form = ct3dGuiTools.ct3d_threadUI(obj, D_hole)
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        elif form.useGroup == True:
+        elif form.useGroup is True:
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
@@ -752,11 +751,11 @@ class ct3de_p2_menu_command():
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3dGuiTools.ct3d_threadUI(obj, D_shaft, lst_threads)
+        form = ct3dGuiTools.ct3d_threadUI(obj, D_shaft)
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        elif form.useGroup == True:
+        elif form.useGroup is True:
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
@@ -879,11 +878,11 @@ class ct3di_p4_menu_command():
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3dGuiTools.ct3d_threadUI(obj, D_hole, lst_threads)
+        form = ct3dGuiTools.ct3d_threadUI(obj, D_hole)
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        elif form.useGroup == True:
+        elif form.useGroup is True:
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
@@ -996,11 +995,11 @@ class ct3de_p4_menu_command():
         #
         # UI thread parameters estimation.
         # UI IS modal. It means code is waiting to UI close.
-        form = ct3dGuiTools.ct3d_threadUI(obj, D_shaft, lst_threads)
+        form = ct3dGuiTools.ct3d_threadUI(obj, D_shaft)
         form.exec_()
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
-        elif form.useGroup == True:
+        elif form.useGroup is True:
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
