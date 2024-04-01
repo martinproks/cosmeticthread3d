@@ -183,10 +183,10 @@ def internal_p0(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 
     obj = None
 
-    if ct3di_prms == None:
+    if ct3di_prms is None:
         App.Console.PrintError('internal_p0(name, ct3di_prms, aPart) - Check ct3di_prms\n')
     else:
-        if name == None:
+        if name is None:
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart != None:
@@ -258,7 +258,7 @@ class CosmeticThread3DInternal_p0:
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-        if obj.length_through == True:
+        if obj.length_through is True:
             # Thread is going throught whole body - there is no ending anulus
             r = Part.makeCompound([h, r0])
         else:
@@ -303,10 +303,10 @@ def internal_p1(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 
     obj = None
 
-    if ct3di_prms == None:
+    if ct3di_prms is None:
         App.Console.PrintError('internal_p1(name, ct3di_prms, aPart) - Check ct3di_prms\n')
     else:
-        if name == None:
+        if name is None:
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart != None:
@@ -375,7 +375,7 @@ class CosmeticThread3DInternal_p1:
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-        if obj.length_through == True:
+        if obj.length_through is True:
             # Thread is going throught whole body - there is no ending anulus
             r = Part.makeCompound([r0])
         else:
@@ -420,10 +420,10 @@ def internal_p2(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 
     obj = None
 
-    if ct3di_prms == None:
+    if ct3di_prms is None:
         App.Console.PrintError('internal_p2(name, ct3di_prms, aPart) - Check ct3di_prms\n')
     else:
-        if name == None:
+        if name is None:
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart != None:
@@ -533,10 +533,10 @@ def internal_p4(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 
     obj = None
 
-    if ct3di_prms == None:
+    if ct3di_prms is None:
         App.Console.PrintError('internal_p4(name, ct3di_prms, aPart) - Check ct3di_prms\n')
     else:
-        if name == None:
+        if name is None:
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart != None:
@@ -768,10 +768,10 @@ def external_p0(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
 
     obj = None
     
-    if ct3de_prms == None:
+    if ct3de_prms is None:
         App.Console.PrintError('external_p0(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
-        if name == None:
+        if name is None:
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart != None:
@@ -837,7 +837,7 @@ class CosmeticThread3DExternal_p0:
         v1 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-        if obj.length_through == True:
+        if obj.length_through is True:
             # Thread is going throught whole body - there is no ending anulus
             r = Part.makeCompound([h, r0])
         else:
@@ -882,10 +882,10 @@ def external_p1(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
 
     obj = None
     
-    if ct3de_prms == None:
+    if ct3de_prms is None:
         App.Console.PrintError('external_p1(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
-        if name == None:
+        if name is None:
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart != None:
@@ -948,7 +948,7 @@ class CosmeticThread3DExternal_p1:
         v1 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-        if obj.length_through == True:
+        if obj.length_through is True:
             # Thread is going throught whole body - there is no ending anulus
             r = Part.makeCompound([r0])
         else:
@@ -993,10 +993,10 @@ def external_p2(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
 
     obj = None
     
-    if ct3de_prms == None:
+    if ct3de_prms is None:
         App.Console.PrintError('external_p2(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
-        if name == None:
+        if name is None:
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart != None:
@@ -1100,10 +1100,10 @@ def external_p4(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
 
     obj = None
     
-    if ct3de_prms == None:
+    if ct3de_prms is None:
         App.Console.PrintError('external_p2(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
-        if name == None:
+        if name is None:
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart != None:
