@@ -52,8 +52,17 @@ import FreeCADGui as Gui
 import Part
 
 import MetricCoarse1st
-
-
+import MetricCoarse2nd
+import MetricCoarse3th
+import MetricFine1st
+import MetricFine2nd
+import MetricFine3th
+# import MetricEle
+# import BSW
+# import BSF
+# import UNC
+# import UNF
+# import UNEF
 
 # +-----------------------------------------------------+
 # |                                                     |
@@ -62,7 +71,6 @@ import MetricCoarse1st
 # +-----------------------------------------------------+
 userCancelled = 'Cancel button pressed'
 userOk        = 'OK button pressed'
-# userApply     = 'Apply button pressed'
 
 
 
@@ -72,7 +80,9 @@ userOk        = 'OK button pressed'
 # |                                                        |
 # +--------------------------------------------------------+
 def get_module_path():
-    """Returns the current module path."""
+    """
+    Returns the current module path.
+    """
     
     return os.path.dirname(__file__)
 
@@ -84,7 +94,9 @@ def get_module_path():
 # |                                                       |
 # +-------------------------------------------------------+
 class ct3d_threadUI(QtGui.QDialog):
-    """UI for thread parameters definition - common for all threads."""
+    """
+    UI for thread parameters definition - common for all threads.
+    """
     # https://wiki.freecad.org/PySide_Intermediate_Examples
     # https://doc.qt.io/qt-5/qtwidgets-module.html
     # https://doc.qt.io/qt-5/qcheckbox.html
@@ -97,30 +109,50 @@ class ct3d_threadUI(QtGui.QDialog):
         and copy the values to the obj properties.
 
         obj  - [text link]  Object with thread parameters...
-        Dobj - [mm]         Hole or shaft diameter for preliminary thread estimation.
+        Dobj - [mm]         Hole or shaft diameter for preliminary
+                            thread estimation.
         """
         
-        # the obj ans lst_threads pointers are copied to internal variables accessible from other methods
+        # the obj and lst_threads pointers are copied to internal variables
+        # accessible from other methods
         self.__obj = obj
         self.__Dobj = Dobj
         # Thread type initialization
         self.__tOT = [ ] # typesOfThreads
-        self.__tOT.append('Metric Coarse thread')                      # MetricCoarse1st.MetricCoarse1st()
-        self.__tOT.append('Metric Fine thread')                        # MetricFine.MetricFine()
-        self.__tOT.append('Metric Electrical thread')                  # MetricEle.MetricEle() # for EN 50262 threaded fittings
-        self.__tOT.append('BSW - British Standard Whitworth')          # BSW.BSW()
-        self.__tOT.append('BSF - British Standard Fine')               # BSF.BSF()
-        self.__tOT.append('UNC - Unified Thread Standard Coarse')      # UNC.UNC()
-        self.__tOT.append('UNF - Unified Thread Standard Fine')        # UNF.UNF()
-        self.__tOT.append('UNEF - Unified Thread Standard Extra fine') # UNEF.UNEF()
+        self.__tOT.append('Metric Coarse thread')
+        # MetricCoarse1st.MetricCoarse1st()
+        self.__tOT.append('Metric Coarse thread 2nd choice')
+        # MetricCoarse2nd.MetricCoarse2nd()
+        self.__tOT.append('Metric Coarse thread 3th choice')
+        # MetricCoarse3th.MetricCoarse3th()
+        self.__tOT.append('Metric Fine thread')
+        # MetricFine.MetricFine()
+        self.__tOT.append('Metric Fine thread 2nd choice')
+        # MetricFine2nd.MetricFine2nd()
+        self.__tOT.append('Metric Fine thread 3th choice')
+        # MetricFine3th.MetricFine3th()
+        self.__tOT.append('Metric Electrical thread')
+        # MetricEle.MetricEle() # for EN 50262 threaded fittings
+        self.__tOT.append('BSW - British Standard Whitworth')
+        # BSW.BSW()
+        self.__tOT.append('BSF - British Standard Fine')
+        # BSF.BSF()
+        self.__tOT.append('UNC - Unified Thread Standard Coarse')
+        # UNC.UNC()
+        self.__tOT.append('UNF - Unified Thread Standard Fine')
+        # UNF.UNF()
+        self.__tOT.append('UNEF - Unified Thread Standard Extra fine')
+        # UNEF.UNEF()
         self.__tOT_index = 0
         self.__lthr = MetricCoarse1st.MetricCoarse1st()
         self.__lthr_index = 0
-        # Button use group Threads? This value is not internal.
-        self.useGroup = False
+        # Use group Threads? This value is not internal.
+        self.useGroup = True
 
         # Estimate/guess thread according the best matching Dobj
-        self.__lthr_index = threadIFromDobj(self.__Dobj, self.__obj, self.__lthr)
+        self.__lthr_index = threadIFromDobj(self.__Dobj, \
+                                            self.__obj, \
+                                            self.__lthr)
 
         # UI itself...
         super(ct3d_threadUI, self).__init__()
@@ -138,10 +170,8 @@ class ct3d_threadUI(QtGui.QDialog):
         #
         # Type of thread selection
         y = 10
-        # self.label00a = QtGui.QLabel('Type of Thread', self)
-        # self.label00a.setFont('Courier')
-        # self.label00a.move(10, y)
         self.w_tOT = QtGui.QComboBox(self)
+        # self.w_tOT.setSizeAdjustPolicy(???)
         self.w_tOT.addItems(self.__tOT)
         self.w_tOT.setCurrentIndex(self.__tOT_index)
         self.w_tOT.activated[str].connect(self.onPopupTypeOfThread)
@@ -153,6 +183,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label0a.setFont('Courier')
         self.label0a.move(10, y)
         self.w_lthr = QtGui.QComboBox(self)
+        # self.w_lthr.setSizeAdjustPolicy(???)
         self.w_lthr.addItems(self.__lthr.getLstNames())
         self.w_lthr.setCurrentIndex(self.__lthr_index)
         self.w_lthr.activated[str].connect(self.onPopupThreadSel)
@@ -285,7 +316,8 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label9a.move(10, y)
         self.w_thr_through = QtGui.QCheckBox('(full length)', self)
         self.w_thr_through.setFont('Courier')
-        # self.w_thr_through.clicked.connect(self.onCheckbox1) # on, I do not wan connect anything. I read isChecked at the end...
+        # self.w_thr_through.clicked.connect(self.onCheckbox1) # I do not
+        # want connect anything. I read isChecked on apply...
         self.w_thr_through.setChecked(False)
         self.w_thr_through.move(250,y)
         #
@@ -296,7 +328,8 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label10a.move(10, y)
         self.w_len = QtGui.QLineEdit(self)
         self.w_len.setValidator(QtGui.QDoubleValidator(0.999, 999.999, 3))
-        self.w_len.setText(str(self.__lthr.getD_drill(name) * 1.5)) # something for start, why not Dx1.5
+        self.w_len.setText(str(self.__lthr.getD_drill(name) * 1.5))
+        # something for start, why not Dx1.5
         self.w_len.setFixedWidth(65)
         self.w_len.setReadOnly(False)
         self.w_len.move(180, y)
@@ -325,8 +358,9 @@ class ct3d_threadUI(QtGui.QDialog):
         self.label13a.move(10, y)
         self.w_useGroup = QtGui.QCheckBox('', self)
         self.w_useGroup.setFont('Courier')
-        # self.w_useGroup.clicked.connect(self.onCheckbox1) # no, I do not wan connect anything. I read isChecked at the end...
-        self.w_useGroup.setChecked(False)
+        # self.w_useGroup.clicked.connect(self.onCheckbox1) # I do not
+        # want connect anything. I read isChecked on apply...
+        self.w_useGroup.setChecked(self.useGroup)
         self.w_useGroup.move(180,y)
         #
 
@@ -358,8 +392,16 @@ class ct3d_threadUI(QtGui.QDialog):
         
         if tOT_name == 'Metric Coarse thread':
             self.__lthr = MetricCoarse1st.MetricCoarse1st()
-        # elif tOT_name == 'Metric Fine thread':
-        #     self.__lthr = MetricFine.MetricFine()
+        elif tOT_name == 'Metric Coarse thread 2nd choice':
+            self.__lthr = MetricCoarse2nd.MetricCoarse2nd()
+        elif tOT_name == 'Metric Coarse thread 3th choice':
+            self.__lthr = MetricCoarse3th.MetricCoarse3th()
+        elif tOT_name == 'Metric Fine thread':
+            self.__lthr = MetricFine1st.MetricFine1st()
+        elif tOT_name == 'Metric Fine thread 2nd choice':
+            self.__lthr = MetricFine2nd.MetricFine2nd()
+        elif tOT_name == 'Metric Fine thread 3th choice':
+            self.__lthr = MetricFine3th.MetricFine3th()
         # elif tOT_name == 'Metric Electrical thread':
         #     self.__lthr = MetricEle.MetricEle()
         # elif tOT_name == 'BSW - British Standard Whitworth':
@@ -384,13 +426,15 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_lthr.setCurrentIndex(i)
         self.onPopupThreadSel(self.__lthr.getName(i))
         #
+        self.onApply()
+        #
         del(i)
         del(tOT_name)
         #
         # return None
 
     def onPopupThreadSel(self, selectedText):
-        # user selected some thread type, fill widgets by values from self.__lthr
+        # user selected some thread type, fill widgets by self.__lthr values
         self.__lthr_index = self.w_lthr.currentIndex()
         name = self.__lthr.getName(self.__lthr_index)
         #
@@ -418,12 +462,12 @@ class ct3d_threadUI(QtGui.QDialog):
             self.__obj.d3      = float(self.w_d3.text())
         if hasattr(self.__obj, 'D_drill'):  # internal thread
             self.__obj.D_drill = float(self.w_D_drill.text())
-        self.__obj.tolerance   = self.w_thr_tol.displayText() # do not remmove white chars - displayText
-        self.__obj.roughness   = self.w_thr_rgh.displayText() # do not remmove white chars - displayText
+        self.__obj.tolerance   = self.w_thr_tol.displayText() # do not remove white chars - displayText
+        self.__obj.roughness   = self.w_thr_rgh.displayText() # do not remove white chars - displayText
         self.__obj.length_through =  self.w_thr_through.isChecked()
         self.__obj.length      = float(self.w_len.text())
-        self.__obj.length_tol  = self.w_len_tol.displayText() # do not remmove white chars - displayText
-        self.useGroup        =  self.w_useGroup.isChecked()
+        self.__obj.length_tol  = self.w_len_tol.displayText() # do not remove white chars - displayText
+        self.useGroup          =  self.w_useGroup.isChecked()
         #
         self.__obj.recompute()
         #
@@ -448,18 +492,25 @@ class ct3d_threadUI(QtGui.QDialog):
 # |                                                       |
 # +-------------------------------------------------------+
 class arrow_direction():
-    """Arrow / direction symbol
-    service class for tools for create/manipulate it"""
+    """
+    Arrow / direction symbol
+    service class for tools for create/manipulate it
+    """
 
     def __init__(self):
-        """__init__() - internal initialization function."""
+        """
+        __init__() - internal initialization function.
+        """
         # empty
         return None
 
     def create():
-        """create() -> obj
+        """
+        create() -> obj
 
-        Create directional symbol / arrow / cone and return textlink (obj) at it."""
+        Create directional symbol / arrow / cone and return textlink
+        (obj) at it.
+        """
         #
         obj = App.ActiveDocument.addObject('Part::Cone','ThreadOrientation')
         obj.Label = 'ThreadOrientation'
@@ -477,9 +528,11 @@ class arrow_direction():
         return obj
 
     def scale(obj, hole_diameter):
-        """scale(obj, hole_diameter)
+        """
+        scale(obj, hole_diameter)
 
-        Scale directional symbol / arrow / cone (textlink obj) to be visually adequate to hole diameter.
+        Scale directional symbol / arrow / cone (textlink obj) to be visually
+        adequate to hole diameter.
         """
         #
         obj.Radius1 = 0.25 * hole_diameter
@@ -526,11 +579,13 @@ def copy_attachment(obj_from, obj_to):
 # |                                                               |
 # +---------------------------------------------------------------+
 def diameter_from_attachment(obj):
-    """diameter_from_attachment(obj) -> D
+    """
+    diameter_from_attachment(obj) -> D
 
     Try to estimate diameter from obj.Support.
     
-    Return Diameter or 0 if is it unsucesfull."""
+    Return Diameter or 0 if is it unsucesfull.
+    """
 
     D = 0.0
     # https://forum.freecad.org/viewtopic.php?p=743699#p743699
@@ -538,7 +593,8 @@ def diameter_from_attachment(obj):
     #     edge.Curve.Radius
     for feature, subs in obj.Support:
         for sub in subs:
-            # Look just for first circular element and estimate diameter from it. Circle or cylinder.
+            # Look just for first circular element and estimate diameter
+            # from it. Circle or cylinder.
             if D == 0:
                 shp = Part.getShape(feature, sub, needSubElement = True)
                 if hasattr(shp, 'Curve'):
@@ -616,7 +672,8 @@ def useGroupThreads(obj, aPart):
     """
     useGroupThreads() -> None
     
-    Move object obj into Threads group/folder in active part aPart (if active part exists)
+    Move object obj into Threads group/folder in active part aPart
+    (if active part exists)
     """
 
     groupThreadsName = 'Threads'
@@ -624,11 +681,13 @@ def useGroupThreads(obj, aPart):
     doc = App.ActiveDocument
     groupObj = None
     if aPart is None:
-        # There is no active Part, look for group 'Threads' inside active document top level
+        # There is no active Part, look for group 'Threads' inside
+        # active document top level
         for tmpObj in doc.Objects:
             if tmpObj.TypeId == 'App::DocumentObjectGroup':
                 if tmpObj.Label == groupThreadsName:
-                    # Ok, I have SOME group 'Threads'. But I need top level one, no parents...
+                    # Ok, I have SOME group 'Threads'.
+                    # But I need top level one, no parents...
                     if len(tmpObj.Parents) == 0:
                         groupObj = tmpObj
                         break
