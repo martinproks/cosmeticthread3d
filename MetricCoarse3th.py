@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# MetricCoarse1st.py
+# MetricCoarse3th.py
 #
 #******************************************************************************
 #* Cosmetic Thread 3D Work Bench - tools for cosmetic threads creation        *
@@ -35,12 +35,12 @@ import math
     
 
 
-class MetricCoarse1st:
+class MetricCoarse3th:
     """
-    class MetricCoarse1st
+    class MetricCoarse3th
 
     Returns object (class) with threads parameters for Metric coarse thread
-    1st selection (ISO 261 preffered group of threads).
+    3th selection (ISO 261 preffered group of threads).
     """
 
     __name = []
@@ -54,110 +54,15 @@ class MetricCoarse1st:
         self.__pitch     = []
         self.__D_drill   = []
 
-        self.__name.append('M1')
-        self.__D_nominal.append(1)
-        self.__pitch.append(0.25)
-        self.__D_drill.append(0.75)
-
-        self.__name.append('M1.2')
-        self.__D_nominal.append(1.2)
-        self.__pitch.append(0.25)
-        self.__D_drill.append(0.95)
-
-        self.__name.append('M1.6')
-        self.__D_nominal.append(1.6)
-        self.__pitch.append(0.35)
-        self.__D_drill.append(1.25)
-
-        self.__name.append('M2')
-        self.__D_nominal.append(2)
-        self.__pitch.append(0.4)
-        self.__D_drill.append(1.6)
-
-        self.__name.append('M2.5')
-        self.__D_nominal.append(2.5)
-        self.__pitch.append(0.45)
-        self.__D_drill.append(2.05)
-
-        self.__name.append('M3')
-        self.__D_nominal.append(3)
-        self.__pitch.append(0.5)
-        self.__D_drill.append(2.5)
-
-        self.__name.append('M4')
-        self.__D_nominal.append(4)
-        self.__pitch.append(0.7)
-        self.__D_drill.append(3.3)
-
-        self.__name.append('M5')
-        self.__D_nominal.append(5)
-        self.__pitch.append(0.8)
-        self.__D_drill.append(4.2)
-
-        self.__name.append('M6')
-        self.__D_nominal.append(6)
-        self.__pitch.append(1)
-        self.__D_drill.append(5)
-
-        self.__name.append('M8')
-        self.__D_nominal.append(8)
+        self.__name.append('M9')
+        self.__D_nominal.append(9)
         self.__pitch.append(1.25)
-        self.__D_drill.append(6.75)
+        self.__D_drill.append(7.65)
 
-        self.__name.append('M10')
-        self.__D_nominal.append(10)
+        self.__name.append('M11')
+        self.__D_nominal.append(11)
         self.__pitch.append(1.5)
-        self.__D_drill.append(8.5)
-
-        self.__name.append('M12')
-        self.__D_nominal.append(12)
-        self.__pitch.append(1.75)
-        self.__D_drill.append(10.2)
-
-        self.__name.append('M16')
-        self.__D_nominal.append(16)
-        self.__pitch.append(2)
-        self.__D_drill.append(14)
-
-        self.__name.append('M20')
-        self.__D_nominal.append(20)
-        self.__pitch.append(2.5)
-        self.__D_drill.append(17.5)
-
-        self.__name.append('M24')
-        self.__D_nominal.append(24)
-        self.__pitch.append(3)
-        self.__D_drill.append(21)
-
-        self.__name.append('M30')
-        self.__D_nominal.append(30)
-        self.__pitch.append(3.5)
-        self.__D_drill.append(26.5)
-
-        self.__name.append('M36')
-        self.__D_nominal.append(36)
-        self.__pitch.append(4)
-        self.__D_drill.append(32)
-
-        self.__name.append('M42')
-        self.__D_nominal.append(42)
-        self.__pitch.append(4.5)
-        self.__D_drill.append(37.5)
-
-        self.__name.append('M48')
-        self.__D_nominal.append(48)
-        self.__pitch.append(5)
-        self.__D_drill.append(43)
-
-        self.__name.append('M56')
-        self.__D_nominal.append(56)
-        self.__pitch.append(5.5)
-        self.__D_drill.append(50.5)
-
-        self.__name.append('M64')
-        self.__D_nominal.append(64)
-        self.__pitch.append(6)
-        self.__D_drill.append(58)
+        self.__D_drill.append(9.4)
 
     def getLstNames(self):
         """
