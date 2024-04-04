@@ -14,7 +14,7 @@ Git link: [GitHub: FreeCAD tool - cosmetic thread for 3D geometry - experimental
 
 FreeCAD tool - cosmetic thread for 3D geometry - experimental.
 
-This tool should make 3D representation and important parameters of cosmetic threads (internal and external) for basic metric standard threads to the FreeCAD.
+This tool should make 3D representation and important parameters of cosmetic threads (internal and external) for standard threads to the FreeCAD.
 
 Goal of this tool is not bring final version of the cosmetic threads (not yet), but explore ways how to do it and prepare background for more stable and good final implementation.
 
@@ -32,7 +32,9 @@ Create folder `Mod/CosmeticThread3D` and copy there all data from this git repos
 
 Restart FreeCAD and the workbench should be there.
 
-This tool is early stage of developement. It is not usable for real work yet.
+This tool is under developement. It is not usable for real work yet - some important interface parameters are changing or added or removed during the developement.
+
+But testers and feedback from them is very helpfull and important. Please test it and left a feedback. Thanks.
 
 ## Usage
 
@@ -150,6 +152,8 @@ The parameters are:
 
 - `MetricCoarse1st.py` - tabularized parameters for metric coarse threads, preffered selection (1st) according to ISO 261
 
+- `MetricCoarse2nd.py`, `MetricCoarse3th.py`, `MetricFine1st.py`, `MetricFine2nd.py`, `MetricFine3th.py` - tabularized parameters... 
+
 ## Notes to implementation
 
 There are more functions and classes for threads (at least it is planned).
@@ -207,5 +211,3 @@ Workbench for just two buttons does not make sense in the end. But for the devel
 8. There is no python report what functions are called on background.
 
 9. There is no language localization, it works in English only.
-
-10. 

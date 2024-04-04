@@ -24,15 +24,15 @@
 #* USA                                                                        *
 #******************************************************************************
 
-__title__   = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
+__title__ = 'Cosmetic Thread 3D Work Bench'
+__author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+__url__ = 'https://github.com/martinproks/cosmeticthread3d'
 
 
 
 import math
-    
+
 
 
 class MetricCoarse1st:
@@ -49,10 +49,10 @@ class MetricCoarse1st:
     __D_drill = []
 
     def __init__(self):
-        self.__name      = []
+        self.__name = []
         self.__D_nominal = []
-        self.__pitch     = []
-        self.__D_drill   = []
+        self.__pitch = []
+        self.__D_drill = []
 
         self.__name.append('M1')
         self.__D_nominal.append(1)
@@ -237,7 +237,7 @@ class MetricCoarse1st:
         H = ptmp * 0.5 * math.sqrt(3)
         x = round(Dtmp - 2*H*(1 - (1/6) - (1/8)), 3)
         return x
-    
+
     def getD_drill(self, ThrName):
         """
         getD_drill(ThrName) -> D_drill
