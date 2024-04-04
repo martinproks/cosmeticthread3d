@@ -30,18 +30,6 @@ I decided to move it to separate file for smaller an better to read
 the main GUI script with buttons.
 """
 
-__title__   = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
-__License__ = 'LGPL-2.1-or-later'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
-
-"""
-Vocabulary:
-ct3d   - Cosmetic Thread 3D
-ct3di  - Cosmetic Thread 3D Internal
-ct3de  - Cosmetic Thread 3D External
-"""
-
 
 
 import os
@@ -64,13 +52,29 @@ import MetricFine3th
 # import UNF
 # import UNEF
 
+
+
+__title__ = 'Cosmetic Thread 3D Work Bench'
+__author__ = 'Martin Prokš'
+__License__ = 'LGPL-2.1-or-later'
+__url__ = 'https://github.com/martinproks/cosmeticthread3d'
+
+"""
+Vocabulary:
+ct3d   - Cosmetic Thread 3D
+ct3di  - Cosmetic Thread 3D Internal
+ct3de  - Cosmetic Thread 3D External
+"""
+
+
+
 # +-----------------------------------------------------+
 # |                                                     |
 # |      UI constants - results of modal dialogs        |
 # |                                                     |
 # +-----------------------------------------------------+
 userCancelled = 'Cancel button pressed'
-userOk        = 'OK button pressed'
+userOk = 'OK button pressed'
 
 
 
@@ -83,7 +87,7 @@ def get_module_path():
     """
     Returns the current module path.
     """
-    
+
     return os.path.dirname(__file__)
 
 
@@ -103,8 +107,9 @@ class ct3d_threadUI(QtGui.QDialog):
     # https://doc.qt.io/qt-5/qcombobox.html
     # https://doc.qt.io/qt-5/qlineedit.html
     def __init__(self, obj, Dobj):
-        """__init__(obj, Dobj)
-        
+        """
+        __init__(obj, Dobj)
+
         Create UI for thread dimensions and parameters definition
         and copy the values to the obj properties.
 
@@ -112,13 +117,13 @@ class ct3d_threadUI(QtGui.QDialog):
         Dobj - [mm]         Hole or shaft diameter for preliminary
                             thread estimation.
         """
-        
+
         # the obj and lst_threads pointers are copied to internal variables
         # accessible from other methods
         self.__obj = obj
         self.__Dobj = Dobj
         # Thread type initialization
-        self.__tOT = [ ] # typesOfThreads
+        self.__tOT = [] # typesOfThreads
         self.__tOT.append('Metric Coarse thread')
         # MetricCoarse1st.MetricCoarse1st()
         self.__tOT.append('Metric Coarse thread 2nd choice')
@@ -157,13 +162,12 @@ class ct3d_threadUI(QtGui.QDialog):
         # UI itself...
         super(ct3d_threadUI, self).__init__()
         self.initUI()
-        return None
 
     def initUI(self):
         self.result = userCancelled
         name = self.__lthr.getName(self.__lthr_index)
- 	# create our window
-	# define window  xLoc,yLoc,xDim,yDim
+        # create our window
+        # define window  xLoc,yLoc,xDim,yDim
         self.setGeometry(250, 250, 400, 510)
         self.setWindowTitle('Cosmetic Thread 3D')
         self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
@@ -176,7 +180,7 @@ class ct3d_threadUI(QtGui.QDialog):
         self.w_tOT.setCurrentIndex(self.__tOT_index)
         self.w_tOT.activated[str].connect(self.onPopupTypeOfThread)
         self.w_tOT.move(10, y)
-        
+
         # Widget name (it means Thread selection)
         y += 30
         self.label0a = QtGui.QLabel('Thread selected', self)
@@ -319,7 +323,7 @@ class ct3d_threadUI(QtGui.QDialog):
         # self.w_thr_through.clicked.connect(self.onCheckbox1) # I do not
         # want connect anything. I read isChecked on apply...
         self.w_thr_through.setChecked(False)
-        self.w_thr_through.move(250,y)
+        self.w_thr_through.move(250, y)
         #
         # Widget len
         y += 30
@@ -361,7 +365,7 @@ class ct3d_threadUI(QtGui.QDialog):
         # self.w_useGroup.clicked.connect(self.onCheckbox1) # I do not
         # want connect anything. I read isChecked on apply...
         self.w_useGroup.setChecked(self.useGroup)
-        self.w_useGroup.move(180,y)
+        self.w_useGroup.move(180, y)
         #
 
         # apply button
@@ -383,13 +387,11 @@ class ct3d_threadUI(QtGui.QDialog):
         okButton.move(260, y)
         self.show()
         self.onApply()
-        #
-        # return None
 
     def onPopupTypeOfThread(self, selectedText):
         self.__tOT_index = self.w_tOT.currentIndex()
         tOT_name = self.__tOT[self.__tOT_index]
-        
+
         if tOT_name == 'Metric Coarse thread':
             self.__lthr = MetricCoarse1st.MetricCoarse1st()
         elif tOT_name == 'Metric Coarse thread 2nd choice':
@@ -428,10 +430,7 @@ class ct3d_threadUI(QtGui.QDialog):
         #
         self.onApply()
         #
-        del(i)
-        del(tOT_name)
-        #
-        # return None
+        del i, tOT_name
 
     def onPopupThreadSel(self, selectedText):
         # user selected some thread type, fill widgets by self.__lthr values
@@ -447,42 +446,40 @@ class ct3d_threadUI(QtGui.QDialog):
         #
         # Rest of the values are independent on thread selection
         #
-        del(name)
-        # return None
+        del name
 
     def onApply(self):
-        self.__obj.Label       = self.w_lthr.currentText()
+        self.__obj.Label = self.w_lthr.currentText()
         self.__obj.Description = self.w_lthr.currentText()
-        self.__obj.D_nominal   = float(self.w_D_nom.text())
-        self.__obj.pitch       = float(self.w_pitch.text())
-        self.__obj.D           = float(self.w_D.text())
+        self.__obj.D_nominal = float(self.w_D_nom.text())
+        self.__obj.pitch = float(self.w_pitch.text())
+        self.__obj.D = float(self.w_D.text())
         if hasattr(self.__obj, 'D1'): # internal thread
-            self.__obj.D1      = float(self.w_D1.text())
+            self.__obj.D1 = float(self.w_D1.text())
         if hasattr(self.__obj, 'd3'): # external thread
-            self.__obj.d3      = float(self.w_d3.text())
+            self.__obj.d3 = float(self.w_d3.text())
         if hasattr(self.__obj, 'D_drill'):  # internal thread
             self.__obj.D_drill = float(self.w_D_drill.text())
-        self.__obj.tolerance   = self.w_thr_tol.displayText() # do not remove white chars - displayText
-        self.__obj.roughness   = self.w_thr_rgh.displayText() # do not remove white chars - displayText
-        self.__obj.length_through =  self.w_thr_through.isChecked()
-        self.__obj.length      = float(self.w_len.text())
-        self.__obj.length_tol  = self.w_len_tol.displayText() # do not remove white chars - displayText
-        self.useGroup          =  self.w_useGroup.isChecked()
+        self.__obj.tolerance = self.w_thr_tol.displayText() # do not remove
+        # white chars - displayText
+        self.__obj.roughness = self.w_thr_rgh.displayText() # do not remove
+        # white chars - displayText
+        self.__obj.length_through = self.w_thr_through.isChecked()
+        self.__obj.length = float(self.w_len.text())
+        self.__obj.length_tol = self.w_len_tol.displayText() # do not remove
+        # white chars - displayText
+        self.useGroup = self.w_useGroup.isChecked()
         #
         self.__obj.recompute()
-        #
-        # return None
 
     def onCancel(self):
         self.result = userCancelled
         self.close()
-        # return None
 
     def onOk(self):
         self.onApply()
         self.result = userOk
         self.close()
-        # return None
 
 
 
@@ -501,8 +498,6 @@ class arrow_direction():
         """
         __init__() - internal initialization function.
         """
-        # empty
-        return None
 
     def create():
         """
@@ -512,11 +507,11 @@ class arrow_direction():
         (obj) at it.
         """
         #
-        obj = App.ActiveDocument.addObject('Part::Cone','ThreadOrientation')
+        obj = App.ActiveDocument.addObject('Part::Cone', 'ThreadOrientation')
         obj.Label = 'ThreadOrientation'
         obj.Radius1 = '1.0 mm'
         obj.Radius2 = '0.0 mm'
-        obj.Height  = '2.5 mm'
+        obj.Height = '2.5 mm'
         #
         # Move it into Active Part - if ActivePart exists
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
@@ -537,9 +532,8 @@ class arrow_direction():
         #
         obj.Radius1 = 0.25 * hole_diameter
         obj.Radius2 = 0.0
-        obj.Height  = 2.5 * obj.Radius1
+        obj.Height = 2.5 * obj.Radius1
         obj.recompute()
-        return None
 
 
 
@@ -549,16 +543,17 @@ class arrow_direction():
 # |                                                       |
 # +-------------------------------------------------------+
 def copy_attachment(obj_from, obj_to):
-    """copy_attachment(obj_from, obj_to)
-    
+    """
+    copy_attachment(obj_from, obj_to)
+
     Internal function.
     """
     #
     obj_to.AttachmentOffset = obj_from.AttachmentOffset
-    obj_to.MapReversed      = obj_from.MapReversed 
-    obj_to.Support          = obj_from.Support
+    obj_to.MapReversed = obj_from.MapReversed
+    obj_to.Support = obj_from.Support
     obj_to.MapPathParameter = obj_from.MapPathParameter
-    obj_to.MapMode          = obj_from.MapMode
+    obj_to.MapMode = obj_from.MapMode
     #
     # Work-around https://forum.freecad.org/viewtopic.php?t=86029
     # Reset obj_to.AttachmentOfset = point[0,0,0], rotation[0,0,0]
@@ -567,9 +562,6 @@ def copy_attachment(obj_from, obj_to):
     # Compare them and if they do not match:
     #     Calculate delta between them - obj_to.Support -> obj_to
     #     Apply the delta to obj_to.AttachmentOffset
-    
-    
-    return None
 
 
 
@@ -583,20 +575,21 @@ def diameter_from_attachment(obj):
     diameter_from_attachment(obj) -> D
 
     Try to estimate diameter from obj.Support.
-    
+
     Return Diameter or 0 if is it unsucesfull.
     """
 
     D = 0.0
     # https://forum.freecad.org/viewtopic.php?p=743699#p743699
-    #     [[Part.getShape(feature, sub, needSubElement = True) for sub in subs] for feature, subs in obj.Support]
+    #     [[Part.getShape(feature, sub, needSubElement = True) \
+    #          for sub in subs] for feature, subs in obj.Support]
     #     edge.Curve.Radius
     for feature, subs in obj.Support:
         for sub in subs:
             # Look just for first circular element and estimate diameter
             # from it. Circle or cylinder.
             if D == 0:
-                shp = Part.getShape(feature, sub, needSubElement = True)
+                shp = Part.getShape(feature, sub, needSubElement=True)
                 if hasattr(shp, 'Curve'):
                     try:
                         D = 2.0 * shp.Curve.Radius
@@ -617,10 +610,10 @@ def diameter_from_attachment(obj):
 # /     from Dobj and list of threads                                     /
 # /                                                                       /
 # /***********************************************************************/
-def threadIFromDobj (Dobj, obj, lthr):
+def threadIFromDobj(Dobj, obj, lthr):
     """
     threadIFromDobj(Dobj, obj, list_of_thread_class) -> int
-    
+
     Estimate the best fitting thread index from Dobj and list_of_thread_class.
     Returns int >= 0
     """
@@ -629,35 +622,39 @@ def threadIFromDobj (Dobj, obj, lthr):
     if hasattr(obj, 'D1'):  # internal thread
         i = 0
         Ddrill = lthr.getD_drill(lthr.getName(i))
-        deviance = abs(Ddrill - Dobj) / Ddrill # relative value based on D_drill
+        # deviance is relative value based on D_drill
+        deviance = abs(Ddrill - Dobj) / Ddrill
         while i < n-1:
             Ddrill = lthr.getD_drill(lthr.getName(i+1))
-            deviance_next = abs(Ddrill - Dobj) / Ddrill # relative value based on D_drill
-            if deviance > deviance_next: # while the deviance is descending (deviance > deviance_next), [i+1] is matching better than [i].
+             # deviance_next is relative value based on D_drill
+            deviance_next = abs(Ddrill - Dobj) / Ddrill
+            if deviance > deviance_next:
+                # while the deviance is descending (deviance > deviance_next),
+                # [i+1] is matching better than [i].
                 CurrentIndex = i+1
             else:  # STOP, the [i] matched better than [i+1]
                 i = n-2 # this will force to stop
             i += 1 # move i for nex turn...
             deviance = deviance_next # and actualize appropriate deviance
-        del(Ddrill)
+        del Ddrill
     if hasattr(obj, 'd3'):  # external thread
         i = 0
         Dtmp = lthr.getD(lthr.getName(i))
         deviance = abs(Dtmp - Dobj) / Dtmp # relative value based on D
         while i < n-1:
             Dtmp = lthr.getD(lthr.getName(i+1))
-            deviance_next = abs(Dtmp - Dobj) / Dtmp # relative value based on D
-            if deviance > deviance_next: # while the deviance is descending, [i+1] is matching better than [i].
+             # deviance_next is relative value based on D
+            deviance_next = abs(Dtmp - Dobj) / Dtmp
+            if deviance > deviance_next:
+                # while the deviance is descending, [i+1] is matching
+                # better than [i].
                 CurrentIndex = i+1
             else:  # STOP, the [i] matched better than [i+1]
                 i = n-2 # this will force to stop
             i += 1 # move i for nex turn...
             deviance = deviance_next # and actualize appropriate deviance
-        del(Dtmp)
-    del(n)
-    del(i)
-    del(deviance)
-    del(deviance_next)
+        del Dtmp
+    del n, i, deviance, deviance_next
     return CurrentIndex
 
 
@@ -671,7 +668,7 @@ def threadIFromDobj (Dobj, obj, lthr):
 def useGroupThreads(obj, aPart):
     """
     useGroupThreads() -> None
-    
+
     Move object obj into Threads group/folder in active part aPart
     (if active part exists)
     """
@@ -693,7 +690,8 @@ def useGroupThreads(obj, aPart):
                         break
         # If the group 'Threads' does not exists, create a new one
         if groupObj is None:
-            groupObj = doc.addObject('App::DocumentObjectGroup','GroupThreads')
+            groupObj = doc.addObject('App::DocumentObjectGroup', \
+                                     'GroupThreads')
             groupObj.Label = groupThreadsName
     else:
         # look for group 'Threads' inside active Part
@@ -704,13 +702,11 @@ def useGroupThreads(obj, aPart):
                     break
         # If the group 'Threads' does not exists, create a new one
         if groupObj is None:
-            groupObj = doc.addObject('App::DocumentObjectGroup','GroupThreads')
+            groupObj = doc.addObject('App::DocumentObjectGroup', \
+                                     'GroupThreads')
             groupObj.Label = groupThreadsName
             aPart.addObject(groupObj)
         # Remove object obj from active part
         aPart.removeObject(obj)
 
-    groupObj.addObject(obj)  # Move object obj into the group 'Threads'
-
-    return None
-
+    groupObj.addObject(obj) # Move object obj into the group 'Threads'

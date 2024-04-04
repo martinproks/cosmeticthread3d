@@ -29,18 +29,6 @@ The UI definition itself and supporting functions are
 moved into ct3dGuiTools.py
 """
 
-__title__   = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
-__License__ = 'LGPL-2.1-or-later'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
-
-"""
-Vocabulary:
-ct3d   - Cosmetic Thread 3D
-ct3di  - Cosmetic Thread 3D Internal
-ct3de  - Cosmetic Thread 3D External
-"""
-
 import os
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -50,6 +38,21 @@ import cosmeticthread3d_part
 # import cosmeticthread3d_partdesign
 import MetricCoarse1st
 import ct3dGuiTools
+
+__title__ = 'Cosmetic Thread 3D Work Bench'
+__author__ = 'Martin Prokš'
+__License__ = 'LGPL-2.1-or-later'
+__url__ = 'https://github.com/martinproks/cosmeticthread3d'
+
+
+
+"""
+Vocabulary:
+ct3d   - Cosmetic Thread 3D
+ct3di  - Cosmetic Thread 3D Internal
+ct3de  - Cosmetic Thread 3D External
+"""
+
 
 
 # **************************************************************
@@ -67,30 +70,40 @@ import ct3dGuiTools
 # |                                                        |
 # +--------------------------------------------------------+
 class ct3di_p0_menu_command():
-    """Command UI - cosmetic thread internal - Part version - type 0.
+    """
+    Command UI - cosmetic thread internal - Part version - type 0.
     This command is called from workbench menu or tool banner.
     """
 
+    def __init__(self):
+        self.doc = None
+        self.obj_tmp = None
+
     def GetResources(self):
-        """Mandatory method for WorkBench Menu/tools button.
-        It returns icon, menu text and tool tip."""
+        """
+        Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip.
+        """
         #
         # The name of a svg file available in the resources
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3di_p0_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'internal_thread.xpm')
-        Menu_text  = 'internal cosmetic thread P0'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 0)'
-        return {'Pixmap'  : Pixmap_icon,
-                # 'Accel'   : 'Shift+S', # a default shortcut (optional)
-                'MenuText': Menu_text,
+        Menu_text = 'internal cosmetic thread P0'
+        Tool_tip = 'Create cosmetic thread geometry and parameters (Part version - type 0)'
+        return {'Pixmap' : Pixmap_icon,
+                # 'Accel' : 'Shift+S', # a default shortcut (optional)
+                'MenuText' : Menu_text,
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do the working action here - call UI components..."""
+        """
+        Button pressed - do the working action here - call UI components...
+        """
         #
-        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
-        # The button is pressed NOW and now You need to know active document...
+        # self.doc must be here. __init__ is called when WB is loaded and
+        # this was who knows when. The button is pressed NOW and now You
+        # need to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -99,45 +112,59 @@ class ct3di_p0_menu_command():
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrow_direction.create()
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
-            # The command editAttachment is not modal. It means, script is continuing.
-            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            Commands.editAttachment(self.obj_tmp, \
+                                    True, \
+                                    True, \
+                                    self.eA_ok, \
+                                    self.eA_cancel, \
+                                    self.eA_apply)
+            # The command editAttachment is not modal. It means,
+            # script is continuing. There are functions associated
+            # to OK/CANCEL/APPLY buttons I can use.
             #   CANCEL = delete temporary object, remove the conus and ends.
             #   APPLY  = just update the conus position and dimensions.
-            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+            #   OK     = go far to the cosmetic thread creation - working code
+            #            is continuing there
         # end if
         #
-        return
+        # return None
 
     def IsActive(self):
-        """Here you can define if the command must be active or not (greyed)
-        if certain conditions are met or not. This function is optional."""
+        """
+        Here you can define if the command must be active or not (greyed)
+        if certain conditions are met or not. This function is optional.
+        """
         result = True
         return result
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+        """
+        Reaction to editAttachment - OK has been pressed, go on with
+        UI Thread Creation
+        """
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
 
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name           = lst_threads.getName(0)
-        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
-        ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name)
-        ct3d_prms.tolerance      = '6H'
-        ct3d_prms.roughness      = 'Ra 1.6'
-        ct3d_prms.length         = 1.5 * ct3d_prms.D_nominal
+        ct3d_prms.name = lst_threads.getName(0)
+        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
+        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
+        # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
+        # # doesn't have this parameter
+        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
+        ct3d_prms.tolerance = '6H'
+        ct3d_prms.roughness = 'Ra 1.6'
+        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
         ct3d_prms.length_through = False
-        ct3d_prms.length_tol     = "H17"
+        ct3d_prms.length_tol = "H17"
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = cosmeticthread3d_part.internal_p0('CosmeticThread3DInternal', ct3d_prms, aPart)
+        obj = cosmeticthread3d_part.internal_p0('CosmeticThread3DInternal', \
+                                                ct3d_prms, aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -155,25 +182,23 @@ class ct3di_p0_menu_command():
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
-        del(lst_threads)
-        del(ct3d_prms)
-        del(aPart)
-        del(D_hole)
-        del(obj)
-
-        return
+        del lst_threads, ct3d_prms, aPart, D_hole, obj
+        #
+        # return None
 
     def eA_cancel(self):
-        """Reaction to editAttachment - CANCEL has been pressed """
+        """
+        Reaction to editAttachment - CANCEL has been pressed
+        """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return
+        # return None
 
     def eA_apply(self):
         """Reaction to editAttachment - APPLY has been pressed """
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_hole)
-        return
+        # return None
 
 Gui.addCommand('internal_cosmetic_thread_p0', ct3di_p0_menu_command())
 
@@ -185,30 +210,40 @@ Gui.addCommand('internal_cosmetic_thread_p0', ct3di_p0_menu_command())
 # |                                                        |
 # +--------------------------------------------------------+
 class ct3de_p0_menu_command():
-    """Command UI - cosmetic thread external - Part version - type 0.
+    """
+    Command UI - cosmetic thread external - Part version - type 0.
     This command is called from workbench menu or tool banner.
     """
-  
+
+    def __init__(self):
+        self.doc = None
+        self.obj_tmp = None
+
     def GetResources(self):
-        """Mandatory method for WorkBench Menu/tools button.
-        It returns icon, menu text and tool tip."""
+        """
+        Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip.
+        """
         #
-        # The name of a svg file available in the resourc  es
+        # The name of a svg file available in the resources
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3de_p0_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
-        Menu_text  = 'external cosmetic thread P0'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 0)'
-        return {'Pixmap'  : Pixmap_icon,
-                # 'Accel'   : 'Shift+S', # a default shortcut (optional)
-                'MenuText': Menu_text,
+        Menu_text = 'external cosmetic thread P0'
+        Tool_tip = 'Create cosmetic thread geometry and parameters (Part version - type 0)'
+        return {'Pixmap' : Pixmap_icon,
+                # 'Accel' : 'Shift+S', # a default shortcut (optional)
+                'MenuText' : Menu_text,
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do the working action here - call UI components..."""
+        """
+        Button pressed - do the working action here - call UI components...
+        """
         #
-        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
-        # The button is pressed NOW and now You need to know active document...
+        # self.doc must be here. __init__ is called when WB is loaded and
+        # this was who knows when. The button is pressed NOW and now You
+        # need to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -217,35 +252,49 @@ class ct3de_p0_menu_command():
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrow_direction.create()
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
-            # The command editAttachment is not modal. It means, script is continuing.
-            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            Commands.editAttachment(self.obj_tmp, \
+                                    True, \
+                                    True, \
+                                    self.eA_ok, \
+                                    self.eA_cancel, \
+                                    self.eA_apply)
+            # The command editAttachment is not modal. It means, script is
+            # continuing. There are functions associated to OK/CANCEL/APPLY
+            # buttons I can use.
             #   CANCEL = delete temporary object, remove the conus and ends.
             #   APPLY  = just update the conus position and dimensions.
-            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+            #   OK     = go far to the cosmetic thread creation - working
+            #            code is continuing there
         # end if
         #
-        return
+        # return None
 
     def IsActive(self):
-        """Here you can define if the command must be active or not (greyed)
-        if certain conditions are met or not. This function is optional."""
+        """
+        Here you can define if the command must be active or not (greyed)
+        if certain conditions are met or not. This function is optional.
+        """
         return True
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+        """
+        Reaction to editAttachment - OK has been pressed, go on with
+        UI Thread Creation
+        """
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
 
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name           = lst_threads.getName(0)
-        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name) # external thread doesn't have this parameter
-        ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name) # external thread doesn't have this parameter
+        ct3d_prms.name = lst_threads.getName(0)
+        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
+        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
+        # # doesn't have this parameter
+        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
+        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
+        # # external thread doesn't have this parameter
         ct3d_prms.tolerance = '6g'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -254,7 +303,9 @@ class ct3de_p0_menu_command():
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = cosmeticthread3d_part.external_p0('CosmeticThread3DExternal', ct3d_prms, aPart)
+        obj = cosmeticthread3d_part.external_p0('CosmeticThread3DExternal', \
+                                                ct3d_prms, \
+                                                aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -272,25 +323,25 @@ class ct3de_p0_menu_command():
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
-        del(lst_threads)
-        del(ct3d_prms)
-        del(aPart)
-        del(D_shaft)
-        del(obj)
+        del lst_threads, ct3d_prms, aPart, D_shaft, obj
         #
-        return None
+        # return None
 
     def eA_cancel(self):
-        """Reaction to editAttachment - CANCEL has been pressed """
+        """
+        Reaction to editAttachment - CANCEL has been pressed
+        """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return None
+        # return None
 
     def eA_apply(self):
-        """Reaction to editAttachment - APPLY has been pressed """
+        """
+        Reaction to editAttachment - APPLY has been pressed
+        """
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_shaft)
-        return None
+        # return None
 
 Gui.addCommand('external_cosmetic_thread_p0', ct3de_p0_menu_command())
 
@@ -314,26 +365,35 @@ class ct3di_p1_menu_command():
     This command is called from workbench menu or tool banner.
     """
 
+    def __init__(self):
+        self.doc = None
+        self.obj_tmp = None
+
     def GetResources(self):
-        """Mandatory method for WorkBench Menu/tools button.
-        It returns icon, menu text and tool tip."""
+        """
+        Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip.
+        """
         #
         # The name of a svg file available in the resources
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3di_p1_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'internal_thread.xpm')
-        Menu_text  = 'internal cosmetic thread P1'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 1)'
-        return {'Pixmap'  : Pixmap_icon,
-                # 'Accel'   : 'Shift+S', # a default shortcut (optional)
-                'MenuText': Menu_text,
+        Menu_text = 'internal cosmetic thread P1'
+        Tool_tip = 'Create cosmetic thread geometry and parameters (Part version - type 1)'
+        return {'Pixmap' : Pixmap_icon,
+                # 'Accel' : 'Shift+S', # a default shortcut (optional)
+                'MenuText' : Menu_text,
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do the working action here - call UI components..."""
+        """
+        Button pressed - do the working action here - call UI components...
+        """
         #
-        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
-        # The button is pressed NOW and now You need to know active document...
+        # self.doc must be here. __init__ is called when WB is loaded and
+        # this was who knows when. The button is pressed NOW and now You
+        # need to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -342,36 +402,49 @@ class ct3di_p1_menu_command():
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrow_direction.create()
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
-            # The command editAttachment is not modal. It means, script is continuing.
-            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            Commands.editAttachment(self.obj_tmp, \
+                                    True, \
+                                    True, \
+                                    self.eA_ok, \
+                                    self.eA_cancel, \
+                                    self.eA_apply)
+            # The command editAttachment is not modal. It means, script is
+            # continuing. There are functions associated to OK/CANCEL/APPLY
+            # buttons I can use.
             #   CANCEL = delete temporary object, remove the conus and ends.
             #   APPLY  = just update the conus position and dimensions.
-            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+            #   OK     = go far to the cosmetic thread creation - working code
+            #            is continuing there
         # end if
         #
-        return
+        # return None
 
     def IsActive(self):
-        """Here you can define if the command must be active or not (greyed)
-        if certain conditions are met or not. This function is optional."""
+        """
+        Here you can define if the command must be active or not (greyed)
+        if certain conditions are met or not. This function is optional.
+        """
         result = True
         return result
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+        """
+        Reaction to editAttachment - OK has been pressed, go on with
+        UI Thread Creation
+        """
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
 
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name           = lst_threads.getName(0)
-        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
-        ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name)
+        ct3d_prms.name = lst_threads.getName(0)
+        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
+        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
+        # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
+        # # doesn't have this parameter
+        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
         ct3d_prms.tolerance = '6H'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -380,7 +453,9 @@ class ct3di_p1_menu_command():
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = cosmeticthread3d_part.internal_p1('CosmeticThread3DInternal', ct3d_prms, aPart)
+        obj = cosmeticthread3d_part.internal_p1('CosmeticThread3DInternal', \
+                                                ct3d_prms, \
+                                                aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -398,25 +473,25 @@ class ct3di_p1_menu_command():
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
-        del(lst_threads)
-        del(ct3d_prms)
-        del(aPart)
-        del(D_hole)
-        del(obj)
-
-        return
+        del lst_threads, ct3d_prms, aPart, D_hole, obj
+        #
+        # return None
 
     def eA_cancel(self):
-        """Reaction to editAttachment - CANCEL has been pressed """
+        """
+        Reaction to editAttachment - CANCEL has been pressed
+        """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return
+        # return None
 
     def eA_apply(self):
-        """Reaction to editAttachment - APPLY has been pressed """
+        """
+        Reaction to editAttachment - APPLY has been pressed
+        """
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_hole)
-        return
+        # return None
 
 Gui.addCommand('internal_cosmetic_thread_p1', ct3di_p1_menu_command())
 
@@ -428,30 +503,40 @@ Gui.addCommand('internal_cosmetic_thread_p1', ct3di_p1_menu_command())
 # |                                                        |
 # +--------------------------------------------------------+
 class ct3de_p1_menu_command():
-    """Command UI - cosmetic thread external - Part version - type 1.
+    """
+    Command UI - cosmetic thread external - Part version - type 1.
     This command is called from workbench menu or tool banner.
     """
-  
+
+    def __init__(self):
+        self.doc = None
+        self.obj_tmp = None
+
     def GetResources(self):
-        """Mandatory method for WorkBench Menu/tools button.
-        It returns icon, menu text and tool tip."""
+        """
+        Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip.
+        """
         #
         # The name of a svg file available in the resources
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3de_p1_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
-        Menu_text  = 'external cosmetic thread P1'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 1)'
-        return {'Pixmap'  : Pixmap_icon,
+        Menu_text = 'external cosmetic thread P1'
+        Tool_tip = 'Create cosmetic thread geometry and parameters (Part version - type 1)'
+        return {'Pixmap' : Pixmap_icon,
                 # 'Accel'   : 'Shift+S', # a default shortcut (optional)
-                'MenuText': Menu_text,
+                'MenuText' : Menu_text,
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do the working action here - call UI components..."""
+        """
+        Button pressed - do the working action here - call UI components...
+        """
         #
-        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
-        # The button is pressed NOW and now You need to know active document...
+        # self.doc must be here. __init__ is called when WB is loaded and
+        # this was who knows when. The button is pressed NOW and now You need
+        # to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -460,35 +545,49 @@ class ct3de_p1_menu_command():
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrow_direction.create()
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
-            # The command editAttachment is not modal. It means, script is continuing.
-            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            Commands.editAttachment(self.obj_tmp, \
+                                    True, \
+                                    True, \
+                                    self.eA_ok, \
+                                    self.eA_cancel, \
+                                    self.eA_apply)
+            # The command editAttachment is not modal. It means, script is
+            # continuing. There are functions associated to OK/CANCEL/APPLY
+            # buttons I can use.
             #   CANCEL = delete temporary object, remove the conus and ends.
             #   APPLY  = just update the conus position and dimensions.
-            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+            #   OK     = go far to the cosmetic thread creation - working code
+            #            is continuing there
         # end if
         #
-        return
+        # return None
 
     def IsActive(self):
-        """Here you can define if the command must be active or not (greyed)
-        if certain conditions are met or not. This function is optional."""
+        """
+        Here you can define if the command must be active or not (greyed)
+        if certain conditions are met or not. This function is optional.
+        """
         return True
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+        """
+        Reaction to editAttachment - OK has been pressed, go on with
+        UI Thread Creation
+        """
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
 
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name           = lst_threads.getName(0)
-        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name) # external thread doesn't have this parameter
-        ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name) # external thread doesn't have this parameter
+        ct3d_prms.name = lst_threads.getName(0)
+        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
+        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
+        # # doesn't have this parameter
+        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
+        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
+        # # external thread doesn't have this parameter
         ct3d_prms.tolerance = '6g'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -497,7 +596,9 @@ class ct3de_p1_menu_command():
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = cosmeticthread3d_part.external_p1('CosmeticThread3DExternal', ct3d_prms, aPart)
+        obj = cosmeticthread3d_part.external_p1('CosmeticThread3DExternal', \
+                                                ct3d_prms, \
+                                                aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -515,25 +616,25 @@ class ct3de_p1_menu_command():
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
-        del(lst_threads)
-        del(ct3d_prms)
-        del(aPart)
-        del(D_shaft)
-        del(obj)
+        del lst_threads, ct3d_prms, aPart, D_shaft, obj
         #
-        return None
+        # return None
 
     def eA_cancel(self):
-        """Reaction to editAttachment - CANCEL has been pressed """
+        """
+        Reaction to editAttachment - CANCEL has been pressed
+        """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return None
+        # return None
 
     def eA_apply(self):
-        """Reaction to editAttachment - APPLY has been pressed """
+        """
+        Reaction to editAttachment - APPLY has been pressed
+        """
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_shaft)
-        return None
+        # return None
 
 Gui.addCommand('external_cosmetic_thread_p1', ct3de_p1_menu_command())
 
@@ -554,30 +655,40 @@ Gui.addCommand('external_cosmetic_thread_p1', ct3de_p1_menu_command())
 # |                                                        |
 # +--------------------------------------------------------+
 class ct3di_p2_menu_command():
-    """Command UI - cosmetic thread internal - Part version - type 2.
+    """
+    Command UI - cosmetic thread internal - Part version - type 2.
     This command is called from workbench menu or tool banner.
     """
 
+    def __init__(self):
+        self.doc = None
+        self.obj_tmp = None
+
     def GetResources(self):
-        """Mandatory method for WorkBench Menu/tools button.
-        It returns icon, menu text and tool tip."""
+        """
+        Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip.
+        """
         #
         # The name of a svg file available in the resources
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3di_p2_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'internal_thread.xpm')
-        Menu_text  = 'internal cosmetic thread P2'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 2)'
-        return {'Pixmap'  : Pixmap_icon,
+        Menu_text = 'internal cosmetic thread P2'
+        Tool_tip = 'Create cosmetic thread geometry and parameters (Part version - type 2)'
+        return {'Pixmap' : Pixmap_icon,
                 # 'Accel'   : 'Shift+S', # a default shortcut (optional)
-                'MenuText': Menu_text,
+                'MenuText' : Menu_text,
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do the working action here - call UI components..."""
+        """
+        Button pressed - do the working action here - call UI components...
+        """
         #
-        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
-        # The button is pressed NOW and now You need to know active document...
+        # self.doc must be here. __init__ is called when WB is loaded and
+        # this was who knows when. The button is pressed NOW and now You
+        # need to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -586,36 +697,49 @@ class ct3di_p2_menu_command():
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrow_direction.create()
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
-            # The command editAttachment is not modal. It means, script is continuing.
-            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            Commands.editAttachment(self.obj_tmp, \
+                                    True, \
+                                    True, \
+                                    self.eA_ok, \
+                                    self.eA_cancel, \
+                                    self.eA_apply)
+            # The command editAttachment is not modal. It means, script is
+            # continuing. There are functions associated to OK/CANCEL/APPLY
+            # buttons I can use.
             #   CANCEL = delete temporary object, remove the conus and ends.
             #   APPLY  = just update the conus position and dimensions.
-            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+            #   OK     = go far to the cosmetic thread creation - working
+            #            code is continuing there
         # end if
         #
-        return
+        # return None
 
     def IsActive(self):
-        """Here you can define if the command must be active or not (greyed)
-        if certain conditions are met or not. This function is optional."""
+        """
+        Here you can define if the command must be active or not (greyed)
+        if certain conditions are met or not. This function is optional.
+        """
         result = True
         return result
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+        """
+        Reaction to editAttachment - OK has been pressed, go on with UI
+        Thread Creation
+        """
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
 
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name           = lst_threads.getName(0)
-        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
-        ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name)
+        ct3d_prms.name = lst_threads.getName(0)
+        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
+        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
+        # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
+        # # doesn't have this parameter
+        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
         ct3d_prms.tolerance = '6H'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -624,7 +748,9 @@ class ct3di_p2_menu_command():
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = cosmeticthread3d_part.internal_p2('CosmeticThread3DInternal', ct3d_prms, aPart)
+        obj = cosmeticthread3d_part.internal_p2('CosmeticThread3DInternal', \
+                                                ct3d_prms, \
+                                                aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -642,25 +768,25 @@ class ct3di_p2_menu_command():
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
-        del(lst_threads)
-        del(ct3d_prms)
-        del(aPart)
-        del(D_hole)
-        del(obj)
+        del lst_threads, ct3d_prms, aPart, D_hole, obj
 
-        return
+        # return None
 
     def eA_cancel(self):
-        """Reaction to editAttachment - CANCEL has been pressed """
+        """
+        Reaction to editAttachment - CANCEL has been pressed
+        """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return
+        # return None
 
     def eA_apply(self):
-        """Reaction to editAttachment - APPLY has been pressed """
+        """
+        Reaction to editAttachment - APPLY has been pressed
+        """
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_hole)
-        return
+        # return None
 
 Gui.addCommand('internal_cosmetic_thread_p2', ct3di_p2_menu_command())
 
@@ -672,30 +798,40 @@ Gui.addCommand('internal_cosmetic_thread_p2', ct3di_p2_menu_command())
 # |                                                        |
 # +--------------------------------------------------------+
 class ct3de_p2_menu_command():
-    """Command UI - cosmetic thread external - Part version - type 2.
+    """
+    Command UI - cosmetic thread external - Part version - type 2.
     This command is called from workbench menu or tool banner.
     """
-  
+
+    def __init__(self):
+        self.doc = None
+        self.obj_tmp = None
+
     def GetResources(self):
-        """Mandatory method for WorkBench Menu/tools button.
-        It returns icon, menu text and tool tip."""
+        """
+        Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip.
+        """
         #
         # The name of a svg file available in the resources
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3de_p2_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
-        Menu_text  = 'external cosmetic thread P2'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 2)'
-        return {'Pixmap'  : Pixmap_icon,
+        Menu_text = 'external cosmetic thread P2'
+        Tool_tip = 'Create cosmetic thread geometry and parameters (Part version - type 2)'
+        return {'Pixmap' : Pixmap_icon,
                 # 'Accel'   : 'Shift+S', # a default shortcut (optional)
-                'MenuText': Menu_text,
+                'MenuText' : Menu_text,
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do the working action here - call UI components..."""
+        """
+        Button pressed - do the working action here - call UI components...
+        """
         #
-        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
-        # The button is pressed NOW and now You need to know active document...
+        # self.doc must be here. __init__ is called when WB is loaded and
+        # this was who knows when. The button is pressed NOW and now You
+        # need to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -704,35 +840,49 @@ class ct3de_p2_menu_command():
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrow_direction.create()
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
-            # The command editAttachment is not modal. It means, script is continuing.
-            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            Commands.editAttachment(self.obj_tmp, \
+                                    True, \
+                                    True, \
+                                    self.eA_ok, \
+                                    self.eA_cancel, \
+                                    self.eA_apply)
+            # The command editAttachment is not modal. It means, script is
+            # continuing. There are functions associated to OK/CANCEL/APPLY
+            # buttons I can use.
             #   CANCEL = delete temporary object, remove the conus and ends.
             #   APPLY  = just update the conus position and dimensions.
-            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+            #   OK     = go far to the cosmetic thread creation - working code
+            #            is continuing there
         # end if
         #
         return
 
     def IsActive(self):
-        """Here you can define if the command must be active or not (greyed)
-        if certain conditions are met or not. This function is optional."""
+        """
+        Here you can define if the command must be active or not (greyed)
+        if certain conditions are met or not. This function is optional.
+        """
         return True
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+        """
+        Reaction to editAttachment - OK has been pressed, go on with UI
+        Thread Creation
+        """
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
 
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name           = lst_threads.getName(0)
-        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name) # external thread doesn't have this parameter
-        ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name) # external thread doesn't have this parameter
+        ct3d_prms.name = lst_threads.getName(0)
+        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
+        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
+        # # doesn't have this parameter
+        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
+        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
+        # # external thread doesn't have this parameter
         ct3d_prms.tolerance = '6g'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -741,7 +891,9 @@ class ct3de_p2_menu_command():
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = cosmeticthread3d_part.external_p2('CosmeticThread3DExternal', ct3d_prms, aPart)
+        obj = cosmeticthread3d_part.external_p2('CosmeticThread3DExternal', \
+                                                ct3d_prms, \
+                                                aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -759,25 +911,25 @@ class ct3de_p2_menu_command():
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
-        del(lst_threads)
-        del(ct3d_prms)
-        del(aPart)
-        del(D_shaft)
-        del(obj)
+        del lst_threads, ct3d_prms, aPart, D_shaft, obj
         #
-        return None
+        # return None
 
     def eA_cancel(self):
-        """Reaction to editAttachment - CANCEL has been pressed """
+        """
+        Reaction to editAttachment - CANCEL has been pressed
+        """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return None
+        # return None
 
     def eA_apply(self):
-        """Reaction to editAttachment - APPLY has been pressed """
+        """
+        Reaction to editAttachment - APPLY has been pressed
+        """
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_shaft)
-        return None
+        # return None
 
 Gui.addCommand('external_cosmetic_thread_p2', ct3de_p2_menu_command())
 
@@ -798,30 +950,40 @@ Gui.addCommand('external_cosmetic_thread_p2', ct3de_p2_menu_command())
 # |                                                        |
 # +--------------------------------------------------------+
 class ct3di_p4_menu_command():
-    """Command UI - cosmetic thread internal - Part version - type 4.
+    """
+    Command UI - cosmetic thread internal - Part version - type 4.
     This command is called from workbench menu or tool banner.
     """
 
+    def __init__(self):
+        self.doc = None
+        self.obj_tmp = None
+
     def GetResources(self):
-        """Mandatory method for WorkBench Menu/tools button.
-        It returns icon, menu text and tool tip."""
+        """
+        Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip.
+        """
         #
         # The name of a svg file available in the resources
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3di_p4_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'internal_thread.xpm')
-        Menu_text  = 'internal cosmetic thread P4'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 4)'
-        return {'Pixmap'  : Pixmap_icon,
+        Menu_text = 'internal cosmetic thread P4'
+        Tool_tip = 'Create cosmetic thread geometry and parameters (Part version - type 4)'
+        return {'Pixmap' : Pixmap_icon,
                 # 'Accel'   : 'Shift+S', # a default shortcut (optional)
-                'MenuText': Menu_text,
+                'MenuText' : Menu_text,
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do the working action here - call UI components..."""
+        """
+        Button pressed - do the working action here - call UI components...
+        """
         #
-        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
-        # The button is pressed NOW and now You need to know active document...
+        # self.doc must be here. __init__ is called when WB is loaded and
+        # this was who knows when. The button is pressed NOW and now You
+        # need to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -830,36 +992,48 @@ class ct3di_p4_menu_command():
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrow_direction.create()
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
-            # The command editAttachment is not modal. It means, script is continuing.
-            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            Commands.editAttachment(self.obj_tmp, \
+                                    True, \
+                                    True, \
+                                    self.eA_ok, \
+                                    self.eA_cancel, \
+                                    self.eA_apply)
+            # The command editAttachment is not modal. It means, script is
+            # continuing. There are functions associated to OK/CANCEL/APPLY
+            # buttons I can use.
             #   CANCEL = delete temporary object, remove the conus and ends.
             #   APPLY  = just update the conus position and dimensions.
-            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+            #   OK     = go far to the cosmetic thread creation - working
+            #            code is continuing there
         # end if
         #
-        return
+        # return None
 
     def IsActive(self):
-        """Here you can define if the command must be active or not (greyed)
-        if certain conditions are met or not. This function is optional."""
+        """
+        Here you can define if the command must be active or not (greyed)
+        if certain conditions are met or not. This function is optional.
+        """
         result = True
         return result
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+        """
+        Reaction to editAttachment - OK has been pressed, go on with
+        UI Thread Creation
+        """
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
 
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name           = lst_threads.getName(0)
-        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name)
+        ct3d_prms.name = lst_threads.getName(0)
+        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
+        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
         # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
-        ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name)
+        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
         ct3d_prms.tolerance = '6H'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -868,7 +1042,9 @@ class ct3di_p4_menu_command():
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = cosmeticthread3d_part.internal_p4('CosmeticThread3DInternal', ct3d_prms, aPart)
+        obj = cosmeticthread3d_part.internal_p4('CosmeticThread3DInternal', \
+                                                ct3d_prms, \
+                                                aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -886,25 +1062,25 @@ class ct3di_p4_menu_command():
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
-        del(lst_threads)
-        del(ct3d_prms)
-        del(aPart)
-        del(D_hole)
-        del(obj)
+        del lst_threads, ct3d_prms, aPart, D_hole, obj
 
-        return
+        # return None
 
     def eA_cancel(self):
-        """Reaction to editAttachment - CANCEL has been pressed """
+        """
+        Reaction to editAttachment - CANCEL has been pressed
+        """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return
+        # return None
 
     def eA_apply(self):
-        """Reaction to editAttachment - APPLY has been pressed """
+        """
+        Reaction to editAttachment - APPLY has been pressed
+        """
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_hole)
-        return
+        # return None
 
 Gui.addCommand('internal_cosmetic_thread_p4', ct3di_p4_menu_command())
 
@@ -916,30 +1092,40 @@ Gui.addCommand('internal_cosmetic_thread_p4', ct3di_p4_menu_command())
 # |                                                        |
 # +--------------------------------------------------------+
 class ct3de_p4_menu_command():
-    """Command UI - cosmetic thread external - Part version - type 4.
+    """
+    Command UI - cosmetic thread external - Part version - type 4.
     This command is called from workbench menu or tool banner.
     """
-  
+
+    def __init__(self):
+        self.doc = None
+        self.obj_tmp = None
+
     def GetResources(self):
-        """Mandatory method for WorkBench Menu/tools button.
-        It returns icon, menu text and tool tip."""
+        """
+        Mandatory method for WorkBench Menu/tools button.
+        It returns icon, menu text and tool tip.
+        """
         #
         # The name of a svg file available in the resources
         ct3d_path = ct3dGuiTools.get_module_path()
         App.Console.PrintMessage('*** FIXME *** ct3de_p4_menu_command.GetResources() - icon to svg\n')
         Pixmap_icon = os.path.join(ct3d_path, 'icons', 'external_thread.xpm')
-        Menu_text  = 'external cosmetic thread P4'
-        Tool_tip   = 'Create cosmetic thread geometry and parameters (Part version - type 4)'
-        return {'Pixmap'  : Pixmap_icon,
+        Menu_text = 'external cosmetic thread P4'
+        Tool_tip = 'Create cosmetic thread geometry and parameters (Part version - type 4)'
+        return {'Pixmap' : Pixmap_icon,
                 # 'Accel'   : 'Shift+S', # a default shortcut (optional)
-                'MenuText': Menu_text,
+                'MenuText' : Menu_text,
                 'ToolTip' : Tool_tip}
 
     def Activated(self):
-        """Button pressed - do the working action here - call UI components..."""
+        """
+        Button pressed - do the working action here - call UI components...
+        """
         #
-        # self.doc must be here. __init__ is called when WB is loaded and this was who knows when.
-        # The button is pressed NOW and now You need to know active document...
+        # self.doc must be here. __init__ is called when WB is loaded and
+        # this was who knows when. The button is pressed NOW and now You
+        # need to know active document...
         self.doc = App.ActiveDocument
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
@@ -948,35 +1134,49 @@ class ct3de_p4_menu_command():
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrow_direction.create()
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, True, True, self.eA_ok, self.eA_cancel, self.eA_apply)
-            # The command editAttachment is not modal. It means, script is continuing.
-            # There are functions associated to OK/CANCEL/APPLY buttons I can use.
+            Commands.editAttachment(self.obj_tmp, \
+                                    True, \
+                                    True, \
+                                    self.eA_ok, \
+                                    self.eA_cancel, \
+                                    self.eA_apply)
+            # The command editAttachment is not modal. It means, script is
+            # continuing. There are functions associated to OK/CANCEL/APPLY
+            # buttons I can use.
             #   CANCEL = delete temporary object, remove the conus and ends.
             #   APPLY  = just update the conus position and dimensions.
-            #   OK     = go far to the cosmetic thread creation - working code is continuing there
+            #   OK     = go far to the cosmetic thread creation - working
+            #            code is continuing there
         # end if
         #
         return
 
     def IsActive(self):
-        """Here you can define if the command must be active or not (greyed)
-        if certain conditions are met or not. This function is optional."""
+        """
+        Here you can define if the command must be active or not (greyed)
+        if certain conditions are met or not. This function is optional.
+        """
         return True
 
     def eA_ok(self):
-        """Reaction to editAttachment - OK has been pressed, go on with UI Thread Creation"""
+        """
+        Reaction to editAttachment - OK has been pressed, go on with UI
+        Thread Creation
+        """
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
 
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name           = lst_threads.getName(0)
-        ct3d_prms.D_nominal      = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch          = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.D              = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1             = lst_threads.getD1(ct3d_prms.name) # external thread doesn't have this parameter
-        ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill        = lst_threads.getD_drill(ct3d_prms.name) # external thread doesn't have this parameter
+        ct3d_prms.name = lst_threads.getName(0)
+        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
+        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
+        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
+        # # doesn't have this parameter
+        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
+        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
+        # # external thread doesn't have this parameter
         ct3d_prms.tolerance = '6g'
         ct3d_prms.roughness = 'Ra 1.6'
         ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
@@ -985,7 +1185,9 @@ class ct3de_p4_menu_command():
 
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = cosmeticthread3d_part.external_p4('CosmeticThread3DExternal', ct3d_prms, aPart)
+        obj = cosmeticthread3d_part.external_p4('CosmeticThread3DExternal', \
+                                                ct3d_prms, \
+                                                aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -1003,25 +1205,25 @@ class ct3de_p4_menu_command():
             ct3dGuiTools.useGroupThreads(obj, aPart)
         #
         # clean up...
-        del(lst_threads)
-        del(ct3d_prms)
-        del(aPart)
-        del(D_shaft)
-        del(obj)
+        del lst_threads, ct3d_prms, aPart, D_shaft, obj
         #
-        return None
+        # return None
 
     def eA_cancel(self):
-        """Reaction to editAttachment - CANCEL has been pressed """
+        """
+        Reaction to editAttachment - CANCEL has been pressed
+        """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        return None
+        # return None
 
     def eA_apply(self):
-        """Reaction to editAttachment - APPLY has been pressed """
+        """
+        Reaction to editAttachment - APPLY has been pressed
+        """
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_shaft)
-        return None
+        # return None
 
 Gui.addCommand('external_cosmetic_thread_p4', ct3de_p4_menu_command())
 

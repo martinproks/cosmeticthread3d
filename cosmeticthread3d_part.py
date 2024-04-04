@@ -2,35 +2,47 @@
 #
 # cosmeticthread3d_part.py
 #
-#******************************************************************************
-#* Cosmetic Thread 3D Work Bench - tools for cosmetic threads creation        *
-#* Copyright (C) 2024  Martin Prokš / martin(dot)proks(at)proks-martin(dot)cz *
-#*                                                                            *
-#* This file is part of the FreeCAD CAx development system.                   *
-#*                                                                            *
-#* This library is free software; you can redistribute it and/or              *
-#* modify it under the terms of the GNU Lesser General Public                 *
-#* License as published by the Free Software Foundation; either               *
-#* version 2.1 of the License, or (at your option) any later version.         *
-#*                                                                            *
-#* This library is distributed in the hope that it will be useful,            *
-#* but WITHOUT ANY WARRANTY; without even the implied warranty of             *
-#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU          *
-#* Lesser General Public License for more details.                            *
-#*                                                                            *
-#* You should have received a copy of the GNU Lesser General Public           *
-#* License along with this library; if not, write to the Free Software        *
-#* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  *
-#* USA                                                                        *
-#******************************************************************************
+#*****************************************************************************
+#* Cosmetic Thread 3D Work Bench - tools for cosmetic threads creation       *
+#* Copyright (C) 2024 Martin Prokš / martin(dot)proks(at)proks-martin(dot)cz *
+#*                                                                           *
+#* This file is part of the FreeCAD CAx development system.                  *
+#*                                                                           *
+#* This library is free software; you can redistribute it and/or             *
+#* modify it under the terms of the GNU Lesser General Public                *
+#* License as published by the Free Software Foundation; either              *
+#* version 2.1 of the License, or (at your option) any later version.        *
+#*                                                                           *
+#* This library is distributed in the hope that it will be useful,           *
+#* but WITHOUT ANY WARRANTY; without even the implied warranty of            *
+#* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU         *
+#* Lesser General Public License for more details.                           *
+#*                                                                           *
+#* You should have received a copy of the GNU Lesser General Public          *
+#* License along with this library; if not, write to the Free Software       *
+#* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 *
+#* USA                                                                       *
+#*****************************************************************************
 """
 Definition of PythonFeature for each Part version of thread geometry type.
 """
 
-___title__  = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
+
+
+import os # needed just for _p4 threads
+from pivy import coin # needed just for _p4 threads
+import FreeCAD as App
+import Part
+import ct3d_params
+
+
+
+___title__ = 'Cosmetic Thread 3D Work Bench'
+__author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+__url__ = 'https://github.com/martinproks/cosmeticthread3d'
+
+
 
 """
 Vocabulary:
@@ -38,13 +50,6 @@ ct3d   - Cosmetic Thread 3D
 ct3di  - Cosmetic Thread 3D Internal
 ct3de  - Cosmetic Thread 3D External
 """
-
-import FreeCAD as App
-import Part
-import ct3d_params
-import os                   # needed just for _p4 threads
-# import FreeCADGui as Gui    # needed just for _p4 threads
-from pivy import coin       # needed just for _p4 threads
 
 
 
@@ -74,24 +79,23 @@ class ViewProviderCosmeticThread3DInternal:
 
     def __init__(self, obj):
         """
-        Set this object to the proxy object of the actual view provider
+        Set this object to the proxy object of the actual view provider.
         """
         obj.Proxy = self
-        return None
 
     def attach(self, obj):
         """
-        Setup the scene sub-graph of the view provider, this method is mandatory
+        Setup the scene sub-graph of the view provider, this method
+        is mandatory.
         """
-        return None
 
     def updateData(self, fp, prop):
         """
-        If a property of the handled feature has changed we have the chance to handle this here
+        If a property of the handled feature has changed we have the chance
+        to handle this here.
         """
-        return None
 
-    def getDisplayModes(self,obj):
+    def getDisplayModes(self, obj):
         """
         Return a list of display modes.
         """
@@ -99,13 +103,15 @@ class ViewProviderCosmeticThread3DInternal:
 
     def getDefaultDisplayMode(self):
         """
-        Return the name of the default display mode. It must be defined in getDisplayModes.
+        Return the name of the default display mode. It must be defined in
+        getDisplayModes.
         """
         return "Shaded"
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
         """
-        Map the display mode defined in attach with those defined in getDisplayModes.
+        Map the display mode defined in attach with those defined in
+        getDisplayModes.
         Since they have the same names nothing needs to be done.
         This method is optional.
         """
@@ -115,12 +121,11 @@ class ViewProviderCosmeticThread3DInternal:
         """
         Print the name of the property that has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def getIcon(self):
         """
-        Return the icon in XMP format which will appear in the tree view. This method is optional and if not defined a default icon is shown.
+        Return the icon in XMP format which will appear in the tree view.
+        This method is optional and if not defined a default icon is shown.
         """
         return """
         /* XPM */
@@ -152,13 +157,11 @@ class ViewProviderCosmeticThread3DInternal:
         """
         Called during document saving.
         """
-        return None
 
-    def loads(self,state):
+    def loads(self, state):
         """
         Called during document restore.
         """
-        return None
 
 
 
@@ -167,7 +170,9 @@ class ViewProviderCosmeticThread3DInternal:
 # | internal_p0() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p0(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
+def internal_p0(name='CosmeticThread3DInternal', \
+                ct3di_prms=None, \
+                aPart=None):
     """
     internal_p0(name, ct3di_prms, aPart) -> obj
 
@@ -189,7 +194,7 @@ def internal_p0(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
         if name is None:
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         CosmeticThread3DInternal_p0(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -207,27 +212,27 @@ def internal_p0(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 # |                                                         |
 # +---------------------------------------------------------+
 class CosmeticThread3DInternal_p0:
-    """CosmeticThread3DInternal_p0 class
+    """
+    CosmeticThread3DInternal_p0 class
 
     The geometry and all handlers are defined here.
     Service function for thread creation is internal() above.
     """
-    
+
     def __init__(self, obj, ct3di_prms):
         """
         __init__(obj, ct3di_prms)
-        
-        constructor of a CosmeticThread3DInternal_p0 class / internall function
+
+        constructor of a CosmeticThread3DInternal_p0 class,
+        internall function.
         """
         #
         self.Type = 'CosmeticThread3DInternal_p0'
         obj.Proxy = self
-        # Add property of internal thread into obj 
+        # Add property of internal thread into obj
         ct3d_params.addProperty_internal_thread(obj, ct3di_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        #
-        return None
 
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
@@ -235,14 +240,11 @@ class CosmeticThread3DInternal_p0:
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) # non-readonly non-hidden
-        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def execute(self, obj):
         """
@@ -257,7 +259,13 @@ class CosmeticThread3DInternal_p0:
         v0 = App.Vector(0.5*obj.D, 0, 0)
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
+        r0 = Part.makeRevolution(e0, \
+                                 e0.FirstParameter, \
+                                 e0.LastParameter, \
+                                 360.0, \
+                                 App.Vector(0, 0, 0), \
+                                 App.Vector(0, 0, 1), \
+                                 Part.Face)
         if obj.length_through is True:
             # Thread is going throught whole body - there is no ending anulus
             r = Part.makeCompound([h, r0])
@@ -265,8 +273,14 @@ class CosmeticThread3DInternal_p0:
             # Ending annulus...
             v2 = App.Vector(0.5*obj.D1, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            r1 = Part.makeRevolution(e1, e1.FirstParameter, e1.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-            r  = Part.makeCompound([h, r0, r1])
+            r1 = Part.makeRevolution(e1, \
+                                     e1.FirstParameter, \
+                                     e1.LastParameter, \
+                                     360.0, \
+                                     App.Vector(0, 0, 0), \
+                                     App.Vector(0, 0, 1), \
+                                     Part.Face)
+            r = Part.makeCompound([h, r0, r1])
 
         # Apply attachement to the r
         if not hasattr(obj, "positionBySupport"):
@@ -277,8 +291,6 @@ class CosmeticThread3DInternal_p0:
         # And assotiate it to the 'obj'
         # *****************************
         obj.Shape = r
-        #
-        return None
 
 
 
@@ -287,7 +299,9 @@ class CosmeticThread3DInternal_p0:
 # | internal_p1() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p1(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
+def internal_p1(name='CosmeticThread3DInternal', \
+                ct3di_prms=None, \
+                aPart=None):
     """
     internal_p1(name, ct3di_prms, aPart) -> obj
 
@@ -296,9 +310,9 @@ def internal_p1(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]               name of the object in the model tree
-    ct3di_prms   - [ct3di_params_class]   parameters of the cosmetic thread
-    aPart        - [text link]            active Part object
+    name         - [string]              name of the object in the model tree
+    ct3di_prms   - [ct3di_params_class]  parameters of the cosmetic thread
+    aPart        - [text link]           active Part object
     """
 
     obj = None
@@ -309,7 +323,7 @@ def internal_p1(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
         if name is None:
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         CosmeticThread3DInternal_p1(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -327,27 +341,27 @@ def internal_p1(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 # |                                                         |
 # +---------------------------------------------------------+
 class CosmeticThread3DInternal_p1:
-    """CosmeticThread3DInternal_p1 class
+    """
+    CosmeticThread3DInternal_p1 class
 
     The geometry and all handlers are defined here.
     Service function for thread creation is internal() above.
     """
-    
+
     def __init__(self, obj, ct3di_prms):
         """
         __init__(obj, ct3di_prms)
-        
-        constructor of a CosmeticThread3DInternal_p1 class / internall function
+
+        constructor of a CosmeticThread3DInternal_p1 class,
+        internall function
         """
         #
         self.Type = 'CosmeticThread3DInternal_p1'
         obj.Proxy = self
-        # Add property of internal thread into obj 
+        # Add property of internal thread into obj
         ct3d_params.addProperty_internal_thread(obj, ct3di_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        #
-        return None
 
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
@@ -355,14 +369,11 @@ class CosmeticThread3DInternal_p1:
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) # non-readonly non-hidden
-        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def execute(self, obj):
         """
@@ -374,7 +385,13 @@ class CosmeticThread3DInternal_p1:
         v0 = App.Vector(0.5*obj.D, 0, 0)
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
+        r0 = Part.makeRevolution(e0, \
+                                 e0.FirstParameter, \
+                                 e0.LastParameter, \
+                                 360.0, \
+                                 App.Vector(0, 0, 0), \
+                                 App.Vector(0, 0, 1), \
+                                 Part.Face)
         if obj.length_through is True:
             # Thread is going throught whole body - there is no ending anulus
             r = Part.makeCompound([r0])
@@ -382,8 +399,14 @@ class CosmeticThread3DInternal_p1:
             # Ending annulus...
             v2 = App.Vector(0.5*obj.D1, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            r1 = Part.makeRevolution(e1, e1.FirstParameter, e1.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-            r  = Part.makeCompound([r0, r1])
+            r1 = Part.makeRevolution(e1, \
+                                     e1.FirstParameter, \
+                                     e1.LastParameter, \
+                                     360.0, \
+                                     App.Vector(0, 0, 0), \
+                                     App.Vector(0, 0, 1), \
+                                     Part.Face)
+            r = Part.makeCompound([r0, r1])
 
         # Apply attachement to the r
         if not hasattr(obj, "positionBySupport"):
@@ -394,8 +417,6 @@ class CosmeticThread3DInternal_p1:
         # And assotiate it to the 'obj'
         # *****************************
         obj.Shape = r
-        #
-        return None
 
 
 
@@ -404,7 +425,9 @@ class CosmeticThread3DInternal_p1:
 # | internal_p2() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p2(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
+def internal_p2(name='CosmeticThread3DInternal', \
+                ct3di_prms=None, \
+                aPart=None):
     """
     internal_p2(name, ct3di_prms, aPart) -> obj
 
@@ -413,9 +436,9 @@ def internal_p2(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]               name of the object in the model tree
-    ct3di_prms   - [ct3di_params_class]   parameters of the cosmetic thread
-    aPart        - [text link]            active Part object
+    name         - [string]             name of the object in the model tree
+    ct3di_prms   - [ct3di_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
     """
 
     obj = None
@@ -426,7 +449,7 @@ def internal_p2(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
         if name is None:
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         CosmeticThread3DInternal_p2(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -444,27 +467,27 @@ def internal_p2(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 # |                                                         |
 # +---------------------------------------------------------+
 class CosmeticThread3DInternal_p2:
-    """CosmeticThread3DInternal_p2 class
+    """
+    CosmeticThread3DInternal_p2 class
 
     The geometry and all handlers are defined here.
     Service function for thread creation is internal() above.
     """
-    
+
     def __init__(self, obj, ct3di_prms):
         """
         __init__(obj, ct3di_prms)
-        
-        constructor of a CosmeticThread3DInternal_p2 class / internall function
+
+        constructor of a CosmeticThread3DInternal_p2 class,
+        internall function
         """
         #
         self.Type = 'CosmeticThread3DInternal_p2'
         obj.Proxy = self
-        # Add property of internal thread into obj 
+        # Add property of internal thread into obj
         ct3d_params.addProperty_internal_thread(obj, ct3di_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        #
-        return None
 
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
@@ -472,14 +495,11 @@ class CosmeticThread3DInternal_p2:
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) # non-readonly non-hidden
-        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def execute(self, obj):
         """
@@ -494,8 +514,20 @@ class CosmeticThread3DInternal_p2:
         v3 = App.Vector(0.5*obj.D1, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         e1 = Part.makeLine(v2, v3)
-        r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Solid)
-        r1 = Part.makeRevolution(e1, e1.FirstParameter, e1.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Solid)
+        r0 = Part.makeRevolution(e0, \
+                                 e0.FirstParameter, \
+                                 e0.LastParameter, \
+                                 360.0, \
+                                 App.Vector(0, 0, 0), \
+                                 App.Vector(0, 0, 1), \
+                                 Part.Solid)
+        r1 = Part.makeRevolution(e1, \
+                                 e1.FirstParameter, \
+                                 e1.LastParameter, \
+                                 360.0, \
+                                 App.Vector(0, 0, 0), \
+                                 App.Vector(0, 0, 1), \
+                                 Part.Solid)
         r = r0.cut(r1)
 
         # Apply attachement to the r
@@ -507,8 +539,6 @@ class CosmeticThread3DInternal_p2:
         # And assotiate it to the 'obj'
         # *****************************
         obj.Shape = r
-        #
-        return None
 
 
 
@@ -517,7 +547,9 @@ class CosmeticThread3DInternal_p2:
 # | internal_p4) - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p4(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
+def internal_p4(name='CosmeticThread3DInternal', \
+                ct3di_prms=None, \
+                aPart=None):
     """
     internal_p4(name, ct3di_prms, aPart) -> obj
 
@@ -526,9 +558,9 @@ def internal_p4(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]               name of the object in the model tree
-    ct3di_prms   - [ct3di_params_class]   parameters of the cosmetic thread
-    aPart        - [text link]            active Part object
+    name         - [string]             name of the object in the model tree
+    ct3di_prms   - [ct3di_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
     """
 
     obj = None
@@ -539,7 +571,7 @@ def internal_p4(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
         if name is None:
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         CosmeticThread3DInternal_p4(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -557,27 +589,27 @@ def internal_p4(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):
 # |                                                         |
 # +---------------------------------------------------------+
 class CosmeticThread3DInternal_p4:
-    """CosmeticThread3DInternal_p4 class
+    """
+    CosmeticThread3DInternal_p4 class
 
     The geometry and all handlers are defined here.
     Service function for thread creation is internal() above.
     """
-    
+
     def __init__(self, obj, ct3di_prms):
         """
         __init__(obj, ct3di_prms)
-        
-        constructor of a CosmeticThread3DInternal_p2 class / internall function
+
+        constructor of a CosmeticThread3DInternal_p2 class,
+        internall function
         """
         #
         self.Type = 'CosmeticThread3DInternal_p4'
         obj.Proxy = self
-        # Add property of internal thread into obj 
+        # Add property of internal thread into obj
         ct3d_params.addProperty_internal_thread(obj, ct3di_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        #
-        return None
 
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
@@ -585,14 +617,11 @@ class CosmeticThread3DInternal_p4:
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) # non-readonly non-hidden
-        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def execute(self, obj):
         """
@@ -604,7 +633,13 @@ class CosmeticThread3DInternal_p4:
         v0 = App.Vector(0.5*obj.D1, 0, 0)
         v1 = App.Vector(0.5*obj.D1, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r  = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
+        r = Part.makeRevolution(e0, \
+                                e0.FirstParameter, \
+                                e0.LastParameter, \
+                                360.0, \
+                                App.Vector(0, 0, 0), \
+                                App.Vector(0, 0, 1), \
+                                Part.Face)
 
         # Apply attachement to the r
         if not hasattr(obj, "positionBySupport"):
@@ -619,12 +654,11 @@ class CosmeticThread3DInternal_p4:
         # Load and apply texture
         # **********************
         tex = coin.SoTexture2()
-        tex.filename = os.path.join(os.path.dirname(__file__), 'CosmeticThread3D.png')
+        tex.filename = os.path.join(os.path.dirname(__file__), \
+                                    'CosmeticThread3D.png')
         obj.ViewObject.Transparency = 0
-        obj.ViewObject.ShapeColor = (1.0,1.0,1.0)
+        obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0)
         obj.ViewObject.RootNode.insertChild(tex, 1)
-        #
-        return None
 
 
 
@@ -648,29 +682,30 @@ class CosmeticThread3DInternal_p4:
 # |                                                         |
 # +---------------------------------------------------------+
 class ViewProviderCosmeticThread3DExternal:
-    """FreeCAD_Gui part of the CosmeticThread3DExternal.
-    This class is common for all types and versions of internal threads."""
+    """
+    FreeCAD_Gui part of the CosmeticThread3DExternal.
+    This class is common for all types and versions of internal threads.
+    """
 
     def __init__(self, obj):
         """
         Set this object to the proxy object of the actual view provider
         """
         obj.Proxy = self
-        return None
 
     def attach(self, obj):
         """
-        Setup the scene sub-graph of the view provider, this method is mandatory
+        Setup the scene sub-graph of the view provider, this method is
+        mandatory
         """
-        return None
 
     def updateData(self, fp, prop):
         """
-        If a property of the handled feature has changed we have the chance to handle this here
+        If a property of the handled feature has changed we have the chance
+        to handle this here
         """
-        return None
 
-    def getDisplayModes(self,obj):
+    def getDisplayModes(self, obj):
         """
         Return a list of display modes.
         """
@@ -678,14 +713,16 @@ class ViewProviderCosmeticThread3DExternal:
 
     def getDefaultDisplayMode(self):
         """
-        Return the name of the default display mode. It must be defined in getDisplayModes.
+        Return the name of the default display mode. It must be defined
+        in getDisplayModes.
         """
         return "Shaded"
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
         """
-        Map the display mode defined in attach with those defined in getDisplayModes.
-        Since they have the same names nothing needs to be done.
+        Map the display mode defined in attach with those defined
+        in getDisplayModes. Since they have the same names nothing needs
+        to be done.
         This method is optional.
         """
         return mode
@@ -694,12 +731,11 @@ class ViewProviderCosmeticThread3DExternal:
         """
         Print the name of the property that has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def getIcon(self):
         """
-        Return the icon in XMP format which will appear in the tree view. This method is optional and if not defined a default icon is shown.
+        Return the icon in XMP format which will appear in the tree view.
+        This method is optional and if not defined a default icon is shown.
         """
 
         return """
@@ -737,13 +773,11 @@ class ViewProviderCosmeticThread3DExternal:
         """
         Called during document saving.
         """
-        return None
 
-    def loads(self,state):
+    def loads(self, state):
         """
         Called during document restore.
         """
-        return None
 
 
 
@@ -752,7 +786,9 @@ class ViewProviderCosmeticThread3DExternal:
 # | external_p0() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p0(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
+def external_p0(name='CosmeticThread3DExternal', \
+                ct3de_prms=None, \
+                aPart=None):
     """
     external_p0(name, ct3de_prms) -> obj
 
@@ -761,20 +797,20 @@ def external_p0(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]               name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class]   parameters of the cosmetic thread
-    aPart        - [text link]            active Part object
+    name         - [string]             name of the object in the model tree
+    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
     """
 
     obj = None
-    
+
     if ct3de_prms is None:
         App.Console.PrintError('external_p0(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
         if name is None:
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         CosmeticThread3DExternal_p0(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
@@ -795,33 +831,28 @@ class CosmeticThread3DExternal_p0:
     def __init__(self, obj, ct3de_prms):
         """
         __init__(obj, ct3de_prms)
-        
-        constructor of a CosmeticThread3DExternal_p0 class / internall function
+
+        constructor of a CosmeticThread3DExternal_p0 class,
+        internall function
         """
-        
+
         self.Type = 'CosmeticThread3DExternal_p0'
         obj.Proxy = self
         ct3d_params.addProperty_external_thread(obj, ct3de_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        #
-        return None
-        
+
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
             obj.addExtension('Part::AttachExtensionPython')
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) #non-readonly non-hidden
-        #
-        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def execute(self, obj):
         """
@@ -836,7 +867,13 @@ class CosmeticThread3DExternal_p0:
         v0 = App.Vector(0.5*obj.d3, 0, 0)
         v1 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
+        r0 = Part.makeRevolution(e0, \
+                                 e0.FirstParameter, \
+                                 e0.LastParameter, \
+                                 360.0, \
+                                 App.Vector(0, 0, 0), \
+                                 App.Vector(0, 0, 1), \
+                                 Part.Face)
         if obj.length_through is True:
             # Thread is going throught whole body - there is no ending anulus
             r = Part.makeCompound([h, r0])
@@ -844,8 +881,14 @@ class CosmeticThread3DExternal_p0:
             # Ending annulus...
             v2 = App.Vector(0.5*obj.D, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            r1 = Part.makeRevolution(e1, e1.FirstParameter, e1.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-            r  = Part.makeCompound([h, r0, r1])
+            r1 = Part.makeRevolution(e1, \
+                                     e1.FirstParameter, \
+                                     e1.LastParameter, \
+                                     360.0, \
+                                     App.Vector(0, 0, 0), \
+                                     App.Vector(0, 0, 1), \
+                                     Part.Face)
+            r = Part.makeCompound([h, r0, r1])
 
         # Apply attachement to the r
         if not hasattr(obj, "positionBySupport"):
@@ -856,8 +899,6 @@ class CosmeticThread3DExternal_p0:
         # And assotiate it to the 'obj'
         # *****************************
         obj.Shape = r
-        #
-        return None
 
 
 
@@ -866,7 +907,9 @@ class CosmeticThread3DExternal_p0:
 # | external_p1() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p1(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
+def external_p1(name='CosmeticThread3DExternal', \
+                ct3de_prms=None, \
+                aPart=None):
     """
     external_p1(name, ct3de_prms) -> obj
 
@@ -875,20 +918,20 @@ def external_p1(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]               name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class]   parameters of the cosmetic thread
-    aPart        - [text link]            active Part object
+    name         - [string]             name of the object in the model tree
+    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
     """
 
     obj = None
-    
+
     if ct3de_prms is None:
         App.Console.PrintError('external_p1(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
         if name is None:
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         CosmeticThread3DExternal_p1(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
@@ -909,33 +952,28 @@ class CosmeticThread3DExternal_p1:
     def __init__(self, obj, ct3de_prms):
         """
         __init__(obj, ct3de_prms)
-        
-        constructor of a CosmeticThread3DExternal_p1 class / internall function
+
+        constructor of a CosmeticThread3DExternal_p1 class,
+        internall function
         """
-        
+
         self.Type = 'CosmeticThread3DExternal_p1'
         obj.Proxy = self
         ct3d_params.addProperty_external_thread(obj, ct3de_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        #
-        return None
-        
+
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
             obj.addExtension('Part::AttachExtensionPython')
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) #non-readonly non-hidden
-        #
-        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def execute(self, obj):
         """
@@ -947,16 +985,28 @@ class CosmeticThread3DExternal_p1:
         v0 = App.Vector(0.5*obj.d3, 0, 0)
         v1 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
+        r0 = Part.makeRevolution(e0, \
+                                 e0.FirstParameter, \
+                                 e0.LastParameter, \
+                                 360.0, \
+                                 App.Vector(0, 0, 0), \
+                                 App.Vector(0, 0, 1), \
+                                 Part.Face)
         if obj.length_through is True:
-            # Thread is going throught whole body - there is no ending anulus
+            # Thread is going throught whole body, there is no ending anulus
             r = Part.makeCompound([r0])
         else:
             # Ending annulus...
             v2 = App.Vector(0.5*obj.D, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            r1 = Part.makeRevolution(e1, e1.FirstParameter, e1.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
-            r  = Part.makeCompound([r0, r1])
+            r1 = Part.makeRevolution(e1, \
+                                     e1.FirstParameter, \
+                                     e1.LastParameter, \
+                                     360.0, \
+                                     App.Vector(0, 0, 0), \
+                                     App.Vector(0, 0, 1), \
+                                     Part.Face)
+            r = Part.makeCompound([r0, r1])
 
         # Apply attachement to the r
         if not hasattr(obj, "positionBySupport"):
@@ -967,8 +1017,6 @@ class CosmeticThread3DExternal_p1:
         # And assotiate it to the 'obj'
         # *****************************
         obj.Shape = r
-        #
-        return None
 
 
 
@@ -977,7 +1025,9 @@ class CosmeticThread3DExternal_p1:
 # | external_p2() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p2(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
+def external_p2(name='CosmeticThread3DExternal', \
+                ct3de_prms=None, \
+                aPart=None):
     """
     external_p2(name, ct3de_prms) -> obj
 
@@ -986,20 +1036,20 @@ def external_p2(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]               name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class]   parameters of the cosmetic thread
-    aPart        - [text link]            active Part object
+    name         - [string]             name of the object in the model tree
+    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
     """
 
     obj = None
-    
+
     if ct3de_prms is None:
         App.Console.PrintError('external_p2(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
         if name is None:
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         CosmeticThread3DExternal_p2(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
@@ -1020,33 +1070,28 @@ class CosmeticThread3DExternal_p2:
     def __init__(self, obj, ct3de_prms):
         """
         __init__(obj, ct3de_prms)
-        
-        constructor of a CosmeticThread3DExternal_p2 class / internall function
+
+        constructor of a CosmeticThread3DExternal_p2 class,
+        internall function
         """
-        
+
         self.Type = 'CosmeticThread3DExternal_p2'
         obj.Proxy = self
         ct3d_params.addProperty_external_thread(obj, ct3de_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        #
-        return None
-        
+
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
             obj.addExtension('Part::AttachExtensionPython')
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) #non-readonly non-hidden
-        #
-        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def execute(self, obj):
         """
@@ -1055,14 +1100,26 @@ class CosmeticThread3DExternal_p2:
 
         # Add shape of the thread
         # ***********************
-        v0 = App.Vector(0.5*obj.D,  0, 0)
-        v1 = App.Vector(0.5*obj.D,  0, obj.length)
+        v0 = App.Vector(0.5*obj.D, 0, 0)
+        v1 = App.Vector(0.5*obj.D, 0, obj.length)
         v2 = App.Vector(0.5*obj.d3, 0, 0)
         v3 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         e1 = Part.makeLine(v2, v3)
-        r0 = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Solid)
-        r1 = Part.makeRevolution(e1, e1.FirstParameter, e1.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Solid)
+        r0 = Part.makeRevolution(e0, \
+                                 e0.FirstParameter, \
+                                 e0.LastParameter, \
+                                 360.0, \
+                                 App.Vector(0, 0, 0), \
+                                 App.Vector(0, 0, 1), \
+                                 Part.Solid)
+        r1 = Part.makeRevolution(e1, \
+                                 e1.FirstParameter, \
+                                 e1.LastParameter, \
+                                 360.0, \
+                                 App.Vector(0, 0, 0), \
+                                 App.Vector(0, 0, 1), \
+                                 Part.Solid)
         r = r0.cut(r1)
 
         # Apply attachement to the r
@@ -1074,8 +1131,6 @@ class CosmeticThread3DExternal_p2:
         # And assotiate it to the 'obj'
         # *****************************
         obj.Shape = r
-        #
-        return None
 
 
 
@@ -1084,7 +1139,9 @@ class CosmeticThread3DExternal_p2:
 # | external_p4() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p4(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
+def external_p4(name='CosmeticThread3DExternal', \
+                ct3de_prms=None, \
+                aPart=None):
     """
     external_p4(name, ct3de_prms) -> obj
 
@@ -1093,20 +1150,20 @@ def external_p4(name='CosmeticThread3DExternal', ct3de_prms=None, aPart=None):
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]               name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class]   parameters of the cosmetic thread
-    aPart        - [text link]            active Part object
+    name         - [string]             name of the object in the model tree
+    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
     """
 
     obj = None
-    
+
     if ct3de_prms is None:
         App.Console.PrintError('external_p2(name, ct3de_prms, aPart) - Check ct3de_prms\n')
     else:
         if name is None:
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         CosmeticThread3DExternal_p4(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
@@ -1127,33 +1184,28 @@ class CosmeticThread3DExternal_p4:
     def __init__(self, obj, ct3de_prms):
         """
         __init__(obj, ct3de_prms)
-        
-        constructor of a CosmeticThread3DExternal_p4 class / internall function
+
+        constructor of a CosmeticThread3DExternal_p4 class,
+        internall function
         """
-        
+
         self.Type = 'CosmeticThread3DExternal_p4'
         obj.Proxy = self
         ct3d_params.addProperty_external_thread(obj, ct3de_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        #
-        return None
-        
+
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
             obj.addExtension('Part::AttachExtensionPython')
         else:
             obj.addExtension('Part::AttachExtensionPython', obj)
         obj.setEditorMode('Placement', 0) #non-readonly non-hidden
-        #
-        return None
 
     def onChanged(self, obj, prop):
         """
         Do something when a property has changed
         """
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
-        return None
 
     def execute(self, obj):
         """
@@ -1162,10 +1214,16 @@ class CosmeticThread3DExternal_p4:
 
         # Add shape of the thread
         # ***********************
-        v0 = App.Vector(0.5*obj.D,  0, 0)
-        v1 = App.Vector(0.5*obj.D,  0, obj.length)
+        v0 = App.Vector(0.5*obj.D, 0, 0)
+        v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r = Part.makeRevolution(e0, e0.FirstParameter, e0.LastParameter, 360.0, App.Vector(0,0,0), App.Vector(0,0,1), Part.Face)
+        r = Part.makeRevolution(e0, \
+                                e0.FirstParameter, \
+                                e0.LastParameter, \
+                                360.0, \
+                                App.Vector(0, 0, 0), \
+                                App.Vector(0, 0, 1), \
+                                Part.Face)
 
         # Apply attachement to the r
         if not hasattr(obj, "positionBySupport"):
@@ -1180,10 +1238,8 @@ class CosmeticThread3DExternal_p4:
         # Load and apply texture
         # **********************
         tex = coin.SoTexture2()
-        tex.filename = os.path.join(os.path.dirname(__file__), 'CosmeticThread3D.png')
+        tex.filename = os.path.join(os.path.dirname(__file__), \
+                                    'CosmeticThread3D.png')
         obj.ViewObject.Transparency = 0
-        obj.ViewObject.ShapeColor = (1.0,1.0,1.0)
+        obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0)
         obj.ViewObject.RootNode.insertChild(tex, 1)
-        #
-        return None
-

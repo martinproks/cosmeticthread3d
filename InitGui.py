@@ -33,33 +33,38 @@ of the work. The third one when the workbench is deactivated, so you can
 remove things if needed.
 """
 
-__title__   = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
+import os
+
+__title__ = 'Cosmetic Thread 3D Work Bench'
+__author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+__url__ = 'https://github.com/martinproks/cosmeticthread3d'
 
 
 
-class CosmeticThread3D (Workbench):
+class CosmeticThread3D(Workbench):
     """
     CosmeticThread3D Workbench definition class
     """
 
     def __init__(self):
-        import os
+        #
         import ct3d_params
+        #
+        self.list = []
         self.__class__.MenuText = 'Cosmetic Thread 3D'
         self.__class__.ToolTip = 'Create cosmetic thread at model space - holes and rods'
-        self.__class__.Icon = os.path.join(ct3d_params.get_module_path(), 'icons', 'CosmeticThread3D_WB.png')
-        return None
-        
+        self.__class__.Icon = os.path.join(ct3d_params.get_module_path(), \
+                                           'icons', \
+                                           'CosmeticThread3D_WB.png')
+
     def Initialize(self):
-        """This function is executed when the workbench is first activated.
+        """
+        This function is executed when the workbench is first activated.
         It is executed once in a FreeCAD session followed by the Activated
         function.
         """
-        # import here all the needed files that create your FreeCAD commands
-        # import MyModuleA, MyModuleB
+        #
         import cosmeticthread3d_Gui
         #
         # a list of command names created in the line above
@@ -72,41 +77,38 @@ class CosmeticThread3D (Workbench):
                      'internal_cosmetic_thread_p4',
                      'external_cosmetic_thread_p4']
         #
-        # creates a new toolbar with your commands
-        # self.appendToolbar("Cosmetic_Thread_3D", self.list) # toolbar not necessary, this workbench is for developement and testing of tools
+        # # creates a new toolbar with your commands
+        # # toolbar not necessary, this workbench is for developement and testing of tools
+        # self.appendToolbar("Cosmetic_Thread_3D", self.list)
         #
         # creates a new menu
         self.appendMenu('Cosmetic Thread 3D', self.list)
         #
-        # appends a submenu to an existing menu
+        # # appends a submenu to an existing menu
         # self.appendMenu(["An existing Menu", "My submenu"], self.list)
-        return None
 
     def Activated(self):
-        """This function is executed whenever the workbench is activated"""
-        # at least for the time I'm developing it...
-        import cosmeticthread3d_Gui
-        from importlib import reload
-        reload(cosmeticthread3d_Gui)
-        return None
+        """
+        This function is executed whenever the workbench is activated
+        """
 
     def Deactivated(self):
-        """This function is executed whenever the workbench is deactivated"""
-        return None
+        """
+        This function is executed whenever the workbench is deactivated
+        """
 
     def ContextMenu(self, recipient):
-        """This function is executed whenever the user right-clicks
-           on screen"""
+        """
+        This function is executed whenever the user right-clicks on screen
+        """
         # "recipient" will be either "view" or "tree"
         # add commands to the context menu
         # self.appendContextMenu("My commands", self.list)
-        return None
 
-    def GetClassName(self): 
+    def GetClassName(self):
         # This function is mandatory if this is a full Python workbench
         # This is not a template, the returned string should be exactly
         #      "Gui::PythonWorkbench"
         return 'Gui::PythonWorkbench'
-       
-Gui.addWorkbench(CosmeticThread3D())
 
+Gui.addWorkbench(CosmeticThread3D())

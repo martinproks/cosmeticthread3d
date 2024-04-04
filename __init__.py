@@ -31,8 +31,7 @@ But I change the approach to workbench, so this file is obsolete now and I left
 it here just for the case I want to go back to macro version someday...
 """
 
-__title__   = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
+__title__ = 'Cosmetic Thread 3D Work Bench'
+__author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
-
+__url__ = 'https://github.com/martinproks/cosmeticthread3d'

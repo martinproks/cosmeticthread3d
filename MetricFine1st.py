@@ -24,10 +24,10 @@
 #* USA                                                                        *
 #******************************************************************************
 
-__title__   = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
+__title__ = 'Cosmetic Thread 3D Work Bench'
+__author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
+__url__ = 'https://github.com/martinproks/cosmeticthread3d'
 
 
 
@@ -49,10 +49,10 @@ class MetricFine1st:
     __D_drill = []
 
     def __init__(self):
-        self.__name      = []
+        self.__name = []
         self.__D_nominal = []
-        self.__pitch     = []
-        self.__D_drill   = []
+        self.__pitch = []
+        self.__D_drill = []
 
         self.__name.append('M1x0.2')
         self.__D_nominal.append(1)
