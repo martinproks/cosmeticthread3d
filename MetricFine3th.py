@@ -43,11 +43,6 @@ class MetricFine3th:
     3th choice according to ISO 261.
     """
 
-    __name = []
-    __D_nominal = []
-    __pitch = []
-    __D_drill = []
-
     def __init__(self):
         self.__name = []
         self.__D_nominal = []
@@ -650,6 +645,14 @@ class MetricFine3th:
                 x = self.__pitch[i]
                 break
             i += 1
+        return x
+
+    def getTPI(self, ThrName):
+        """
+        getTPI(ThrName) -> TPI
+        """
+        x = self.getpitch(ThrName)
+        x = round(25.4 / x, 3) if x > 0.0 else 0.0
         return x
 
     def getD(self, ThrName):

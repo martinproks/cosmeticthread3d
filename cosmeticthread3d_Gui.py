@@ -125,17 +125,13 @@ class ct3di_p0_menu_command():
             #   APPLY  = just update the conus position and dimensions.
             #   OK     = go far to the cosmetic thread creation - working code
             #            is continuing there
-        # end if
-        #
-        # return None
 
     def IsActive(self):
         """
         Here you can define if the command must be active or not (greyed)
         if certain conditions are met or not. This function is optional.
         """
-        result = True
-        return result
+        return True
 
     def eA_ok(self):
         """
@@ -150,6 +146,7 @@ class ct3di_p0_menu_command():
         ct3d_prms.name = lst_threads.getName(0)
         ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
         ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
         ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
         ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
         # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
@@ -183,8 +180,6 @@ class ct3di_p0_menu_command():
         #
         # clean up...
         del lst_threads, ct3d_prms, aPart, D_hole, obj
-        #
-        # return None
 
     def eA_cancel(self):
         """
@@ -192,13 +187,11 @@ class ct3di_p0_menu_command():
         """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        # return None
 
     def eA_apply(self):
         """Reaction to editAttachment - APPLY has been pressed """
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_hole)
-        # return None
 
 Gui.addCommand('internal_cosmetic_thread_p0', ct3di_p0_menu_command())
 
@@ -265,9 +258,6 @@ class ct3de_p0_menu_command():
             #   APPLY  = just update the conus position and dimensions.
             #   OK     = go far to the cosmetic thread creation - working
             #            code is continuing there
-        # end if
-        #
-        # return None
 
     def IsActive(self):
         """
@@ -289,6 +279,7 @@ class ct3de_p0_menu_command():
         ct3d_prms.name = lst_threads.getName(0)
         ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
         ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
         ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
         # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
         # # doesn't have this parameter
@@ -324,8 +315,6 @@ class ct3de_p0_menu_command():
         #
         # clean up...
         del lst_threads, ct3d_prms, aPart, D_shaft, obj
-        #
-        # return None
 
     def eA_cancel(self):
         """
@@ -333,7 +322,6 @@ class ct3de_p0_menu_command():
         """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        # return None
 
     def eA_apply(self):
         """
@@ -341,7 +329,6 @@ class ct3de_p0_menu_command():
         """
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_shaft)
-        # return None
 
 Gui.addCommand('external_cosmetic_thread_p0', ct3de_p0_menu_command())
 
@@ -415,17 +402,13 @@ class ct3di_p1_menu_command():
             #   APPLY  = just update the conus position and dimensions.
             #   OK     = go far to the cosmetic thread creation - working code
             #            is continuing there
-        # end if
-        #
-        # return None
 
     def IsActive(self):
         """
         Here you can define if the command must be active or not (greyed)
         if certain conditions are met or not. This function is optional.
         """
-        result = True
-        return result
+        return True
 
     def eA_ok(self):
         """
@@ -440,6 +423,7 @@ class ct3di_p1_menu_command():
         ct3d_prms.name = lst_threads.getName(0)
         ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
         ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
         ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
         ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
         # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
@@ -474,8 +458,6 @@ class ct3di_p1_menu_command():
         #
         # clean up...
         del lst_threads, ct3d_prms, aPart, D_hole, obj
-        #
-        # return None
 
     def eA_cancel(self):
         """
@@ -483,7 +465,6 @@ class ct3di_p1_menu_command():
         """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        # return None
 
     def eA_apply(self):
         """
@@ -491,7 +472,6 @@ class ct3di_p1_menu_command():
         """
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_hole)
-        # return None
 
 Gui.addCommand('internal_cosmetic_thread_p1', ct3di_p1_menu_command())
 
@@ -558,9 +538,6 @@ class ct3de_p1_menu_command():
             #   APPLY  = just update the conus position and dimensions.
             #   OK     = go far to the cosmetic thread creation - working code
             #            is continuing there
-        # end if
-        #
-        # return None
 
     def IsActive(self):
         """
@@ -582,6 +559,7 @@ class ct3de_p1_menu_command():
         ct3d_prms.name = lst_threads.getName(0)
         ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
         ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
         ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
         # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
         # # doesn't have this parameter
@@ -617,8 +595,6 @@ class ct3de_p1_menu_command():
         #
         # clean up...
         del lst_threads, ct3d_prms, aPart, D_shaft, obj
-        #
-        # return None
 
     def eA_cancel(self):
         """
@@ -626,7 +602,6 @@ class ct3de_p1_menu_command():
         """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        # return None
 
     def eA_apply(self):
         """
@@ -634,7 +609,6 @@ class ct3de_p1_menu_command():
         """
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_shaft)
-        # return None
 
 Gui.addCommand('external_cosmetic_thread_p1', ct3de_p1_menu_command())
 
@@ -710,17 +684,13 @@ class ct3di_p2_menu_command():
             #   APPLY  = just update the conus position and dimensions.
             #   OK     = go far to the cosmetic thread creation - working
             #            code is continuing there
-        # end if
-        #
-        # return None
 
     def IsActive(self):
         """
         Here you can define if the command must be active or not (greyed)
         if certain conditions are met or not. This function is optional.
         """
-        result = True
-        return result
+        return True
 
     def eA_ok(self):
         """
@@ -735,6 +705,7 @@ class ct3di_p2_menu_command():
         ct3d_prms.name = lst_threads.getName(0)
         ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
         ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
         ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
         ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
         # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
@@ -770,15 +741,12 @@ class ct3di_p2_menu_command():
         # clean up...
         del lst_threads, ct3d_prms, aPart, D_hole, obj
 
-        # return None
-
     def eA_cancel(self):
         """
         Reaction to editAttachment - CANCEL has been pressed
         """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        # return None
 
     def eA_apply(self):
         """
@@ -786,7 +754,6 @@ class ct3di_p2_menu_command():
         """
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_hole)
-        # return None
 
 Gui.addCommand('internal_cosmetic_thread_p2', ct3di_p2_menu_command())
 
@@ -853,9 +820,6 @@ class ct3de_p2_menu_command():
             #   APPLY  = just update the conus position and dimensions.
             #   OK     = go far to the cosmetic thread creation - working code
             #            is continuing there
-        # end if
-        #
-        return
 
     def IsActive(self):
         """
@@ -877,6 +841,7 @@ class ct3de_p2_menu_command():
         ct3d_prms.name = lst_threads.getName(0)
         ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
         ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
         ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
         # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
         # # doesn't have this parameter
@@ -912,8 +877,6 @@ class ct3de_p2_menu_command():
         #
         # clean up...
         del lst_threads, ct3d_prms, aPart, D_shaft, obj
-        #
-        # return None
 
     def eA_cancel(self):
         """
@@ -921,7 +884,6 @@ class ct3de_p2_menu_command():
         """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        # return None
 
     def eA_apply(self):
         """
@@ -929,7 +891,6 @@ class ct3de_p2_menu_command():
         """
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_shaft)
-        # return None
 
 Gui.addCommand('external_cosmetic_thread_p2', ct3de_p2_menu_command())
 
@@ -1005,17 +966,13 @@ class ct3di_p4_menu_command():
             #   APPLY  = just update the conus position and dimensions.
             #   OK     = go far to the cosmetic thread creation - working
             #            code is continuing there
-        # end if
-        #
-        # return None
 
     def IsActive(self):
         """
         Here you can define if the command must be active or not (greyed)
         if certain conditions are met or not. This function is optional.
         """
-        result = True
-        return result
+        return True
 
     def eA_ok(self):
         """
@@ -1030,6 +987,7 @@ class ct3di_p4_menu_command():
         ct3d_prms.name = lst_threads.getName(0)
         ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
         ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
         ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
         ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
         # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
@@ -1064,15 +1022,12 @@ class ct3di_p4_menu_command():
         # clean up...
         del lst_threads, ct3d_prms, aPart, D_hole, obj
 
-        # return None
-
     def eA_cancel(self):
         """
         Reaction to editAttachment - CANCEL has been pressed
         """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        # return None
 
     def eA_apply(self):
         """
@@ -1080,7 +1035,6 @@ class ct3di_p4_menu_command():
         """
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_hole)
-        # return None
 
 Gui.addCommand('internal_cosmetic_thread_p4', ct3di_p4_menu_command())
 
@@ -1147,9 +1101,6 @@ class ct3de_p4_menu_command():
             #   APPLY  = just update the conus position and dimensions.
             #   OK     = go far to the cosmetic thread creation - working
             #            code is continuing there
-        # end if
-        #
-        return
 
     def IsActive(self):
         """
@@ -1171,6 +1122,7 @@ class ct3de_p4_menu_command():
         ct3d_prms.name = lst_threads.getName(0)
         ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
         ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
+        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
         ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
         # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
         # # doesn't have this parameter
@@ -1206,8 +1158,6 @@ class ct3de_p4_menu_command():
         #
         # clean up...
         del lst_threads, ct3d_prms, aPart, D_shaft, obj
-        #
-        # return None
 
     def eA_cancel(self):
         """
@@ -1215,7 +1165,6 @@ class ct3de_p4_menu_command():
         """
         # Remove geometry from document
         self.doc.removeObject(self.obj_tmp.Name)
-        # return None
 
     def eA_apply(self):
         """
@@ -1223,7 +1172,6 @@ class ct3de_p4_menu_command():
         """
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
         ct3dGuiTools.arrow_direction.scale(self.obj_tmp, D_shaft)
-        # return None
 
 Gui.addCommand('external_cosmetic_thread_p4', ct3de_p4_menu_command())
 
