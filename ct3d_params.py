@@ -79,6 +79,7 @@ class ct3di_params_class:
         self.name = 'M10'     # [string]     Thread designation
         self.D_nominal = 10.0 # [float - mm] Nominal diameter
         self.pitch = 1.5      # [float - mm] Pitch - coarse
+        self.TPI = round(25.4 / self.pitch, 3) # [float] Threads Per Inch
         self.D = 10.0         # [float - mm] Major diameter
         #                     #     (used for thread show) - tolerance = 0
         self.D1 = 8.376       # [float - mm] Minor diameter - tolerance = 0
@@ -129,6 +130,12 @@ def addProperty_internal_thread(obj, ct3di_params):
                     'ct3di_data', \
                     'Thread pitch.', \
                     0).pitch = ct3di_params.pitch
+    # TPI - Read and Write
+    obj.addProperty('App::PropertyFloat', \
+                    'TPI', \
+                    'ct3di_data', \
+                    'Threads Per Inch.', \
+                    0).TPI = ct3di_params.TPI
     # Major diameter - Read and Write
     obj.addProperty('App::PropertyLength', \
                     'D', \
@@ -185,8 +192,8 @@ def addProperty_internal_thread(obj, ct3di_params):
 # |                                                        |
 # +--------------------------------------------------------+
 # There is a lot of parameters around cosmetic thread external for exchange
-# informations on function calls and returns. I decide to wrap them into a class.
-# It will be more easy to handle with one object than many separate
+# informations on function calls and returns. I decide to wrap them into
+# a class. It will be more easy to handle with one object than many separate
 # variables...
 class ct3de_params_class:
     """
@@ -196,6 +203,7 @@ class ct3de_params_class:
         self.name = 'M10'
         self.D_nominal = 10.0
         self.pitch = 1.5
+        self.TPI = round(25.4 / self.pitch, 3)
         self.D = 10.0
         self.d3 = 8.160
         self.tolerance = '6g'
@@ -236,6 +244,12 @@ def addProperty_external_thread(obj, ct3de_params):
                     'ct3de_data', \
                     'Thread pitch.', \
                     0).pitch = ct3de_params.pitch
+    # TPI - Read and Write
+    obj.addProperty('App::PropertyFloat', \
+                    'TPI', \
+                    'ct3de_data', \
+                    'Threads Per Inch.', \
+                    0).TPI = ct3de_params.TPI
     # Major diameter - Read and Write
     obj.addProperty('App::PropertyLength', \
                     'D', \
