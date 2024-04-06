@@ -30,8 +30,6 @@ I decided to move it to separate file for smaller an better to read
 the main GUI script with buttons.
 """
 
-
-
 import os
 from PySide import QtCore, QtGui
 from PySide.QtGui import QFrame
@@ -46,13 +44,12 @@ import MetricFine1st
 import MetricFine2nd
 import MetricFine3th
 import MetricEle
-# import BSW
-# import BSF
+import Gthread
 # import UNC
 # import UNF
 # import UNEF
-
-
+import BSW
+import BSF
 
 __title__ = 'Cosmetic Thread 3D Work Bench'
 __author__ = 'Martin Prokš'
@@ -135,17 +132,19 @@ class ct3d_threadUI(QtGui.QDialog):
         self.__tOT.append('Metric Fine thread 3th choice')
         # MetricFine3th.MetricFine3th()
         self.__tOT.append('Metric Electrical thread')
-        # MetricEle.MetricEle() # according to EN 60623 selection
-        self.__tOT.append('BSW - British Standard Whitworth')
-        # BSW.BSW()
-        self.__tOT.append('BSF - British Standard Fine')
-        # BSF.BSF()
+        # MetricEle.MetricEle() # according to EN 60423 selection
+        self.__tOT.append('G - Pipe Parallel Thread (BSPP)')
+        # Gthread.Gthread()
         self.__tOT.append('UNC - Unified Thread Standard Coarse')
         # UNC.UNC()
         self.__tOT.append('UNF - Unified Thread Standard Fine')
         # UNF.UNF()
         self.__tOT.append('UNEF - Unified Thread Standard Extra fine')
         # UNEF.UNEF()
+        self.__tOT.append('BSW - British Standard Whitworth')
+        # BSW.BSW()
+        self.__tOT.append('BSF - British Standard Fine')
+        # BSF.BSF()
         self.__tOT_index = 0
         self.__lthr = MetricCoarse1st.MetricCoarse1st()
         self.__lthr_index = 0
@@ -417,16 +416,18 @@ class ct3d_threadUI(QtGui.QDialog):
             self.__lthr = MetricFine3th.MetricFine3th()
         elif tOT_name == 'Metric Electrical thread':
             self.__lthr = MetricEle.MetricEle()
-        # elif tOT_name == 'BSW - British Standard Whitworth':
-        #     self.__lthr = BSW.BSW()
-        # elif tOT_name == 'BSF - British Standard Fine':
-        #     self.__lthr = BSF.BSF()
+        elif tOT_name == 'G - Pipe Parallel Thread (BSPP)':
+            self.__lthr = Gthread.Gthread()
         # elif tOT_name == 'UNC - Unified Thread Standard Coarse':
         #     self.__lthr = UNC.UNC()
         # elif tOT_name == 'UNF - Unified Thread Standard Fine'
         #     self.__lthr = UNF.UNF()
         # elif tOT_name == 'UNEF - Unified Thread Standard Extra fine'
         #     self.__lthr = UNEF.UNEF()
+        elif tOT_name == 'BSW - British Standard Whitworth':
+            self.__lthr = BSW.BSW()
+        elif tOT_name == 'BSF - British Standard Fine':
+            self.__lthr = BSF.BSF()
         else:
             App.Console.PrintMessage('*** FIXME *** ct3dGouiTools.ct3d_threadUI.onPopupTypeOfThread() - selected thread type is not implemented\n')
             self.__tOT_index = 0
