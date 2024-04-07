@@ -45,9 +45,9 @@ import MetricFine2nd
 import MetricFine3th
 import MetricEle
 import Gthread
-# import UNC
-# import UNF
-# import UNEF
+import UNC
+import UNF
+import UNEF
 import BSW
 import BSF
 
@@ -418,12 +418,12 @@ class ct3d_threadUI(QtGui.QDialog):
             self.__lthr = MetricEle.MetricEle()
         elif tOT_name == 'G - Pipe Parallel Thread (BSPP)':
             self.__lthr = Gthread.Gthread()
-        # elif tOT_name == 'UNC - Unified Thread Standard Coarse':
-        #     self.__lthr = UNC.UNC()
-        # elif tOT_name == 'UNF - Unified Thread Standard Fine'
-        #     self.__lthr = UNF.UNF()
-        # elif tOT_name == 'UNEF - Unified Thread Standard Extra fine'
-        #     self.__lthr = UNEF.UNEF()
+        elif tOT_name == 'UNC - Unified Thread Standard Coarse':
+            self.__lthr = UNC.UNC()
+        elif tOT_name == 'UNF - Unified Thread Standard Fine':
+            self.__lthr = UNF.UNF()
+        elif tOT_name == 'UNEF - Unified Thread Standard Extra fine':
+            self.__lthr = UNEF.UNEF()
         elif tOT_name == 'BSW - British Standard Whitworth':
             self.__lthr = BSW.BSW()
         elif tOT_name == 'BSF - British Standard Fine':

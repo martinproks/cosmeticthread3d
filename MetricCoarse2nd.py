@@ -29,11 +29,7 @@ __author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
 __url__ = 'https://github.com/martinproks/cosmeticthread3d'
 
-
-
 import math
-
-
 
 class MetricCoarse2nd:
     """
