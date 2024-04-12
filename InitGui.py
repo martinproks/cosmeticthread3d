@@ -40,8 +40,6 @@ __author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
 __url__ = 'https://github.com/martinproks/cosmeticthread3d'
 
-
-
 class CosmeticThread3D(Workbench):
     """
     CosmeticThread3D Workbench definition class
@@ -74,6 +72,8 @@ class CosmeticThread3D(Workbench):
                      'external_cosmetic_thread_p1',
                      'internal_cosmetic_thread_p2',
                      'external_cosmetic_thread_p2',
+                     'internal_cosmetic_thread_p3',
+                     'external_cosmetic_thread_p3',
                      'internal_cosmetic_thread_p4',
                      'external_cosmetic_thread_p4']
         #
