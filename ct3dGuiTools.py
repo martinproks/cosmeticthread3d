@@ -553,7 +553,10 @@ def copy_attachment(obj_from, obj_to):
     #
     obj_to.AttachmentOffset = obj_from.AttachmentOffset
     obj_to.MapReversed = obj_from.MapReversed
-    obj_to.Support = obj_from.Support
+    if int(App.Version()[1]) == 22:
+        obj_to.AttachmentSupport = obj_from.AttachmentSupport
+    elif int(App.Version()[1]) == 21:
+        obj_to.Support = obj_from.Support
     obj_to.MapPathParameter = obj_from.MapPathParameter
     obj_to.MapMode = obj_from.MapMode
     #
@@ -586,7 +589,11 @@ def diameter_from_attachment(obj):
     #     [[Part.getShape(feature, sub, needSubElement = True) \
     #          for sub in subs] for feature, subs in obj.Support]
     #     edge.Curve.Radius
-    for feature, subs in obj.Support:
+    if int(App.Version()[1]) == 22:
+        obj_AS = obj.AttachmentSupport
+    elif int(App.Version()[1]) == 21:
+        obj_AS = obj.Support
+    for feature, subs in obj_AS:
         for sub in subs:
             # Look just for first circular element and estimate diameter
             # from it. Circle or cylinder.

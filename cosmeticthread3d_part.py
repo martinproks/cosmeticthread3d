@@ -267,7 +267,7 @@ class CosmeticThread3DInternal_p0:
                                  App.Vector(0, 0, 1), \
                                  Part.Face)
         if obj.length_through is True:
-            # Thread is going throught whole body - there is no ending anulus
+            # Thread is going throught whole body - there is no ending annulus
             r = Part.makeCompound([h, r0])
         else:
             # Ending annulus...
@@ -393,7 +393,7 @@ class CosmeticThread3DInternal_p1:
                                  App.Vector(0, 0, 1), \
                                  Part.Face)
         if obj.length_through is True:
-            # Thread is going throught whole body - there is no ending anulus
+            # Thread is going throught whole body - there is no ending annulus
             r = Part.makeCompound([r0])
         else:
             # Ending annulus...
@@ -544,7 +544,155 @@ class CosmeticThread3DInternal_p2:
 
 # +------------------------------------------------------------+
 # |                                                            |
-# | internal_p4) - create internal thread object and geometry |
+# | internal_p3() - create internal thread object and geometry |
+# |                                                            |
+# +------------------------------------------------------------+
+def internal_p3(name='CosmeticThread3DInternal', \
+                ct3di_prms=None, \
+                aPart=None):
+    """
+    internal_p3(name, ct3di_prms, aPart) -> obj
+
+    It creates Cosmetic Thread 3D Internal (Part version, type 3)
+    and returns obj.
+
+    This function is mentioned to be used for object creation.
+
+    name       - [string]               name of the object in the model tree
+    ct3di_prms - [ct3di_params_class]   parameters of the cosmetic thread
+    aPart      - [text link]            active Part object
+    """
+
+    obj = None
+
+    if ct3di_prms is None:
+        App.Console.PrintError('internal_p3(name, ct3di_prms, aPart) - Check ct3di_prms\n')
+    else:
+        if name is None:
+            name = ct3di_prms.name
+        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        if aPart is not None:
+            aPart.addObject(obj)
+        CosmeticThread3DInternal_p3(obj, ct3di_prms)
+        ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        App.ActiveDocument.recompute()
+
+    return obj
+
+
+
+# +---------------------------------------------------------+
+# |                                                         |
+# | CosmeticThread3DInternal_p3 class.                      |
+# |                                                         |
+# | The geometry and all handlers are defined here.         |
+# |                                                         |
+# +---------------------------------------------------------+
+class CosmeticThread3DInternal_p3:
+    """
+    CosmeticThread3DInternal_p3 class
+
+    The geometry and all handlers are defined here.
+    Service function for thread creation is internal() above.
+    """
+
+    def __init__(self, obj, ct3di_prms):
+        """
+        __init__(obj, ct3di_prms)
+
+        constructor of a CosmeticThread3DInternal_p3 class,
+        internall function.
+        """
+        #
+        self.Type = 'CosmeticThread3DInternal_p3'
+        obj.Proxy = self
+        # Add property of internal thread into obj
+        ct3d_params.addProperty_internal_thread(obj, ct3di_prms)
+        # Attachement extension
+        self.makeAttachable(obj)
+
+    def makeAttachable(self, obj):
+        if int(App.Version()[1]) >= 19:
+            obj.addExtension('Part::AttachExtensionPython')
+        else:
+            obj.addExtension('Part::AttachExtensionPython', obj)
+        obj.setEditorMode('Placement', 0) # non-readonly non-hidden
+
+    def onChanged(self, obj, prop):
+        """
+        Do something when a property has changed
+        """
+
+    def execute(self, obj):
+        """
+        Do something when doing a recomputation, this method is mandatory
+        """
+        # Outside shell - D
+        ri = []
+        v0 = App.Vector(0.5*obj.D, 0, 0)
+        v1 = App.Vector(0.5*obj.D, 0, obj.length)
+        e0 = Part.makeLine(v0, v1)
+        ri.append(Part.makeRevolution(e0, \
+                                      e0.FirstParameter, \
+                                      e0.LastParameter, \
+                                      360.0, \
+                                      App.Vector(0, 0, 0), \
+                                      App.Vector(0, 0, 1), \
+                                      Part.Face))
+
+        # Zig-Zag shell between D1 and D
+        [n_rings, mod_rings] = divmod(obj.length.Value, obj.pitch.Value)
+        if n_rings < 1.0:
+            n_rings = 1.0
+        d_z = 0.5 * obj.length.Value / n_rings
+        n_v = int(n_rings * 2 + 1)
+        for i in range(n_v):
+            x = 0.5*obj.D1 if i % 2 else 0.5*obj.D
+            y = 0
+            z = i*d_z
+            if i == 0:
+                vi1 = App.Vector(x, y, z)
+            else:
+                vi = vi1
+                vi1 = App.Vector(x, y, z)
+                ei = Part.makeLine(vi, vi1)
+                ri.append(Part.makeRevolution(ei, \
+                                              ei.FirstParameter, \
+                                              ei.LastParameter, \
+                                              360.0, \
+                                              App.Vector(0, 0, 0), \
+                                              App.Vector(0, 0, 1), \
+                                              Part.Face))
+
+        # Ending anulus and compound object:
+        if obj.length_through is not True:
+            # Append ending annulus...
+            v2 = App.Vector(0.5*obj.D1, 0, obj.length)
+            e1 = Part.makeLine(v1, v2)
+            ri.append(Part.makeRevolution(e1, \
+                                          e1.FirstParameter, \
+                                          e1.LastParameter, \
+                                          360.0, \
+                                          App.Vector(0, 0, 0), \
+                                          App.Vector(0, 0, 1), \
+                                          Part.Face))
+        r = Part.makeCompound(ri)
+
+        # Apply attachement to the r
+        if not hasattr(obj, "positionBySupport"):
+            self.makeAttachable(obj)
+        obj.positionBySupport()
+        r.Placement = obj.Placement
+
+        # And assotiate it to the 'obj'
+        # *****************************
+        obj.Shape = r
+
+
+
+# +------------------------------------------------------------+
+# |                                                            |
+# | internal_p4() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
 def internal_p4(name='CosmeticThread3DInternal', \
@@ -1121,6 +1269,146 @@ class CosmeticThread3DExternal_p2:
                                  App.Vector(0, 0, 1), \
                                  Part.Solid)
         r = r0.cut(r1)
+
+        # Apply attachement to the r
+        if not hasattr(obj, "positionBySupport"):
+            self.makeAttachable(obj)
+        obj.positionBySupport()
+        r.Placement = obj.Placement
+
+        # And assotiate it to the 'obj'
+        # *****************************
+        obj.Shape = r
+
+
+
+# +------------------------------------------------------------+
+# |                                                            |
+# | external_p3() - create external thread object and geometry |
+# |                                                            |
+# +------------------------------------------------------------+
+def external_p3(name='CosmeticThread3DExternal', \
+                ct3de_prms=None, \
+                aPart=None):
+    """
+    external_p3(name, ct3de_prms) -> obj
+
+    creates Cosmetic Thread 3D External (Part version, type 3)
+    and returns obj.
+
+    This function is mentioned to be used for object creation.
+
+    name         - [string]             name of the object in the model tree
+    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
+    aPart        - [text link]          active Part object
+    """
+
+    obj = None
+
+    if ct3de_prms is None:
+        App.Console.PrintError('external_p3(name, ct3de_prms, aPart) - Check ct3de_prms\n')
+    else:
+        if name is None:
+            name = ct3de_prms.name
+        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        if aPart is not None:
+            aPart.addObject(obj)
+        CosmeticThread3DExternal_p3(obj, ct3de_prms)
+        ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        App.ActiveDocument.recompute()
+
+    return obj
+
+
+
+# +---------------------------------------------------------+
+# |                                                         |
+# | CosmeticThread3DExternal_p3 class.                      |
+# |                                                         |
+# | The geometry and all handlers are defined here.         |
+# |                                                         |
+# +---------------------------------------------------------+
+class CosmeticThread3DExternal_p3:
+    def __init__(self, obj, ct3de_prms):
+        """
+        __init__(obj, ct3de_prms)
+
+        constructor of a CosmeticThread3DExternal_p3 class,
+        internall function
+        """
+
+        self.Type = 'CosmeticThread3DExternal_p3'
+        obj.Proxy = self
+        ct3d_params.addProperty_external_thread(obj, ct3de_prms)
+        # Attachement extension
+        self.makeAttachable(obj)
+
+    def makeAttachable(self, obj):
+        if int(App.Version()[1]) >= 19:
+            obj.addExtension('Part::AttachExtensionPython')
+        else:
+            obj.addExtension('Part::AttachExtensionPython', obj)
+        obj.setEditorMode('Placement', 0) #non-readonly non-hidden
+
+    def onChanged(self, obj, prop):
+        """
+        Do something when a property has changed
+        """
+
+    def execute(self, obj):
+        """
+        Do something when doing a recomputation, this method is mandatory
+        """
+
+        # Add shape of the thread
+        ri = []
+        v0 = App.Vector(0.5*obj.d3, 0, 0)
+        v1 = App.Vector(0.5*obj.d3, 0, obj.length)
+        e0 = Part.makeLine(v0, v1)
+        ri.append(Part.makeRevolution(e0, \
+                                      e0.FirstParameter, \
+                                      e0.LastParameter, \
+                                      360.0, \
+                                      App.Vector(0, 0, 0), \
+                                      App.Vector(0, 0, 1), \
+                                      Part.Face))
+
+        # Zig-Zag shell between d3 and D
+        [n_rings, mod_rings] = divmod(obj.length.Value, obj.pitch.Value)
+        if n_rings < 1.0:
+            n_rings = 1.0
+        d_z = 0.5 * obj.length.Value / n_rings
+        n_v = int(n_rings * 2 + 1)
+        for i in range(n_v):
+            x = 0.5*obj.D if i % 2 else 0.5*obj.d3
+            y = 0
+            z = i*d_z
+            if i == 0:
+                vi1 = App.Vector(x, y, z)
+            else:
+                vi = vi1
+                vi1 = App.Vector(x, y, z)
+                ei = Part.makeLine(vi, vi1)
+                ri.append(Part.makeRevolution(ei, \
+                                              ei.FirstParameter, \
+                                              ei.LastParameter, \
+                                              360.0, \
+                                              App.Vector(0, 0, 0), \
+                                              App.Vector(0, 0, 1), \
+                                              Part.Face))
+
+        if obj.length_through is not True:
+            # Append ending annulus...
+            v2 = App.Vector(0.5*obj.D, 0, obj.length)
+            e1 = Part.makeLine(v1, v2)
+            ri.append(Part.makeRevolution(e1, \
+                                          e1.FirstParameter, \
+                                          e1.LastParameter, \
+                                          360.0, \
+                                          App.Vector(0, 0, 0), \
+                                          App.Vector(0, 0, 1), \
+                                          Part.Face))
+            r = Part.makeCompound(ri)
 
         # Apply attachement to the r
         if not hasattr(obj, "positionBySupport"):
