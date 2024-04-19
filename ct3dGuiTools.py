@@ -493,12 +493,13 @@ class ct3d_threadUI(QtGui.QDialog):
 # +-------------------------------------------------------+
 # |                                                       |
 # | Arrow / direction symbol - internal class / functions |
+# | Part version of the arrow                             |
 # |                                                       |
 # +-------------------------------------------------------+
-class arrow_direction():
+class arrowP_direction():
     """
-    Arrow / direction symbol
-    service class for tools for create/manipulate it
+    Arrow / direction symbol (Part version).
+    service class for tools for create/manipulate it.
     """
 
     def __init__(self):
@@ -541,6 +542,46 @@ class arrow_direction():
 
 # +-------------------------------------------------------+
 # |                                                       |
+# | Arrow / direction symbol - internal class / functions |
+# | PartDesign version of the arrow                       |
+# |                                                       |
+# +-------------------------------------------------------+
+class arrowPD_direction():
+    """
+    Arrow / direction symbol (PartDesign version).
+    service class for tools for create/manipulate it.
+    """
+
+    def __init__(self):
+        """
+        __init__() - internal initialization function.
+        """
+
+    def create():
+        """
+        create() -> obj
+
+        Create directional symbol / arrow / cone and return textlink
+        (obj) at it.
+        """
+        body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
+        obj = body.newObject('PartDesign::CoordinateSystem','Local_CS')
+        obj.Label = 'ThreadOrientation'
+        obj.recompute()
+        return obj
+
+    def scale(obj, hole_diameter):
+        """
+        scale(obj, hole_diameter)
+
+        Scale directional symbol / arrow / cone (textlink obj) to be visually
+        adequate to hole diameter.
+        """
+        # emnpty, LCS does not need scale...
+
+
+# +-------------------------------------------------------+
+# |                                                       |
 # | Copy attachent() - service functions                  |
 # |                                                       |
 # +-------------------------------------------------------+
@@ -553,9 +594,10 @@ def copy_attachment(obj_from, obj_to):
     #
     obj_to.AttachmentOffset = obj_from.AttachmentOffset
     obj_to.MapReversed = obj_from.MapReversed
-    if int(App.Version()[1]) == 22:
+    # They changed Support to AttachmentSupport in 0.22.devel:
+    if int(App.Version()[1]) >= 22:
         obj_to.AttachmentSupport = obj_from.AttachmentSupport
-    elif int(App.Version()[1]) == 21:
+    else:
         obj_to.Support = obj_from.Support
     obj_to.MapPathParameter = obj_from.MapPathParameter
     obj_to.MapMode = obj_from.MapMode
@@ -589,9 +631,10 @@ def diameter_from_attachment(obj):
     #     [[Part.getShape(feature, sub, needSubElement = True) \
     #          for sub in subs] for feature, subs in obj.Support]
     #     edge.Curve.Radius
-    if int(App.Version()[1]) == 22:
+    # They changed Support to AttachmentSupport in 0.22.devel:
+    if int(App.Version()[1]) >= 22:
         obj_AS = obj.AttachmentSupport
-    elif int(App.Version()[1]) == 21:
+    else:
         obj_AS = obj.Support
     for feature, subs in obj_AS:
         for sub in subs:
