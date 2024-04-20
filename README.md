@@ -20,7 +20,7 @@ This tool should make 3D representation and important parameters of cosmetic thr
 
 Goal of this tool is not bring final version of the cosmetic threads (not yet), but explore ways how to do it and prepare background for more stable and good final implementation. There are 5 types of Part version of geometric representation of cosmetic thread. You can test each of them and select the one You prefer. **Please let feedback what type is the best in your opinion - what type to develop more and finally implement**.
 
-![Cosmetic Thread 3D - internal and external examples](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/test_2024-02-20.png?raw=true)
+![Cosmetic Thread 3D - internal and external examples](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/test_2024-04-20.png?raw=true)
 
 ---
 
