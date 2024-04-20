@@ -82,6 +82,7 @@ class ViewProviderCosmeticThread3DInternal:
         Setup the scene sub-graph of the view provider, this method
         is mandatory.
         """
+        self.vobj = obj
 
     def updateData(self, fp, prop):
         """
@@ -93,7 +94,12 @@ class ViewProviderCosmeticThread3DInternal:
         """
         Return a list of display modes.
         """
-        return []
+        modes=[]
+        modes.append('Flat Lines')
+        modes.append('Shaded')
+        modes.append('Wireframe')
+        modes.append('Points')
+        return modes
 
     def getDefaultDisplayMode(self):
         """
@@ -193,8 +199,14 @@ def internal_pd0(name='CosmeticThread3DInternal', ct3di_prms=None):
         if (name is None) or (name == ''):
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('PartDesign::FeatureSubtractivePython', name)
-        CosmeticThread3DInternal_pd0(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        obj.ViewObject.ShapeColor=body.ViewObject.ShapeColor
+        obj.ViewObject.LineColor=body.ViewObject.LineColor
+        obj.ViewObject.PointColor=body.ViewObject.PointColor
+        obj.ViewObject.Transparency=body.ViewObject.Transparency
+        obj.ViewObject.DisplayMode=body.ViewObject.DisplayMode
+        obj.ViewObject.makeTemporaryVisible(True)
+        CosmeticThread3DInternal_pd0(obj, ct3di_prms)
         body.addObject(obj) # optionally we can also use body.insertObject()
         # App.ActiveDocument.recompute()
     return obj
@@ -345,6 +357,7 @@ class ViewProviderCosmeticThread3DExternal:
         Setup the scene sub-graph of the view provider, this method
         is mandatory.
         """
+        self.vobj = obj
 
     def updateData(self, fp, prop):
         """
@@ -356,7 +369,12 @@ class ViewProviderCosmeticThread3DExternal:
         """
         Return a list of display modes.
         """
-        return []
+        modes=[]
+        modes.append('Flat Lines')
+        modes.append('Shaded')
+        modes.append('Wireframe')
+        modes.append('Points')
+        return modes
 
     def getDefaultDisplayMode(self):
         """
@@ -462,8 +480,14 @@ def external_pd0(name='CosmeticThread3DExternal', ct3de_prms=None):
         if (name is None) or (name == ''):
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('PartDesign::FeatureSubtractivePython', name)
-        CosmeticThread3DExternal_pd0(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        obj.ViewObject.ShapeColor=body.ViewObject.ShapeColor
+        obj.ViewObject.LineColor=body.ViewObject.LineColor
+        obj.ViewObject.PointColor=body.ViewObject.PointColor
+        obj.ViewObject.Transparency=body.ViewObject.Transparency
+        obj.ViewObject.DisplayMode=body.ViewObject.DisplayMode
+        obj.ViewObject.makeTemporaryVisible(True)
+        CosmeticThread3DExternal_pd0(obj, ct3de_prms)
         body.addObject(obj) # optionally we can also use body.insertObject()
         # App.ActiveDocument.recompute()
     return obj
