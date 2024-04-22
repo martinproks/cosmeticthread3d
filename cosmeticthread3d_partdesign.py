@@ -46,6 +46,26 @@ import ct3d_params
 
 
 
+def __setObjVPDefaults__(obj, body):
+    """
+    __setObjVPDefaults__(obj, body) -> None
+    
+    Set object ViewProvider properties according to body.
+    """
+    obj.ViewObject.DisplayMode = body.ViewObject.DisplayMode
+    obj.ViewObject.DrawStyle = body.ViewObject.DrawStyle
+    obj.ViewObject.LineColor = body.ViewObject.LineColor
+    obj.ViewObject.LineWidth = body.ViewObject.LineWidth
+    obj.ViewObject.PointColor = body.ViewObject.PointColor
+    obj.ViewObject.PointSize = body.ViewObject.PointSize
+    if int(App.Version()[1]) >= 22:
+        obj.ViewObject.ShapeAppearance = body.ViewObject.ShapeAppearance
+    else:
+        obj.ViewObject.ShapeColor = body.ViewObject.ShapeColor
+    obj.ViewObject.Transparency = body.ViewObject.Transparency
+
+
+
 # **************************************************************** #
 # **************************************************************** #
 # **************************************************************** #
@@ -94,19 +114,14 @@ class ViewProviderCosmeticThread3DInternal:
         """
         Return a list of display modes.
         """
-        modes=[]
-        modes.append('Flat Lines')
-        modes.append('Shaded')
-        modes.append('Wireframe')
-        modes.append('Points')
-        return modes
+        return []
 
     def getDefaultDisplayMode(self):
         """
         Return the name of the default display mode. It must be defined
         in getDisplayModes.
         """
-        return "Shaded"
+        return "Wireframe"
 
     def setDisplayMode(self,mode):
         """
@@ -200,12 +215,7 @@ def internal_pd0(name='CosmeticThread3DInternal', ct3di_prms=None):
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('PartDesign::FeatureSubtractivePython', name)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
-        obj.ViewObject.ShapeColor=body.ViewObject.ShapeColor
-        obj.ViewObject.LineColor=body.ViewObject.LineColor
-        obj.ViewObject.PointColor=body.ViewObject.PointColor
-        obj.ViewObject.Transparency=body.ViewObject.Transparency
-        obj.ViewObject.DisplayMode=body.ViewObject.DisplayMode
-        obj.ViewObject.makeTemporaryVisible(True)
+        __setObjVPDefaults__(obj, body)
         CosmeticThread3DInternal_pd0(obj, ct3di_prms)
         body.addObject(obj) # optionally we can also use body.insertObject()
         # App.ActiveDocument.recompute()
@@ -369,19 +379,14 @@ class ViewProviderCosmeticThread3DExternal:
         """
         Return a list of display modes.
         """
-        modes=[]
-        modes.append('Flat Lines')
-        modes.append('Shaded')
-        modes.append('Wireframe')
-        modes.append('Points')
-        return modes
+        return []
 
     def getDefaultDisplayMode(self):
         """
         Return the name of the default display mode. It must be defined
         in getDisplayModes.
         """
-        return "Shaded"
+        return "Wireframe"
 
     def setDisplayMode(self,mode):
         """
@@ -481,12 +486,7 @@ def external_pd0(name='CosmeticThread3DExternal', ct3de_prms=None):
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('PartDesign::FeatureSubtractivePython', name)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
-        obj.ViewObject.ShapeColor=body.ViewObject.ShapeColor
-        obj.ViewObject.LineColor=body.ViewObject.LineColor
-        obj.ViewObject.PointColor=body.ViewObject.PointColor
-        obj.ViewObject.Transparency=body.ViewObject.Transparency
-        obj.ViewObject.DisplayMode=body.ViewObject.DisplayMode
-        obj.ViewObject.makeTemporaryVisible(True)
+        __setObjVPDefaults__(obj, body)
         CosmeticThread3DExternal_pd0(obj, ct3de_prms)
         body.addObject(obj) # optionally we can also use body.insertObject()
         # App.ActiveDocument.recompute()
