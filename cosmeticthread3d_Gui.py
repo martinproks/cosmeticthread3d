@@ -109,12 +109,14 @@ class ct3di_p0_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means,
             # script is continuing. There are functions associated
@@ -136,30 +138,16 @@ class ct3di_p0_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with
         UI Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
-
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
-        # # doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        ct3d_prms.tolerance = '6H'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsI(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.internal_p0('CosmeticThread3DInternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.internal_p0('CosmeticThread3DInternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -245,12 +233,14 @@ class ct3de_p0_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -275,28 +265,14 @@ class ct3de_p0_menu_command():
 
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
-
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
-        # # doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        # # external thread doesn't have this parameter
-        ct3d_prms.tolerance = '6g'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsE(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.external_p0('CosmeticThread3DExternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.external_p0('CosmeticThread3DExternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -389,12 +365,14 @@ class ct3di_p1_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -416,30 +394,16 @@ class ct3di_p1_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with
         UI Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
-
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
-        # # doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        ct3d_prms.tolerance = '6H'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsI(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.internal_p1('CosmeticThread3DInternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.internal_p1('CosmeticThread3DInternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -525,12 +489,14 @@ class ct3de_p1_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -552,31 +518,16 @@ class ct3de_p1_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with
         UI Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
-
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
-        # # doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        # # external thread doesn't have this parameter
-        ct3d_prms.tolerance = '6g'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsE(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.external_p1('CosmeticThread3DExternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.external_p1('CosmeticThread3DExternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -671,12 +622,14 @@ class ct3di_p2_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -698,30 +651,16 @@ class ct3di_p2_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with UI
         Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
-
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
-        # # doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        ct3d_prms.tolerance = '6H'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsI(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.internal_p2('CosmeticThread3DInternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.internal_p2('CosmeticThread3DInternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -807,12 +746,14 @@ class ct3de_p2_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -834,31 +775,16 @@ class ct3de_p2_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with UI
         Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
-
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
-        # # doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        # # external thread doesn't have this parameter
-        ct3d_prms.tolerance = '6g'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
-        # Cosmetic thread creation
+        ct3dGuiTools.fillParamsE(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
+         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.external_p2('CosmeticThread3DExternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.external_p2('CosmeticThread3DExternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -953,12 +879,14 @@ class ct3di_p3_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -980,30 +908,16 @@ class ct3di_p3_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with UI
         Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
-
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
-        # # doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        ct3d_prms.tolerance = '6H'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsI(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.internal_p3('CosmeticThread3DInternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.internal_p3('CosmeticThread3DInternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -1089,12 +1003,14 @@ class ct3de_p3_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -1116,31 +1032,16 @@ class ct3de_p3_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with UI
         Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
-
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
-        # # doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        # # external thread doesn't have this parameter
-        ct3d_prms.tolerance = '6g'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsE(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.external_p3('CosmeticThread3DExternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.external_p3('CosmeticThread3DExternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -1235,12 +1136,14 @@ class ct3di_p4_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -1262,29 +1165,16 @@ class ct3di_p4_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with
         UI Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
-
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3             = lst_threads.getd3(ct3d_prms.name) # internal thread doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        ct3d_prms.tolerance = '6H'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsI(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.internal_p4('CosmeticThread3DInternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.internal_p4('CosmeticThread3DInternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -1370,12 +1260,14 @@ class ct3de_p4_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -1397,31 +1289,16 @@ class ct3de_p4_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with UI
         Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
-
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
-        # # doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        # # external thread doesn't have this parameter
-        ct3d_prms.tolerance = '6g'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsE(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        obj = ct3d_p.external_p4('CosmeticThread3DExternal', \
-                                 ct3d_prms, \
+        obj = ct3d_p.external_p4('CosmeticThread3DExternal',
+                                 ct3d_prms,
                                  aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
@@ -1521,12 +1398,14 @@ class ct3di_pd0_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowPD_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means,
             # script is continuing. There are functions associated
@@ -1548,26 +1427,12 @@ class ct3di_pd0_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with
         UI Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3di_params_class()
-
         D_hole = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name)
-        # ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name) # internal thread
-        # # doesn't have this parameter
-        ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        ct3d_prms.tolerance = '6H'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsI(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         obj = ct3d_pd.internal_pd0('CosmeticThread3DInternal', ct3d_prms)
         # Attachement apply from temporary object to cosmetic thread
@@ -1657,12 +1522,14 @@ class ct3de_pd0_menu_command():
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
             self.obj_tmp = ct3dGuiTools.arrowPD_direction.create()
+            # Clear selected objects, if threre are any
+            Gui.Selection.clearSelection(True)
             # Object Attachement...
-            Commands.editAttachment(self.obj_tmp, \
-                                    True, \
-                                    True, \
-                                    self.eA_ok, \
-                                    self.eA_cancel, \
+            Commands.editAttachment(self.obj_tmp,
+                                    True,
+                                    True,
+                                    self.eA_ok,
+                                    self.eA_cancel,
                                     self.eA_apply)
             # The command editAttachment is not modal. It means, script is
             # continuing. There are functions associated to OK/CANCEL/APPLY
@@ -1684,27 +1551,12 @@ class ct3de_pd0_menu_command():
         Reaction to editAttachment - OK has been pressed, go on with UI
         Thread Creation.
         """
-
         lst_threads = MetricCoarse1st.MetricCoarse1st()
         ct3d_prms = ct3d_params.ct3de_params_class()
-
         D_shaft = ct3dGuiTools.diameter_from_attachment(self.obj_tmp)
-        ct3d_prms.name = lst_threads.getName(0)
-        ct3d_prms.D_nominal = lst_threads.getD_nominal(ct3d_prms.name)
-        ct3d_prms.pitch = lst_threads.getpitch(ct3d_prms.name)
-        ct3d_prms.TPI = lst_threads.getTPI(ct3d_prms.name)
-        ct3d_prms.D = lst_threads.getD(ct3d_prms.name)
-        # ct3d_prms.D1 = lst_threads.getD1(ct3d_prms.name) # external thread
-        # # doesn't have this parameter
-        ct3d_prms.d3 = lst_threads.getd3(ct3d_prms.name)
-        # ct3d_prms.D_drill = lst_threads.getD_drill(ct3d_prms.name)
-        # # external thread doesn't have this parameter
-        ct3d_prms.tolerance = '6g'
-        ct3d_prms.roughness = 'Ra 1.6'
-        ct3d_prms.length = 1.5 * ct3d_prms.D_nominal
-        ct3d_prms.length_through = False
-        ct3d_prms.length_tol = "H17"
-
+        ct3dGuiTools.fillParamsE(ct3d_prms,
+                                 lst_threads.getName(0),
+                                 lst_threads)
         # Cosmetic thread creation
         obj = ct3d_pd.external_pd0('CosmeticThread3DExternal', ct3d_prms)
         # Attachement apply from temporary object to cosmetic thread

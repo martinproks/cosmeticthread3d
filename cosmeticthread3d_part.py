@@ -27,22 +27,16 @@
 Definition of PythonFeature for each Part version of thread geometry type.
 """
 
-
-
 import os # needed just for _p4 threads
 from pivy import coin # needed just for _p4 threads
 import FreeCAD as App
 import Part
 import ct3d_params
 
-
-
 ___title__ = 'Cosmetic Thread 3D Work Bench'
 __author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
 __url__ = 'https://github.com/martinproks/cosmeticthread3d'
-
-
 
 """
 Vocabulary:
@@ -50,6 +44,21 @@ ct3d   - Cosmetic Thread 3D
 ct3di  - Cosmetic Thread 3D Internal
 ct3de  - Cosmetic Thread 3D External
 """
+
+
+
+def __setObjVPDefaults__(obj):
+    """
+    __setObjVPDefaults__(obj) -> None
+    
+    Set object ViewProvider properties like LineWidth, Transfluency, ...
+    """
+    obj.ViewObject.DrawStyle = 'Dashed'
+    obj.ViewObject.LineColor = (0, 0, 0)
+    obj.ViewObject.LineWidth = 1.0
+    obj.ViewObject.PointColor = (25, 25, 25)
+    obj.ViewObject.PointSize = 1.0
+    obj.ViewObject.Transparency = 80
 
 
 
@@ -106,7 +115,7 @@ class ViewProviderCosmeticThread3DInternal:
         Return the name of the default display mode. It must be defined in
         getDisplayModes.
         """
-        return "Shaded"
+        return "Wireframe"
 
     def setDisplayMode(self, mode):
         """
@@ -196,8 +205,9 @@ def internal_p0(name='CosmeticThread3DInternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DInternal_p0(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DInternal_p0(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -325,8 +335,9 @@ def internal_p1(name='CosmeticThread3DInternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DInternal_p1(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DInternal_p1(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -451,8 +462,9 @@ def internal_p2(name='CosmeticThread3DInternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DInternal_p2(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DInternal_p2(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -573,8 +585,9 @@ def internal_p3(name='CosmeticThread3DInternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DInternal_p3(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DInternal_p3(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -721,8 +734,9 @@ def internal_p4(name='CosmeticThread3DInternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DInternal_p4(obj, ct3di_prms)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DInternal_p4(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -864,7 +878,7 @@ class ViewProviderCosmeticThread3DExternal:
         Return the name of the default display mode. It must be defined
         in getDisplayModes.
         """
-        return "Shaded"
+        return "Wireframe"
 
     def setDisplayMode(self, mode):
         """
@@ -960,8 +974,9 @@ def external_p0(name='CosmeticThread3DExternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DExternal_p0(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DExternal_p0(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -1081,8 +1096,9 @@ def external_p1(name='CosmeticThread3DExternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DExternal_p1(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DExternal_p1(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -1199,8 +1215,9 @@ def external_p2(name='CosmeticThread3DExternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DExternal_p2(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DExternal_p2(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -1313,8 +1330,9 @@ def external_p3(name='CosmeticThread3DExternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DExternal_p3(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DExternal_p3(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
     return obj
@@ -1453,8 +1471,9 @@ def external_p4(name='CosmeticThread3DExternal', \
         obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
-        CosmeticThread3DExternal_p4(obj, ct3de_prms)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        __setObjVPDefaults__(obj)
+        CosmeticThread3DExternal_p4(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
     return obj

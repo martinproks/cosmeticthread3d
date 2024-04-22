@@ -8,8 +8,26 @@
 </head>
 
 <body>
-  <h1>Cosmetic Thread 3D - user manual</h1>
+  <h1 id="ct3dUserManual">Cosmetic Thread 3D - user manual</h1>
 
+  <h2 id="toc">Table of content</h2>
+
+  <ul style="list-style-type:none;">
+    <li><a href="#intro"><em>Introduction</em></a></li>
+    <li><a href="#ct3dTypes">1. Cosmetic Thread 3D types</a></li>
+    <li><a href="#Part_ct3d">2 Part version of ct3d</a></li>
+    <ul style="list-style-type:none;">
+      <li><a href="#PartGeneral">2.1 General description of Part version</a></li>
+      <li><a href="#PartInternal">2.2 Internal ct3d - Part version - P0</a></li>
+      <li><a href="#PartExternal">2.3 External ct3d - Part version - P0</a></li>
+    </ul>
+    <li><a href="#PartDesign_ct3d">3 PartDesign version of ct3d</a></li>
+    <li><a href="#PartPartDesign_ct3d">4 Part version of ct3d vs. PartDesign body</a></li>
+    <!-- <li><a href="#"></a></li> -->
+  </ul>
+
+  <h2 id="intro">Introduction</h2>
+  
   <p>
     Cosmetic Thread 3D (nickname <em>ct3d</em>) is tool for visual
     simplicity of threads. Real 3D geometry of thread is very complex,
@@ -41,7 +59,7 @@
     or CNC machining or FEM calculations.
   </p>
 
-  <h1>Cosmetic Thread 3D types</h1>
+  <h1 id="ct3dTypes">1. Cosmetic Thread 3D types</h1>
   
   <p>
     FreeCAD has two major types of 3D geometry. Part geometry
@@ -66,6 +84,7 @@
 	  <em>PartDesign</em> base body.
 	</a>
       </li>
+    </ul>
   </p>
 
   <!--
@@ -73,9 +92,9 @@
       *********************************************************
       *********************************************************
     -->
-  <h2 id="Part_ct3d">Part version of ct3d</h2>
+  <h1 id="Part_ct3d">2 Part version of ct3d</h1>
 
-  <h3>General description of Part version</h3>
+  <h2 id="PartGeneral">2.1 General description of Part version</h2>
   
   <p>
     Part version of <em>ct3d</em> is dedicated for geometry based
@@ -95,7 +114,7 @@
 
   <img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-partmenu.png?raw=true" alt="Ct3d - Menu with Part version of tools." />
 
-  <h3>Internal ct3d - Part version - P0</h3>
+  <h2 id="PartInternal">2.2 Internal ct3d - Part version - P0</h2>
 
   <ol>
     <li>
@@ -112,13 +131,6 @@
       <p>
 	You should to activate Part with the object (if the object is inside
 	Part).
-      <p/>
-    </li>
-
-    <li>
-      <p>
-	You should to deselect all. Optionally You can pre-select hole
-	starting edge.
       <p/>
     </li>
 
@@ -161,7 +173,7 @@
       </p>
       <p>
 	The cone is going into the hole - that is OK - in the
-	image here. Bu if the cone pointing out of the hole,
+	image here. But if the cone pointing out of the hole,
 	You should flip sides in the Attachment editor.
       </p>
       <p>
@@ -246,27 +258,178 @@
       <p>
 	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_007.png?raw=true" alt="Ct3d - Data window and parameters." />
       </p>
-      
     </li>
+
   </ol>
 
   
-  <h3>External ct3d - Part version - P0</h3>
+  <h2 id="PartExternal">2.3 External ct3d - Part version - P0</h2>
 
-  <p>
-    TODO: ************************
-  </p>
+  <ol>
+    <li>
+      <p>
+	First You have to have Part geometry model with cylinder or bolt-like
+	geometry for thread. For example simple stud with a chamfer
+	(the chamfer is not important, just example).
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_010.png?raw=true" alt="Ct3d - Part body / stud with a chamfer." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	You should to activate Part with the object (if the object is inside
+	Part).
+      <p/>
+    </li>
+
+    <li>
+      <p>
+      Choose <em>Cosmetic Thread 3D</em> workbench in the Workbench menu.
+      </p>
+    </li>
+    
+    <li>
+      <p>
+	A <em>Cosmetic Thread 3D</em> menu appears in the menu tool bar.
+	Choose <em>external cosmetic thread P0</em>.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_011.png?raw=true" alt="Ct3d - Menu location." />
+      </p>
+    </li>
+ 
+    <li>
+      <p>
+	An attachment editor appears. Select thread starting edge (circle
+	or arc) and mode <em>Concentric</em>.
+      </p>
+      <p>
+	Note: The edge defines plane where the tread starts. It means
+	if the rod/bolt/stud/whatever is chamfered, the chamfer edge should
+	be selected, like here in this example.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_012.png?raw=true" alt="Ct3d - Attachment editor." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	Zoom the start of the stud. There is directional arrow (cone).
+	The base of the cone represents starting plane of the thread
+	and point of the cone shows the direction of the <em>ct3d</em>
+	to be created.
+      </p>
+      <p>
+	If the cone pointing out of the stud (like here at this example),
+	You should flip sides in the Attachment editor.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_013a.png?raw=true" alt="Ct3d - Attachment editor, Zoom." />
+      </p>
+      <p>
+	Note: If the cone is too small or too big for the stud, try Apply
+	button in the Attachment editor. The cone scale according to the
+	selected circle.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_013b.png?raw=true" alt="Ct3d - Attachment editor, Apply." />
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_013c.png?raw=true" alt="Ct3d - Attachment editor, flip sides." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	Press OK in the Attachment editor.
+      <p/>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_014.png?raw=true" alt="Ct3d - Attachment editor, OK." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	And a thread User Interface (<em>Thread UI</em>) appears.
+	You can select thread type (for example <em>Metric Coarse thread</em>
+	...) and thread dimension.
+      <p/>
+      <p>
+	The parameters You can edit are marked green on a picture below,
+	parameters dependent on a specific thread are marked red and
+	You can't edit them from <em>Thread UI</em>.
+      <p/>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_015.png?raw=true" alt="Ct3d - Thread UI." />
+      </p>
+      <p>
+	Note: The thread dimension is estimated/guessed from circle/arc
+	selected at attachment editor. It works well usually and estimates
+	the dimension correctly, but sometimes it fails and set incorrect
+	thread dimension. You should check the value and select the
+	correct one.
+      <p/>
+      <p>
+	Note: You can press Apply to update geometry representation of
+	the thread according to changes in parameters You made.
+      </p>
+    </li>
+
+    <li>
+      <p>
+	Parameters <em>Thread tolerances</em>, <em>Thread roughness</em> and
+	<em>Length tolerances</em> doesn't have impact to the geometry
+	representation of the <em>ct3d</em>. You can left them empty
+	or fill them as You wish. These parameteres are for future
+	possibility to send information into TechDraw and CNC.
+      </p>
+      <p>
+	Checkbox <em>Thread throught hole/bolt</em> is for termination
+	annulus of thread. If You set it, the annulus is not shown.
+	In this example, the thread is throught - it is going to the
+	end of the cylinder and terminating out of material.
+      <p/>
+      <p>
+	If You select <em>Use Threads group</em>, the thread will be
+	created inside group <em>Threads</em>. If You unselect this
+	option, no group will be created and the thread will be created
+	in the Part object or on top of document.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_016a.png?raw=true" alt="Ct3d - Thread is throught." />
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_016b.png?raw=true" alt="Ct3d - Use thread group effect." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	If You press OK, the cosmetic thread is created with parameters
+	You set.
+      <p/>
+      <p>
+	You can edit all parameters freely in the <em>Data</em>
+	window. Even the parameters that has not be possible to edit
+	in the <em>Thread UI</em>.
+      <p/>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-part_017.png?raw=true" alt="Ct3d - Data window and parameters." />
+      </p>
+    </li>
+
+  </ol>
+
   
-  <p>
-    TODO: It is identical to internal, just external...
-  </p>
-
   <!--
       *********************************************************
       *********************************************************
       *********************************************************
     -->
-  <h2 id="PartDesign_ct3d">PartDesign version of ct3d</h2>
+  <h1 id="PartDesign_ct3d">3 PartDesign version of ct3d</h1>
 
   <p>
     TODO: ************************
@@ -282,7 +445,7 @@
       *********************************************************
       *********************************************************
     -->
-  <h2 id="PartPartDesign_ct3d">Part version of ct3d vs. PartDesign body</h2>
+  <h1 id="PartPartDesign_ct3d">4 Part version of ct3d vs. PartDesign body</h1>
 
   <p>
     TODO: ************************

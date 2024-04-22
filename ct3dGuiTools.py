@@ -762,3 +762,62 @@ def useGroupThreads(obj, aPart):
         aPart.removeObject(obj)
 
     groupObj.addObject(obj) # Move object obj into the group 'Threads'
+
+
+
+# /***********************************************************************/
+# /                                                                       /
+# / fillParamsI()                                                         /
+# /                                                                       /
+# /***********************************************************************/
+def fillParamsI (ct3d_prms, thrName, lst_threads):
+    """
+    fillParamsI (ct3d_prms, thrName, lst_threads) -> None
+
+    Fill ct3d params from lst_threads according to thrName.
+    Internal thread version.
+    """
+    ct3d_prms.name = thrName
+    ct3d_prms.D_nominal = lst_threads.getD_nominal(thrName)
+    ct3d_prms.pitch = lst_threads.getpitch(thrName)
+    ct3d_prms.TPI = lst_threads.getTPI(thrName)
+    ct3d_prms.D = lst_threads.getD(thrName)
+    ct3d_prms.D1 = lst_threads.getD1(thrName)
+    # ct3d_prms.d3 = lst_threads.getd3(thrName) # internal thread
+    # # doesn't have this parameter
+    ct3d_prms.D_drill = lst_threads.getD_drill(thrName)
+    ct3d_prms.tolerance = '6H'
+    ct3d_prms.roughness = 'Ra 1.6'
+    ct3d_prms.length = round(1.5 * ct3d_prms.D_nominal, 1)
+    ct3d_prms.length_through = False
+    ct3d_prms.length_tol = "H17"
+
+
+
+# /***********************************************************************/
+# /                                                                       /
+# / fillParamsE()                                                         /
+# /                                                                       /
+# /***********************************************************************/
+def fillParamsE (ct3d_prms, thrName, lst_threads):
+    """
+    fillParamsE (ct3d_prms, thrName, lst_threads) -> None
+
+    Fill ct3d params from lst_threads according to thrName.
+    External thread version.
+    """
+    ct3d_prms.name = thrName
+    ct3d_prms.D_nominal = lst_threads.getD_nominal(thrName)
+    ct3d_prms.pitch = lst_threads.getpitch(thrName)
+    ct3d_prms.TPI = lst_threads.getTPI(thrName)
+    ct3d_prms.D = lst_threads.getD(thrName)
+    # ct3d_prms.D1 = lst_threads.getD1(thrName) # external thread
+    # # doesn't have this parameter
+    ct3d_prms.d3 = lst_threads.getd3(thrName)
+    # ct3d_prms.D_drill = lst_threads.getD_drill(thrName) # external thread
+    # # doesn't have this parameter
+    ct3d_prms.tolerance = '6g'
+    ct3d_prms.roughness = 'Ra 1.6'
+    ct3d_prms.length = round(1.5 * ct3d_prms.D_nominal, 1)
+    ct3d_prms.length_through = False
+    ct3d_prms.length_tol = "H17"
