@@ -46,26 +46,6 @@ import ct3d_params
 
 
 
-def __setObjVPDefaults__(obj, body):
-    """
-    __setObjVPDefaults__(obj, body) -> None
-    
-    Set object ViewProvider properties according to body.
-    """
-    obj.ViewObject.DisplayMode = body.ViewObject.DisplayMode
-    obj.ViewObject.DrawStyle = body.ViewObject.DrawStyle
-    obj.ViewObject.LineColor = body.ViewObject.LineColor
-    obj.ViewObject.LineWidth = body.ViewObject.LineWidth
-    obj.ViewObject.PointColor = body.ViewObject.PointColor
-    obj.ViewObject.PointSize = body.ViewObject.PointSize
-    if int(App.Version()[1]) >= 22:
-        obj.ViewObject.ShapeAppearance = body.ViewObject.ShapeAppearance
-    else:
-        obj.ViewObject.ShapeColor = body.ViewObject.ShapeColor
-    obj.ViewObject.Transparency = body.ViewObject.Transparency
-
-
-
 # **************************************************************** #
 # **************************************************************** #
 # **************************************************************** #
@@ -91,11 +71,22 @@ class ViewProviderCosmeticThread3DInternal:
     This class is common for all types and versions of internal threads.
     """
 
-    def __init__(self, obj):
+    def __init__(self, obj, body):
         """
         Set this object to the proxy object of the actual view provider.
         """
         obj.Proxy = self
+        obj.DisplayMode = body.DisplayMode
+        obj.DrawStyle = body.DrawStyle
+        obj.LineColor = body.LineColor
+        obj.LineWidth = body.LineWidth
+        obj.PointColor = body.PointColor
+        obj.PointSize = body.PointSize
+        if int(App.Version()[1]) >= 22:
+            obj.ShapeAppearance = body.ShapeAppearance
+        else:
+            obj.ShapeColor = body.ShapeColor
+        obj.Transparency = body.Transparency
 
     def attach(self, obj):
         """
@@ -181,11 +172,11 @@ class ViewProviderCosmeticThread3DInternal:
 
 
 
-# +------------------------------------------------------------+
-# |                                                            |
-# | internal_p0() - create internal thread object and geometry |
-# |                                                            |
-# +------------------------------------------------------------+
+# +-------------------------------------------------------------+
+# |                                                             |
+# | internal_pd0() - create internal thread object and geometry |
+# |                                                             |
+# +-------------------------------------------------------------+
 def internal_pd0(name='CosmeticThread3DInternal', ct3di_prms=None):
     """
     internal_pd0(name, ct3di_prms) -> obj
@@ -214,18 +205,17 @@ def internal_pd0(name='CosmeticThread3DInternal', ct3di_prms=None):
         if (name is None) or (name == ''):
             name = ct3di_prms.name
         obj = App.ActiveDocument.addObject('PartDesign::FeatureSubtractivePython', name)
-        ViewProviderCosmeticThread3DInternal(obj.ViewObject)
-        __setObjVPDefaults__(obj, body)
+        ViewProviderCosmeticThread3DInternal(obj.ViewObject,
+                                             body.ViewObject)
         CosmeticThread3DInternal_pd0(obj, ct3di_prms)
         body.addObject(obj) # optionally we can also use body.insertObject()
-        # App.ActiveDocument.recompute()
     return obj
 
 
 
 # +---------------------------------------------------------+
 # |                                                         |
-# | CosmeticThread3DInternal_p0 class.                      |
+# | CosmeticThread3DInternal_pd0 class.                     |
 # |                                                         |
 # | The geometry and all handlers are defined here.         |
 # |                                                         |
@@ -281,16 +271,17 @@ class CosmeticThread3DInternal_pd0:
         v.append(App.Vector(0, 0, -4*t))
         v.append(App.Vector(0.5*obj.D.Value, 0, -4*t))
         v.append(App.Vector(0.5*obj.D.Value, 0, obj.length.Value))
-        v.append(App.Vector(0.5*obj.D1.Value - 1.5*t, 0, obj.length.Value))
-        v.append(App.Vector(0.5*obj.D1.Value - 1.5*t, 0, obj.length.Value - t))
+        if not obj.length_through:
+            v.append(App.Vector(0.5*obj.D1.Value - 1.5*t, 0, obj.length.Value))
+            v.append(App.Vector(0.5*obj.D1.Value - 1.5*t, 0, obj.length.Value - t))
         v.append(App.Vector(0.5*obj.D.Value - t, 0, obj.length.Value - t))
         v.append(App.Vector(0.5*obj.D.Value - t, 0, -3*t))
         v.append(App.Vector(0, 0, -3*t))
         v.append(App.Vector(0, 0, -4*t))
         wire = Part.makePolygon(v)
         face = Part.Face(wire)
-        revolved_shape = face.revolve(App.Vector(0, 0, 0), \
-                                      App.Vector(0, 0, 1), \
+        revolved_shape = face.revolve(App.Vector(0, 0, 0),
+                                      App.Vector(0, 0, 1),
                                       360)
         # slots
         v = []
@@ -302,14 +293,14 @@ class CosmeticThread3DInternal_pd0:
         wire = Part.makePolygon(v)
         face = Part.Face(wire)
         slot = face.extrude(App.Vector(0, 0, obj.length.Value + 10*t))
-        slot0 = slot.rotated(App.Vector(0, 0, 0), \
-                             App.Vector(0, 0, 1), \
+        slot0 = slot.rotated(App.Vector(0, 0, 0),
+                             App.Vector(0, 0, 1),
                              360.0/13.0)
-        slot1 = slot.rotated(App.Vector(0, 0, 0), \
-                             App.Vector(0, 0, 1), \
+        slot1 = slot.rotated(App.Vector(0, 0, 0),
+                             App.Vector(0, 0, 1),
                              360.0/13.0 + 120)
-        slot2 = slot.rotated(App.Vector(0, 0, 0), \
-                             App.Vector(0, 0, 1), \
+        slot2 = slot.rotated(App.Vector(0, 0, 0),
+                             App.Vector(0, 0, 1),
                              360.0/13.0 + 240)
         # final solid of cosmetic thread
         ct3dSolid = revolved_shape.cut([slot0, slot1, slot2])
@@ -356,11 +347,22 @@ class ViewProviderCosmeticThread3DExternal:
     This class is common for all types and versions of internal threads.
     """
 
-    def __init__(self, obj):
+    def __init__(self, obj, body):
         """
         Set this object to the proxy object of the actual view provider.
         """
         obj.Proxy = self
+        obj.DisplayMode = body.DisplayMode
+        obj.DrawStyle = body.DrawStyle
+        obj.LineColor = body.LineColor
+        obj.LineWidth = body.LineWidth
+        obj.PointColor = body.PointColor
+        obj.PointSize = body.PointSize
+        if int(App.Version()[1]) >= 22:
+            obj.ShapeAppearance = body.ShapeAppearance
+        else:
+            obj.ShapeColor = body.ShapeColor
+        obj.Transparency = body.Transparency
 
     def attach(self, obj):
         """
@@ -485,11 +487,10 @@ def external_pd0(name='CosmeticThread3DExternal', ct3de_prms=None):
         if (name is None) or (name == ''):
             name = ct3de_prms.name
         obj = App.ActiveDocument.addObject('PartDesign::FeatureSubtractivePython', name)
-        ViewProviderCosmeticThread3DExternal(obj.ViewObject)
-        __setObjVPDefaults__(obj, body)
+        ViewProviderCosmeticThread3DExternal(obj.ViewObject,
+                                             body.ViewObject)
         CosmeticThread3DExternal_pd0(obj, ct3de_prms)
         body.addObject(obj) # optionally we can also use body.insertObject()
-        # App.ActiveDocument.recompute()
     return obj
 
 
@@ -540,15 +541,20 @@ class CosmeticThread3DExternal_pd0:
         v = []
         v.append(App.Vector(0.5*obj.d3.Value, 0, -4*t))
         v.append(App.Vector(0.5*obj.d3.Value, 0, obj.length.Value))
-        v.append(App.Vector(0.5*obj.D.Value + 1.5*t, 0, obj.length.Value))
-        v.append(App.Vector(0.5*obj.D.Value + 1.5*t, 0, obj.length.Value - t))
+        if not obj.length_through:
+            v.append(App.Vector(0.5*obj.D.Value + 1.5*t,
+                                0,
+                                obj.length.Value))
+            v.append(App.Vector(0.5*obj.D.Value + 1.5*t,
+                                0,
+                                obj.length.Value - t))
         v.append(App.Vector(0.5*obj.d3.Value + t, 0, obj.length.Value - t))
         v.append(App.Vector(0.5*obj.d3.Value + t, 0, -4*t))
         v.append(App.Vector(0.5*obj.d3.Value, 0, -4*t))
         wire = Part.makePolygon(v)
         face = Part.Face(wire)
-        revolved_shape = face.revolve(App.Vector(0, 0, 0), \
-                                      App.Vector(0, 0, 1), \
+        revolved_shape = face.revolve(App.Vector(0, 0, 0),
+                                      App.Vector(0, 0, 1),
                                       360)
         # slots
         v = []
@@ -560,14 +566,14 @@ class CosmeticThread3DExternal_pd0:
         wire = Part.makePolygon(v)
         face = Part.Face(wire)
         slot = face.extrude(App.Vector(0, 0, obj.length.Value + 10*t))
-        slot0 = slot.rotated(App.Vector(0, 0, 0), \
-                             App.Vector(0, 0, 1), \
+        slot0 = slot.rotated(App.Vector(0, 0, 0),
+                             App.Vector(0, 0, 1),
                              360.0/13.0)
-        slot1 = slot.rotated(App.Vector(0, 0, 0), \
-                             App.Vector(0, 0, 1), \
+        slot1 = slot.rotated(App.Vector(0, 0, 0),
+                             App.Vector(0, 0, 1),
                              360.0/13.0 + 120)
-        slot2 = slot.rotated(App.Vector(0, 0, 0), \
-                             App.Vector(0, 0, 1), \
+        slot2 = slot.rotated(App.Vector(0, 0, 0),
+                             App.Vector(0, 0, 1),
                              360.0/13.0 + 240)
         # final solid of cosmetic thread
         ct3dSolid = revolved_shape.cut([slot0, slot1, slot2])
@@ -586,4 +592,3 @@ class CosmeticThread3DExternal_pd0:
         # Subshape for patterns
         ct3dSolid.transformShape(obj.Placement.inverse().toMatrix(), True)
         obj.AddSubShape = ct3dSolid
-
