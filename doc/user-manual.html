@@ -17,12 +17,24 @@
     <li><a href="#ct3dTypes">1. Cosmetic Thread 3D types</a></li>
     <li><a href="#Part_ct3d">2 Part version of ct3d</a></li>
     <ul style="list-style-type:none;">
-      <li><a href="#PartGeneral">2.1 General description of Part version</a></li>
-      <li><a href="#PartInternal">2.2 Internal ct3d - Part version - P0</a></li>
-      <li><a href="#PartExternal">2.3 External ct3d - Part version - P0</a></li>
+      <li><a href="#PartGeneral">2.1 General description of
+	  Part version</a></li>
+      <li><a href="#PartInternal">2.2 Internal ct3d - Part
+	  version - P0</a></li>
+      <li><a href="#PartExternal">2.3 External ct3d - Part
+	  version - P0</a></li>
     </ul>
     <li><a href="#PartDesign_ct3d">3 PartDesign version of ct3d</a></li>
-    <li><a href="#PartPartDesign_ct3d">4 Part version of ct3d vs. PartDesign body</a></li>
+    <ul style="list-style-type:none;">
+      <li><a href="#PartDesignGeneral">3.1 General description of
+	  PartDesign version</a></li>
+      <li><a href="#PartInternal">3.2 Internal ct3d - PartDesign
+	  version - PD0</a></li>
+      <li><a href="#PartExternal">3.3 External ct3d - PartDesign
+	  version - PD0</a></li>
+    </ul>
+    <li><a href="#PartPartDesign_ct3d">4 Part version of ct3d vs.
+	PartDesign body</a></li>
     <!-- <li><a href="#"></a></li> -->
   </ul>
 
@@ -431,6 +443,7 @@
     -->
   <h1 id="PartDesign_ct3d">3 PartDesign version of ct3d</h1>
 
+  <h2 id="PartDesignGeneral">3.1 General description of PartDesign version</h2>
   <p>
     TODO: ************************
   </p>
@@ -440,6 +453,9 @@
     on Part Workbench.
   </p>
 
+  <h2 id="PartDesignInternal">3.2 Internal ct3d -  PartDesign version - PD0</h2>
+  <h2 id="PartDesignExternal">3.3 External ct3d -  PartDesign version - PD0</h2>
+  
   <!--
       *********************************************************
       *********************************************************
@@ -448,7 +464,135 @@
   <h1 id="PartPartDesign_ct3d">4 Part version of ct3d vs. PartDesign body</h1>
 
   <p>
-    TODO: ************************
+    The main idea is create Part version of ct3d attached to an PartDesign
+    (PD) body geometry. But the direct attachment geometry from PD body
+    to outside results to errors. It is necessary to use
+    <em>PartDesign_ShapeBinder</em> or <em>PartDesign_SubShapeBinder</em>
+    and the <em>ct3d</em> attache to the binder.
   </p>
-  
+
+  <h2 id="PDP_InternalThread">Internal thread</h2>
+
+  <ol>
+    <li>
+      <p>
+	First You have to have PartDesign geometry model with hole for
+	thread.	For example simple block with a hole.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_001.png?raw=true" alt="Ct3d - PartDesign body / block with hole." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	You should to activate Part with the object (if the object is inside
+	Part).
+      <p/>
+    </li>
+
+    <li>
+      <p>
+      Choose <em>PartDesign</em> workbench in the Workbench menu.
+      </p>
+      <p>
+      Select <em>PartDesign_ShapeBinder</em> command.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_002.png?raw=true" alt="Ct3d - PartDesign - ShapeBinder command." />
+      </p>
+    </li>
+    
+    <li>
+      <p>
+	The <em>PartDesign_ShapeBinder</em> user interface appears.
+      <p/>
+      <p>
+	First press <em>Add Geometry</em> button, then select
+	starting edge of the hole - the edge you need for
+	thread attachment.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_003.png?raw=true" alt="Ct3d - PartDesign - ShapeBinder UI, edge select." />
+      </p>
+    </li>
+    
+    <li>
+      <p>
+	The edge is added to the user interface.
+      <p/>
+      <p>
+	Press <em>OK</em> button and the shape binder is created.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_004.png?raw=true" alt="Ct3d - PartDesign - ShapeBinder OK button." />
+      </p>
+    </li>
+    
+    <li>
+      <p>
+	The <em>ShapeBinder</em> is created under a body.
+      <p/>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_005.png?raw=true" alt="Ct3d - ShapeBindercreated." />
+      </p>
+      <p>
+	Move the <em>ShapeBinder</em> into a Part object
+	by Drag-and-Drop method (catch it by mouse, move it
+	and drop it). If the Part object doesn't exist,
+	move it into root of the active document.
+      </p>
+      <p>
+	Check parameters of the <em>ShapeBinder</em>, the
+	binded edge should be listed there.
+      </p>
+      <p>
+	Check parameter <em>Trace Support</em>, it should be set
+	to True. If not, switch it to True (and recompute it).
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_006.png?raw=true" alt="Ct3d - ShapeBinder params." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	Hide the <em>PartDesign</em> body and left just
+	the <em>ShapeBinder</em> circle	to be shown. It is good
+	to remember direction to the hole - direction for
+	thread orientation.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_007.png?raw=true" alt="Ct3d - ShapeBinder only." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	Create <a href="#PartInternal">Cosmetic Thread 3D - internal P0</a>
+	version	attached to the circle of <em>ShapeBinder</em>.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_008.png?raw=true" alt="Ct3d - ct3d attached." />
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_009.png?raw=true" alt="Ct3d - ct3d created." />
+      </p>
+    </li>
+
+    <li>
+      <p>
+	Move the <em>ShapeBinder</em> into the <em>Threads</em> group
+	and hide the <em>ShapeBinder</em>.
+      </p>
+      <p>
+	Show the whole body. You can change body transfluency for example,
+	or switch all to the Wireframe, ... for better view of the thread.
+      </p>
+      <p>
+	<img src="https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/usermanual-ct3d-pdp_010.png?raw=true" alt="Ct3d - pdp created." />
+      </p>
+    </li>
+
+  </ol>  
 </body>

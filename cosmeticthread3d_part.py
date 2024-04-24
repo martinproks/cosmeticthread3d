@@ -47,21 +47,6 @@ ct3de  - Cosmetic Thread 3D External
 
 
 
-def __setObjVPDefaults__(obj):
-    """
-    __setObjVPDefaults__(obj) -> None
-    
-    Set object ViewProvider properties like LineWidth, Transfluency, ...
-    """
-    obj.ViewObject.DrawStyle = 'Dashed'
-    obj.ViewObject.LineColor = (0, 0, 0)
-    obj.ViewObject.LineWidth = 1.0
-    obj.ViewObject.PointColor = (25, 25, 25)
-    obj.ViewObject.PointSize = 1.0
-    obj.ViewObject.Transparency = 80
-
-
-
 # **************************************************************** #
 # **************************************************************** #
 # **************************************************************** #
@@ -91,6 +76,12 @@ class ViewProviderCosmeticThread3DInternal:
         Set this object to the proxy object of the actual view provider.
         """
         obj.Proxy = self
+        obj.DrawStyle = 'Dashed'
+        obj.LineColor = (0, 0, 0)
+        obj.LineWidth = 1.0
+        obj.PointColor = (25, 25, 25)
+        obj.PointSize = 1.0
+        obj.Transparency = 80
 
     def attach(self, obj):
         """
@@ -179,8 +170,8 @@ class ViewProviderCosmeticThread3DInternal:
 # | internal_p0() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p0(name='CosmeticThread3DInternal', \
-                ct3di_prms=None, \
+def internal_p0(name='CosmeticThread3DInternal',
+                ct3di_prms=None,
                 aPart=None):
     """
     internal_p0(name, ct3di_prms, aPart) -> obj
@@ -206,7 +197,6 @@ def internal_p0(name='CosmeticThread3DInternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DInternal_p0(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
@@ -269,12 +259,12 @@ class CosmeticThread3DInternal_p0:
         v0 = App.Vector(0.5*obj.D, 0, 0)
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r0 = Part.makeRevolution(e0, \
-                                 e0.FirstParameter, \
-                                 e0.LastParameter, \
-                                 360.0, \
-                                 App.Vector(0, 0, 0), \
-                                 App.Vector(0, 0, 1), \
+        r0 = Part.makeRevolution(e0,
+                                 e0.FirstParameter,
+                                 e0.LastParameter,
+                                 360.0,
+                                 App.Vector(0, 0, 0),
+                                 App.Vector(0, 0, 1),
                                  Part.Face)
         if obj.length_through is True:
             # Thread is going throught whole body - there is no ending annulus
@@ -283,12 +273,12 @@ class CosmeticThread3DInternal_p0:
             # Ending annulus...
             v2 = App.Vector(0.5*obj.D1, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            r1 = Part.makeRevolution(e1, \
-                                     e1.FirstParameter, \
-                                     e1.LastParameter, \
-                                     360.0, \
-                                     App.Vector(0, 0, 0), \
-                                     App.Vector(0, 0, 1), \
+            r1 = Part.makeRevolution(e1,
+                                     e1.FirstParameter,
+                                     e1.LastParameter,
+                                     360.0,
+                                     App.Vector(0, 0, 0),
+                                     App.Vector(0, 0, 1),
                                      Part.Face)
             r = Part.makeCompound([h, r0, r1])
 
@@ -309,8 +299,8 @@ class CosmeticThread3DInternal_p0:
 # | internal_p1() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p1(name='CosmeticThread3DInternal', \
-                ct3di_prms=None, \
+def internal_p1(name='CosmeticThread3DInternal',
+                ct3di_prms=None,
                 aPart=None):
     """
     internal_p1(name, ct3di_prms, aPart) -> obj
@@ -336,7 +326,6 @@ def internal_p1(name='CosmeticThread3DInternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DInternal_p1(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
@@ -396,12 +385,12 @@ class CosmeticThread3DInternal_p1:
         v0 = App.Vector(0.5*obj.D, 0, 0)
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r0 = Part.makeRevolution(e0, \
-                                 e0.FirstParameter, \
-                                 e0.LastParameter, \
-                                 360.0, \
-                                 App.Vector(0, 0, 0), \
-                                 App.Vector(0, 0, 1), \
+        r0 = Part.makeRevolution(e0,
+                                 e0.FirstParameter,
+                                 e0.LastParameter,
+                                 360.0,
+                                 App.Vector(0, 0, 0),
+                                 App.Vector(0, 0, 1),
                                  Part.Face)
         if obj.length_through is True:
             # Thread is going throught whole body - there is no ending annulus
@@ -410,12 +399,12 @@ class CosmeticThread3DInternal_p1:
             # Ending annulus...
             v2 = App.Vector(0.5*obj.D1, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            r1 = Part.makeRevolution(e1, \
-                                     e1.FirstParameter, \
-                                     e1.LastParameter, \
-                                     360.0, \
-                                     App.Vector(0, 0, 0), \
-                                     App.Vector(0, 0, 1), \
+            r1 = Part.makeRevolution(e1,
+                                     e1.FirstParameter,
+                                     e1.LastParameter,
+                                     360.0,
+                                     App.Vector(0, 0, 0),
+                                     App.Vector(0, 0, 1),
                                      Part.Face)
             r = Part.makeCompound([r0, r1])
 
@@ -436,8 +425,8 @@ class CosmeticThread3DInternal_p1:
 # | internal_p2() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p2(name='CosmeticThread3DInternal', \
-                ct3di_prms=None, \
+def internal_p2(name='CosmeticThread3DInternal',
+                ct3di_prms=None,
                 aPart=None):
     """
     internal_p2(name, ct3di_prms, aPart) -> obj
@@ -463,7 +452,6 @@ def internal_p2(name='CosmeticThread3DInternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DInternal_p2(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
@@ -526,19 +514,19 @@ class CosmeticThread3DInternal_p2:
         v3 = App.Vector(0.5*obj.D1, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         e1 = Part.makeLine(v2, v3)
-        r0 = Part.makeRevolution(e0, \
-                                 e0.FirstParameter, \
-                                 e0.LastParameter, \
-                                 360.0, \
-                                 App.Vector(0, 0, 0), \
-                                 App.Vector(0, 0, 1), \
+        r0 = Part.makeRevolution(e0,
+                                 e0.FirstParameter,
+                                 e0.LastParameter,
+                                 360.0,
+                                 App.Vector(0, 0, 0),
+                                 App.Vector(0, 0, 1),
                                  Part.Solid)
-        r1 = Part.makeRevolution(e1, \
-                                 e1.FirstParameter, \
-                                 e1.LastParameter, \
-                                 360.0, \
-                                 App.Vector(0, 0, 0), \
-                                 App.Vector(0, 0, 1), \
+        r1 = Part.makeRevolution(e1,
+                                 e1.FirstParameter,
+                                 e1.LastParameter,
+                                 360.0,
+                                 App.Vector(0, 0, 0),
+                                 App.Vector(0, 0, 1),
                                  Part.Solid)
         r = r0.cut(r1)
 
@@ -559,8 +547,8 @@ class CosmeticThread3DInternal_p2:
 # | internal_p3() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p3(name='CosmeticThread3DInternal', \
-                ct3di_prms=None, \
+def internal_p3(name='CosmeticThread3DInternal',
+                ct3di_prms=None,
                 aPart=None):
     """
     internal_p3(name, ct3di_prms, aPart) -> obj
@@ -586,7 +574,6 @@ def internal_p3(name='CosmeticThread3DInternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DInternal_p3(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
@@ -645,12 +632,12 @@ class CosmeticThread3DInternal_p3:
         v0 = App.Vector(0.5*obj.D, 0, 0)
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        ri.append(Part.makeRevolution(e0, \
-                                      e0.FirstParameter, \
-                                      e0.LastParameter, \
-                                      360.0, \
-                                      App.Vector(0, 0, 0), \
-                                      App.Vector(0, 0, 1), \
+        ri.append(Part.makeRevolution(e0,
+                                      e0.FirstParameter,
+                                      e0.LastParameter,
+                                      360.0,
+                                      App.Vector(0, 0, 0),
+                                      App.Vector(0, 0, 1),
                                       Part.Face))
 
         # Zig-Zag shell between D1 and D
@@ -669,12 +656,12 @@ class CosmeticThread3DInternal_p3:
                 vi = vi1
                 vi1 = App.Vector(x, y, z)
                 ei = Part.makeLine(vi, vi1)
-                ri.append(Part.makeRevolution(ei, \
-                                              ei.FirstParameter, \
-                                              ei.LastParameter, \
-                                              360.0, \
-                                              App.Vector(0, 0, 0), \
-                                              App.Vector(0, 0, 1), \
+                ri.append(Part.makeRevolution(ei,
+                                              ei.FirstParameter,
+                                              ei.LastParameter,
+                                              360.0,
+                                              App.Vector(0, 0, 0),
+                                              App.Vector(0, 0, 1),
                                               Part.Face))
 
         # Ending anulus and compound object:
@@ -682,12 +669,12 @@ class CosmeticThread3DInternal_p3:
             # Append ending annulus...
             v2 = App.Vector(0.5*obj.D1, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            ri.append(Part.makeRevolution(e1, \
-                                          e1.FirstParameter, \
-                                          e1.LastParameter, \
-                                          360.0, \
-                                          App.Vector(0, 0, 0), \
-                                          App.Vector(0, 0, 1), \
+            ri.append(Part.makeRevolution(e1,
+                                          e1.FirstParameter,
+                                          e1.LastParameter,
+                                          360.0,
+                                          App.Vector(0, 0, 0),
+                                          App.Vector(0, 0, 1),
                                           Part.Face))
         r = Part.makeCompound(ri)
 
@@ -708,8 +695,8 @@ class CosmeticThread3DInternal_p3:
 # | internal_p4() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p4(name='CosmeticThread3DInternal', \
-                ct3di_prms=None, \
+def internal_p4(name='CosmeticThread3DInternal',
+                ct3di_prms=None,
                 aPart=None):
     """
     internal_p4(name, ct3di_prms, aPart) -> obj
@@ -735,7 +722,6 @@ def internal_p4(name='CosmeticThread3DInternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DInternal_p4(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
@@ -795,12 +781,12 @@ class CosmeticThread3DInternal_p4:
         v0 = App.Vector(0.5*obj.D1, 0, 0)
         v1 = App.Vector(0.5*obj.D1, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r = Part.makeRevolution(e0, \
-                                e0.FirstParameter, \
-                                e0.LastParameter, \
-                                360.0, \
-                                App.Vector(0, 0, 0), \
-                                App.Vector(0, 0, 1), \
+        r = Part.makeRevolution(e0,
+                                e0.FirstParameter,
+                                e0.LastParameter,
+                                360.0,
+                                App.Vector(0, 0, 0),
+                                App.Vector(0, 0, 1),
                                 Part.Face)
 
         # Apply attachement to the r
@@ -816,7 +802,7 @@ class CosmeticThread3DInternal_p4:
         # Load and apply texture
         # **********************
         tex = coin.SoTexture2()
-        tex.filename = os.path.join(os.path.dirname(__file__), \
+        tex.filename = os.path.join(os.path.dirname(__file__),
                                     'CosmeticThread3D.png')
         obj.ViewObject.Transparency = 0
         obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0)
@@ -854,6 +840,12 @@ class ViewProviderCosmeticThread3DExternal:
         Set this object to the proxy object of the actual view provider
         """
         obj.Proxy = self
+        obj.DrawStyle = 'Dashed'
+        obj.LineColor = (0, 0, 0)
+        obj.LineWidth = 1.0
+        obj.PointColor = (25, 25, 25)
+        obj.PointSize = 1.0
+        obj.Transparency = 80
 
     def attach(self, obj):
         """
@@ -948,8 +940,8 @@ class ViewProviderCosmeticThread3DExternal:
 # | external_p0() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p0(name='CosmeticThread3DExternal', \
-                ct3de_prms=None, \
+def external_p0(name='CosmeticThread3DExternal',
+                ct3de_prms=None,
                 aPart=None):
     """
     external_p0(name, ct3de_prms) -> obj
@@ -975,7 +967,6 @@ def external_p0(name='CosmeticThread3DExternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DExternal_p0(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
@@ -1030,12 +1021,12 @@ class CosmeticThread3DExternal_p0:
         v0 = App.Vector(0.5*obj.d3, 0, 0)
         v1 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r0 = Part.makeRevolution(e0, \
-                                 e0.FirstParameter, \
-                                 e0.LastParameter, \
-                                 360.0, \
-                                 App.Vector(0, 0, 0), \
-                                 App.Vector(0, 0, 1), \
+        r0 = Part.makeRevolution(e0,
+                                 e0.FirstParameter,
+                                 e0.LastParameter,
+                                 360.0,
+                                 App.Vector(0, 0, 0),
+                                 App.Vector(0, 0, 1),
                                  Part.Face)
         if obj.length_through is True:
             # Thread is going throught whole body - there is no ending anulus
@@ -1044,12 +1035,12 @@ class CosmeticThread3DExternal_p0:
             # Ending annulus...
             v2 = App.Vector(0.5*obj.D, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            r1 = Part.makeRevolution(e1, \
-                                     e1.FirstParameter, \
-                                     e1.LastParameter, \
-                                     360.0, \
-                                     App.Vector(0, 0, 0), \
-                                     App.Vector(0, 0, 1), \
+            r1 = Part.makeRevolution(e1,
+                                     e1.FirstParameter,
+                                     e1.LastParameter,
+                                     360.0,
+                                     App.Vector(0, 0, 0),
+                                     App.Vector(0, 0, 1),
                                      Part.Face)
             r = Part.makeCompound([h, r0, r1])
 
@@ -1070,8 +1061,8 @@ class CosmeticThread3DExternal_p0:
 # | external_p1() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p1(name='CosmeticThread3DExternal', \
-                ct3de_prms=None, \
+def external_p1(name='CosmeticThread3DExternal',
+                ct3de_prms=None,
                 aPart=None):
     """
     external_p1(name, ct3de_prms) -> obj
@@ -1097,7 +1088,6 @@ def external_p1(name='CosmeticThread3DExternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DExternal_p1(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
@@ -1149,12 +1139,12 @@ class CosmeticThread3DExternal_p1:
         v0 = App.Vector(0.5*obj.d3, 0, 0)
         v1 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r0 = Part.makeRevolution(e0, \
-                                 e0.FirstParameter, \
-                                 e0.LastParameter, \
-                                 360.0, \
-                                 App.Vector(0, 0, 0), \
-                                 App.Vector(0, 0, 1), \
+        r0 = Part.makeRevolution(e0,
+                                 e0.FirstParameter,
+                                 e0.LastParameter,
+                                 360.0,
+                                 App.Vector(0, 0, 0),
+                                 App.Vector(0, 0, 1),
                                  Part.Face)
         if obj.length_through is True:
             # Thread is going throught whole body, there is no ending anulus
@@ -1163,12 +1153,12 @@ class CosmeticThread3DExternal_p1:
             # Ending annulus...
             v2 = App.Vector(0.5*obj.D, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            r1 = Part.makeRevolution(e1, \
-                                     e1.FirstParameter, \
-                                     e1.LastParameter, \
-                                     360.0, \
-                                     App.Vector(0, 0, 0), \
-                                     App.Vector(0, 0, 1), \
+            r1 = Part.makeRevolution(e1,
+                                     e1.FirstParameter,
+                                     e1.LastParameter,
+                                     360.0,
+                                     App.Vector(0, 0, 0),
+                                     App.Vector(0, 0, 1),
                                      Part.Face)
             r = Part.makeCompound([r0, r1])
 
@@ -1189,8 +1179,8 @@ class CosmeticThread3DExternal_p1:
 # | external_p2() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p2(name='CosmeticThread3DExternal', \
-                ct3de_prms=None, \
+def external_p2(name='CosmeticThread3DExternal',
+                ct3de_prms=None,
                 aPart=None):
     """
     external_p2(name, ct3de_prms) -> obj
@@ -1216,7 +1206,6 @@ def external_p2(name='CosmeticThread3DExternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DExternal_p2(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
@@ -1271,19 +1260,19 @@ class CosmeticThread3DExternal_p2:
         v3 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
         e1 = Part.makeLine(v2, v3)
-        r0 = Part.makeRevolution(e0, \
-                                 e0.FirstParameter, \
-                                 e0.LastParameter, \
-                                 360.0, \
-                                 App.Vector(0, 0, 0), \
-                                 App.Vector(0, 0, 1), \
+        r0 = Part.makeRevolution(e0,
+                                 e0.FirstParameter,
+                                 e0.LastParameter,
+                                 360.0,
+                                 App.Vector(0, 0, 0),
+                                 App.Vector(0, 0, 1),
                                  Part.Solid)
-        r1 = Part.makeRevolution(e1, \
-                                 e1.FirstParameter, \
-                                 e1.LastParameter, \
-                                 360.0, \
-                                 App.Vector(0, 0, 0), \
-                                 App.Vector(0, 0, 1), \
+        r1 = Part.makeRevolution(e1,
+                                 e1.FirstParameter,
+                                 e1.LastParameter,
+                                 360.0,
+                                 App.Vector(0, 0, 0),
+                                 App.Vector(0, 0, 1),
                                  Part.Solid)
         r = r0.cut(r1)
 
@@ -1304,8 +1293,8 @@ class CosmeticThread3DExternal_p2:
 # | external_p3() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p3(name='CosmeticThread3DExternal', \
-                ct3de_prms=None, \
+def external_p3(name='CosmeticThread3DExternal',
+                ct3de_prms=None,
                 aPart=None):
     """
     external_p3(name, ct3de_prms) -> obj
@@ -1331,7 +1320,6 @@ def external_p3(name='CosmeticThread3DExternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DExternal_p3(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
@@ -1383,12 +1371,12 @@ class CosmeticThread3DExternal_p3:
         v0 = App.Vector(0.5*obj.d3, 0, 0)
         v1 = App.Vector(0.5*obj.d3, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        ri.append(Part.makeRevolution(e0, \
-                                      e0.FirstParameter, \
-                                      e0.LastParameter, \
-                                      360.0, \
-                                      App.Vector(0, 0, 0), \
-                                      App.Vector(0, 0, 1), \
+        ri.append(Part.makeRevolution(e0,
+                                      e0.FirstParameter,
+                                      e0.LastParameter,
+                                      360.0,
+                                      App.Vector(0, 0, 0),
+                                      App.Vector(0, 0, 1),
                                       Part.Face))
 
         # Zig-Zag shell between d3 and D
@@ -1407,24 +1395,24 @@ class CosmeticThread3DExternal_p3:
                 vi = vi1
                 vi1 = App.Vector(x, y, z)
                 ei = Part.makeLine(vi, vi1)
-                ri.append(Part.makeRevolution(ei, \
-                                              ei.FirstParameter, \
-                                              ei.LastParameter, \
-                                              360.0, \
-                                              App.Vector(0, 0, 0), \
-                                              App.Vector(0, 0, 1), \
+                ri.append(Part.makeRevolution(ei,
+                                              ei.FirstParameter,
+                                              ei.LastParameter,
+                                              360.0,
+                                              App.Vector(0, 0, 0),
+                                              App.Vector(0, 0, 1),
                                               Part.Face))
 
         if obj.length_through is not True:
             # Append ending annulus...
             v2 = App.Vector(0.5*obj.D, 0, obj.length)
             e1 = Part.makeLine(v1, v2)
-            ri.append(Part.makeRevolution(e1, \
-                                          e1.FirstParameter, \
-                                          e1.LastParameter, \
-                                          360.0, \
-                                          App.Vector(0, 0, 0), \
-                                          App.Vector(0, 0, 1), \
+            ri.append(Part.makeRevolution(e1,
+                                          e1.FirstParameter,
+                                          e1.LastParameter,
+                                          360.0,
+                                          App.Vector(0, 0, 0),
+                                          App.Vector(0, 0, 1),
                                           Part.Face))
             r = Part.makeCompound(ri)
 
@@ -1445,8 +1433,8 @@ class CosmeticThread3DExternal_p3:
 # | external_p4() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p4(name='CosmeticThread3DExternal', \
-                ct3de_prms=None, \
+def external_p4(name='CosmeticThread3DExternal',
+                ct3de_prms=None,
                 aPart=None):
     """
     external_p4(name, ct3de_prms) -> obj
@@ -1472,7 +1460,6 @@ def external_p4(name='CosmeticThread3DExternal', \
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
-        __setObjVPDefaults__(obj)
         CosmeticThread3DExternal_p4(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 
@@ -1524,12 +1511,12 @@ class CosmeticThread3DExternal_p4:
         v0 = App.Vector(0.5*obj.D, 0, 0)
         v1 = App.Vector(0.5*obj.D, 0, obj.length)
         e0 = Part.makeLine(v0, v1)
-        r = Part.makeRevolution(e0, \
-                                e0.FirstParameter, \
-                                e0.LastParameter, \
-                                360.0, \
-                                App.Vector(0, 0, 0), \
-                                App.Vector(0, 0, 1), \
+        r = Part.makeRevolution(e0,
+                                e0.FirstParameter,
+                                e0.LastParameter,
+                                360.0,
+                                App.Vector(0, 0, 0),
+                                App.Vector(0, 0, 1),
                                 Part.Face)
 
         # Apply attachement to the r
@@ -1545,7 +1532,7 @@ class CosmeticThread3DExternal_p4:
         # Load and apply texture
         # **********************
         tex = coin.SoTexture2()
-        tex.filename = os.path.join(os.path.dirname(__file__), \
+        tex.filename = os.path.join(os.path.dirname(__file__),
                                     'CosmeticThread3D.png')
         obj.ViewObject.Transparency = 0
         obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0)
