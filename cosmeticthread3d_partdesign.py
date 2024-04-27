@@ -40,7 +40,6 @@ ct3de  - Cosmetic Thread 3D External
 """
 
 import FreeCAD as App
-import FreeCADGui as Gui
 import Part
 import ct3d_params
 
@@ -177,34 +176,34 @@ class ViewProviderCosmeticThread3DInternal:
 # | internal_pd0() - create internal thread object and geometry |
 # |                                                             |
 # +-------------------------------------------------------------+
-def internal_pd0(name='CosmeticThread3DInternal', ct3di_prms=None):
+def internal_pd0(name, ct3di_prms, doc, body):
     """
-    internal_pd0(name, ct3di_prms) -> obj
+    internal_pd0(name, ct3di_prms, doc, body) -> obj
 
     It creates Cosmetic Thread 3D Internal (PartDesign version, type 0)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name       - [string]               name of the object in the model tree
-    ct3di_prms - [ct3di_params_class]   parameters of the cosmetic thread
+    name       - [string]                 name of the object in the model tree
+    ct3di_prms - [ct3di_params_class]     parameters of the cosmetic thread
+    doc        - [text link]              document for thread creating
+    body       - [PartDesign body object] body object for the thread
     """
 
-    body = None
     obj = None
-    #
-    body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
-    if not body:
-        App.Console.PrintError("No active body.\n")
+    if doc is None:
+        App.Console.PrintError("Document has to be set.\n")        
+    elif not body:
+        App.Console.PrintError("Body has to be set.\n")
     elif body.Tip is None:
         App.Console.PrintError("Cosmetic thread can not be a first feature in a body.\n")
     elif ct3di_prms is None:
-        App.Console.PrintError('internal_pd0(name, ct3di_prms, aPart) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_pd0(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
     else:
-        obj = None
         if (name is None) or (name == ''):
             name = ct3di_prms.name
-        obj = App.ActiveDocument.addObject('PartDesign::FeatureSubtractivePython', name)
+        obj = doc.addObject('PartDesign::FeatureSubtractivePython', name)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject,
                                              body.ViewObject)
         CosmeticThread3DInternal_pd0(obj, ct3di_prms)
@@ -459,34 +458,35 @@ class ViewProviderCosmeticThread3DExternal:
 # | external_pd0() - create external thread object and geometry |
 # |                                                             |
 # +-------------------------------------------------------------+
-def external_pd0(name='CosmeticThread3DExternal', ct3de_prms=None):
+def external_pd0(name, ct3de_prms, doc, body):
     """
-    external_pd0(name, ct3de_prms) -> obj
+    external_pd0(name, ct3de_prms, doc, body) -> obj
 
     creates Cosmetic Thread 3D External (Part Design version, type 0)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]               name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class]   parameters of the cosmetic thread
+    name       - [string]                 name of the object in the model tree
+    ct3de_prms - [ct3de_params_class]     parameters of the cosmetic thread
+    doc        - [text link]              document for thread creating
+    body       - [PartDesign body object] body object for the thread
     """
 
-    body = None
     obj = None
-    #
-    body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
-    if not body:
-        App.Console.PrintError("No active body.\n")
+    if doc is None:
+        App.Console.PrintError("Document has to be set.\n")        
+    elif not body:
+        App.Console.PrintError("Body has to be set.\n")
     elif body.Tip is None:
         App.Console.PrintError("Cosmetic thread can not be a first feature in a body.\n")
     elif ct3de_prms is None:
-        App.Console.PrintError('external_pd0(name, ct3de_prms, aPart) - Check ct3de_prms\n')
+        App.Console.PrintError('external_pd0(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
     else:
         obj = None
         if (name is None) or (name == ''):
             name = ct3de_prms.name
-        obj = App.ActiveDocument.addObject('PartDesign::FeatureSubtractivePython', name)
+        obj = doc.addObject('PartDesign::FeatureSubtractivePython', name)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject,
                                              body.ViewObject)
         CosmeticThread3DExternal_pd0(obj, ct3de_prms)

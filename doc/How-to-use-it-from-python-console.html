@@ -11,7 +11,7 @@
   <h1>Cosmetic Thread 3D from python console</h1>
 
   <p>
-    At this moment (2024/04/15) I do not know how to make FreeCAD standard
+    At this moment (2024/04/27) I do not know how to make FreeCAD standard
     command copy to Python console. Therefore I have to describe how to use it.
   </p>
 
@@ -34,8 +34,11 @@
 import ct3d_params<br />
 import cosmeticthread3d_part as ct3d<br />
 <br />
-tp = ct3d_params.ct3di_params_class()<br />
-obj = ct3d.internal_p0('My New Thread', tp)<br />
+thrName = 'TestThread'<br />
+thrParams = ct3d_params.ct3di_params_class()<br />
+doc = App.ActiveDocument<br />
+aPart = None<br />
+obj = ct3d.internal_p0(thrName, thrParams, doc, aPart)<br />
 </code>
 
   <p>
@@ -52,23 +55,21 @@ obj = ct3d.internal_p0('My New Thread', tp)<br />
   </p>
 
   <p>
-    Help for the internal thread command.
+    Help for the internal thread command:
   </p>
 
   <code>
-def internal_p0(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):<br />
-    """<br />
-    internal_p0(name, ct3di_prms, aPart) -> obj<br />
+internal_p0(name, ct3di_prms, doc, aPart) -> obj<br />
 <br />
-    It creates Cosmetic Thread 3D Internal (Part version, type 0)<br />
-    and returns obj.<br />
+It creates Cosmetic Thread 3D Internal (Part version, type 0)<br />
+and returns obj.<br />
 <br />
-    This function is mentioned to be used for object creation.<br />
+This function is mentioned to be used for object creation.<br />
 <br />
-    name       - [string]               name of the object in the model tree<br />
-    ct3di_prms - [ct3di_params_class]   parameters of the cosmetic thread<br />
-    aPart      - [text link]            active Part object<br />
-    """<br />
+name       - [string]             name of the object in the model tree<br />
+ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread<br />
+doc        - [text link]          document for thread creating<br />
+aPart      - [text link]          Part object for thread creating or None<br />
   </code>
 
 
@@ -84,8 +85,11 @@ def internal_p0(name='CosmeticThread3DInternal', ct3di_prms=None, aPart=None):<b
 import ct3d_params<br />
 import cosmeticthread3d_part as ct3d<br />
 <br />
-tp = ct3d_params.ct3de_params_class()<br />
-ct3d.external_p0('My New Thread', tp)<br />
+thrName = 'TestThread'<br />
+thrParams = ct3d_params.ct3de_params_class()<br />
+doc = App.ActiveDocument<br />
+aPart = None<br />
+obj = ct3d.external_p0(thrName, thrParams, doc, aPart)<br />
   </code>
 
   <p>
@@ -109,8 +113,11 @@ ct3d.external_p0('My New Thread', tp)<br />
 import ct3d_params<br />
 import cosmeticthread3d_partdesign as ct3d<br />
 <br />
-tp = ct3d_params.ct3di_params_class()<br />
-obj = ct3d.internal_pd0('My New Thread', tp)<br />
+thrName = 'TestThread'<br />
+thrParams = ct3d_params.ct3di_params_class()<br />
+doc = App.ActiveDocument<br />
+body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")<br />
+obj = ct3d.internal_pd0(thrName, thrParams, doc, body)<br />
 </code>
 
   <p>
@@ -127,22 +134,21 @@ obj = ct3d.internal_pd0('My New Thread', tp)<br />
   </p>
 
   <p>
-    Help for the internal thread command.
+    Help for the internal thread command:
   </p>
 
   <code>
-def internal_pd0(name='CosmeticThread3DInternal', ct3di_prms=None):<br />
-    """<br />
-    internal_pd0(name, ct3di_prms) -> obj<br />
+internal_pd0(name, ct3di_prms, doc, body) -> obj<br />
 <br />
-    It creates Cosmetic Thread 3D Internal (PartDesign version, type 0)<br />
-    and returns obj.<br />
+It creates Cosmetic Thread 3D Internal (PartDesign version, type 0)<br />
+and returns obj.<br />
 <br />
-    This function is mentioned to be used for object creation.<br />
+This function is mentioned to be used for object creation.<br />
 <br />
-    name       - [string]           name of the object in the model tree<br />
-    ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread<br />
-    """<br />
+name       - [string]           name of the object in the model tree<br />
+ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread<br />
+doc        - [text link]              document for thread creating<br />
+body       - [PartDesign body object] body object for the thread<br />
   </code>
 
   <h2>External thread, PartDesign version, type 0 </h2>
@@ -156,8 +162,11 @@ def internal_pd0(name='CosmeticThread3DInternal', ct3di_prms=None):<br />
 import ct3d_params<br />
 import cosmeticthread3d_partdesign as ct3d<br />
 <br />
-tp = ct3d_params.ct3de_params_class()<br />
-ct3d.external_pd0('My New Thread', tp)<br />
+thrName = 'TestThread'<br />
+thrParams = ct3d_params.ct3de_params_class()<br />
+doc = App.ActiveDocument<br />
+body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")<br />
+obj = ct3d.external_pd0(thrName, thrParams, doc, body)<br />
   </code>
 
   <p>
