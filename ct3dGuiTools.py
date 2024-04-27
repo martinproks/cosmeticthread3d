@@ -34,7 +34,6 @@ import os
 from PySide import QtCore, QtGui
 from PySide.QtGui import QFrame
 import FreeCAD as App
-import FreeCADGui as Gui
 import Part
 
 import MetricCoarse1st
@@ -507,21 +506,23 @@ class arrowP_direction():
         __init__() - internal initialization function.
         """
 
-    def create():
+    def create(doc, aPart=None):
         """
-        create() -> obj
+        create(aPart) -> obj
 
         Create directional symbol / arrow / cone and return textlink
         (obj) at it.
+
+        doc   - document where the arrow should be created
+        aPart - part object where the arrow should be created or None
         """
-        obj = App.ActiveDocument.addObject('Part::Cone', 'ThreadOrientation')
+        obj = doc.addObject('Part::Cone', 'ThreadOrientation')
         obj.Label = 'ThreadOrientation'
         obj.Radius1 = '1.0 mm'
         obj.Radius2 = '0.0 mm'
         obj.Height = '2.5 mm'
         # Move it into Active Part - if ActivePart exists
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
-        if aPart != None:
+        if aPart is not None:
             aPart.addObject(obj)
         obj.recompute()
         return obj
@@ -557,14 +558,17 @@ class arrowPD_direction():
         __init__() - internal initialization function.
         """
 
-    def create():
+    def create(doc, body):
         """
-        create() -> obj
+        create(doc, body) -> obj
 
         Create directional symbol / arrow / cone and return textlink
         (obj) at it.
+
+        doc  - document
+        body - active PartDesign body or None
         """
-        body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
+        # Actually I do not need 'doc' object here, if I use body.newObject().
         obj = body.newObject('PartDesign::CoordinateSystem','Local_CS')
         obj.Label = 'ThreadOrientation'
         obj.recompute()

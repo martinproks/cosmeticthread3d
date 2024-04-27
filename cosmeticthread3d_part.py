@@ -170,30 +170,31 @@ class ViewProviderCosmeticThread3DInternal:
 # | internal_p0() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p0(name='CosmeticThread3DInternal',
-                ct3di_prms=None,
-                aPart=None):
+def internal_p0(name, ct3di_prms, doc, aPart):
     """
-    internal_p0(name, ct3di_prms, aPart) -> obj
+    internal_p0(name, ct3di_prms, doc, aPart) -> obj
 
     It creates Cosmetic Thread 3D Internal (Part version, type 0)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name       - [string]               name of the object in the model tree
-    ct3di_prms - [ct3di_params_class]   parameters of the cosmetic thread
-    aPart      - [text link]            active Part object
+    name       - [string]             name of the object in the model tree
+    ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3di_prms is None:
-        App.Console.PrintError('internal_p0(name, ct3di_prms, aPart) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_p0(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
+    elif doc is None:
+        App.Console.PrintError('internal_p0(name, ct3di_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3di_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -299,30 +300,31 @@ class CosmeticThread3DInternal_p0:
 # | internal_p1() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p1(name='CosmeticThread3DInternal',
-                ct3di_prms=None,
-                aPart=None):
+def internal_p1(name, ct3di_prms, doc, aPart):
     """
-    internal_p1(name, ct3di_prms, aPart) -> obj
+    internal_p1(name, ct3di_prms, doc, aPart) -> obj
 
     It creates Cosmetic Thread 3D Internal (Part version, type 1)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]              name of the object in the model tree
-    ct3di_prms   - [ct3di_params_class]  parameters of the cosmetic thread
-    aPart        - [text link]           active Part object
+    name       - [string]             name of the object in the model tree
+    ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3di_prms is None:
-        App.Console.PrintError('internal_p1(name, ct3di_prms, aPart) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_p1(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
+    elif doc is None:
+        App.Console.PrintError('internal_p1(name, ct3di_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3di_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -425,30 +427,31 @@ class CosmeticThread3DInternal_p1:
 # | internal_p2() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p2(name='CosmeticThread3DInternal',
-                ct3di_prms=None,
-                aPart=None):
+def internal_p2(name, ct3di_prms, doc, aPart):
     """
-    internal_p2(name, ct3di_prms, aPart) -> obj
+    internal_p2(name, ct3di_prms, doc, aPart) -> obj
 
     It creates Cosmetic Thread 3D Internal (Part version, type 2)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]             name of the object in the model tree
-    ct3di_prms   - [ct3di_params_class] parameters of the cosmetic thread
-    aPart        - [text link]          active Part object
+    name       - [string]             name of the object in the model tree
+    ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3di_prms is None:
-        App.Console.PrintError('internal_p2(name, ct3di_prms, aPart) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_p2(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
+    elif doc is None:
+        App.Console.PrintError('internal_p2(name, ct3di_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3di_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -547,30 +550,31 @@ class CosmeticThread3DInternal_p2:
 # | internal_p3() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p3(name='CosmeticThread3DInternal',
-                ct3di_prms=None,
-                aPart=None):
+def internal_p3(name, ct3di_prms, doc, aPart):
     """
-    internal_p3(name, ct3di_prms, aPart) -> obj
+    internal_p3(name, ct3di_prms, doc, aPart) -> obj
 
     It creates Cosmetic Thread 3D Internal (Part version, type 3)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name       - [string]               name of the object in the model tree
-    ct3di_prms - [ct3di_params_class]   parameters of the cosmetic thread
-    aPart      - [text link]            active Part object
+    name       - [string]             name of the object in the model tree
+    ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3di_prms is None:
-        App.Console.PrintError('internal_p3(name, ct3di_prms, aPart) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_p3(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
+    elif doc is None:
+        App.Console.PrintError('internal_p3(name, ct3di_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3di_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -695,30 +699,31 @@ class CosmeticThread3DInternal_p3:
 # | internal_p4() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def internal_p4(name='CosmeticThread3DInternal',
-                ct3di_prms=None,
-                aPart=None):
+def internal_p4(name, ct3di_prms, doc, aPart):
     """
-    internal_p4(name, ct3di_prms, aPart) -> obj
+    internal_p4(name, ct3di_prms, doc, aPart) -> obj
 
     It creates Cosmetic Thread 3D Internal (Part version, type 4)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]             name of the object in the model tree
-    ct3di_prms   - [ct3di_params_class] parameters of the cosmetic thread
-    aPart        - [text link]          active Part object
+    name       - [string]             name of the object in the model tree
+    ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3di_prms is None:
-        App.Console.PrintError('internal_p4(name, ct3di_prms, aPart) - Check ct3di_prms\n')
+        App.Console.PrintError('internal_p4(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
+    elif doc is None:
+        App.Console.PrintError('internal_p4(name, ct3di_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3di_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
@@ -940,30 +945,32 @@ class ViewProviderCosmeticThread3DExternal:
 # | external_p0() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p0(name='CosmeticThread3DExternal',
-                ct3de_prms=None,
-                aPart=None):
+def external_p0(name, ct3de_prms, doc, aPart):
     """
-    external_p0(name, ct3de_prms) -> obj
+    external_p0(name, ct3de_prms, doc, aPart) -> obj
 
     creates Cosmetic Thread 3D External (Part version, type 0)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]             name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
-    aPart        - [text link]          active Part object
+    name       - [string]             name of the object in the model tree
+    ct3de_prms - [ct3de_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
+
     """
 
     obj = None
 
     if ct3de_prms is None:
-        App.Console.PrintError('external_p0(name, ct3de_prms, aPart) - Check ct3de_prms\n')
+        App.Console.PrintError('external_p0(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
+    elif doc is None:
+        App.Console.PrintError('external_p0(name, ct3de_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3de_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
@@ -1061,30 +1068,31 @@ class CosmeticThread3DExternal_p0:
 # | external_p1() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p1(name='CosmeticThread3DExternal',
-                ct3de_prms=None,
-                aPart=None):
+def external_p1(name, ct3de_prms, doc, aPart):
     """
-    external_p1(name, ct3de_prms) -> obj
+    external_p1(name, ct3de_prms, doc, aPart) -> obj
 
     creates Cosmetic Thread 3D External (Part version, type 1)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]             name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
-    aPart        - [text link]          active Part object
+    name       - [string]             name of the object in the model tree
+    ct3de_prms - [ct3de_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3de_prms is None:
-        App.Console.PrintError('external_p1(name, ct3de_prms, aPart) - Check ct3de_prms\n')
+        App.Console.PrintError('external_p1(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
+    elif doc is None:
+        App.Console.PrintError('external_p1(name, ct3de_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3de_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
@@ -1179,30 +1187,31 @@ class CosmeticThread3DExternal_p1:
 # | external_p2() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p2(name='CosmeticThread3DExternal',
-                ct3de_prms=None,
-                aPart=None):
+def external_p2(name, ct3de_prms, doc, aPart):
     """
-    external_p2(name, ct3de_prms) -> obj
+    external_p2(name, ct3de_prms, doc, aPart) -> obj
 
     creates Cosmetic Thread 3D External (Part version, type 2)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]             name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
-    aPart        - [text link]          active Part object
+    name       - [string]             name of the object in the model tree
+    ct3de_prms - [ct3de_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3de_prms is None:
-        App.Console.PrintError('external_p2(name, ct3de_prms, aPart) - Check ct3de_prms\n')
+        App.Console.PrintError('external_p2(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
+    elif doc is None:
+        App.Console.PrintError('external_p2(name, ct3de_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3de_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
@@ -1293,30 +1302,31 @@ class CosmeticThread3DExternal_p2:
 # | external_p3() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p3(name='CosmeticThread3DExternal',
-                ct3de_prms=None,
-                aPart=None):
+def external_p3(name, ct3de_prms, doc, aPart):
     """
-    external_p3(name, ct3de_prms) -> obj
+    external_p3(name, ct3de_prms, doc, aPart) -> obj
 
     creates Cosmetic Thread 3D External (Part version, type 3)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]             name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
-    aPart        - [text link]          active Part object
+    name       - [string]             name of the object in the model tree
+    ct3de_prms - [ct3de_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3de_prms is None:
-        App.Console.PrintError('external_p3(name, ct3de_prms, aPart) - Check ct3de_prms\n')
+        App.Console.PrintError('external_p3(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
+    elif doc is None:
+        App.Console.PrintError('external_p3(name, ct3de_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3de_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
@@ -1433,30 +1443,31 @@ class CosmeticThread3DExternal_p3:
 # | external_p4() - create external thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
-def external_p4(name='CosmeticThread3DExternal',
-                ct3de_prms=None,
-                aPart=None):
+def external_p4(name, ct3de_prms, doc, aPart):
     """
-    external_p4(name, ct3de_prms) -> obj
+    external_p4(name, ct3de_prms, doc, aPart) -> obj
 
     creates Cosmetic Thread 3D External (Part version, type 4)
     and returns obj.
 
     This function is mentioned to be used for object creation.
 
-    name         - [string]             name of the object in the model tree
-    ct3de_prms   - [ct3de_params_class] parameters of the cosmetic thread
-    aPart        - [text link]          active Part object
+    name       - [string]             name of the object in the model tree
+    ct3de_prms - [ct3de_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
     """
 
     obj = None
 
     if ct3de_prms is None:
-        App.Console.PrintError('external_p2(name, ct3de_prms, aPart) - Check ct3de_prms\n')
+        App.Console.PrintError('external_p4(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
+    elif doc is None:
+        App.Console.PrintError('external_p4(name, ct3de_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
     else:
         if name is None:
             name = ct3de_prms.name
-        obj = App.ActiveDocument.addObject('Part::FeaturePython', name)
+        obj = doc.addObject('Part::FeaturePython', name)
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)

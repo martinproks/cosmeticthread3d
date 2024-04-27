@@ -76,6 +76,7 @@ class ct3di_p0_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -107,8 +108,10 @@ class ct3di_p0_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -145,10 +148,10 @@ class ct3di_p0_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.internal_p0('CosmeticThread3DInternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -163,10 +166,10 @@ class ct3di_p0_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_hole, obj
+        del lst_threads, ct3d_prms, D_hole, obj
 
     def eA_cancel(self):
         """
@@ -200,6 +203,7 @@ class ct3de_p0_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -231,8 +235,10 @@ class ct3de_p0_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -270,10 +276,10 @@ class ct3de_p0_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.external_p0('CosmeticThread3DExternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -288,10 +294,10 @@ class ct3de_p0_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_shaft, obj
+        del lst_threads, ct3d_prms, D_shaft, obj
 
     def eA_cancel(self):
         """
@@ -332,6 +338,7 @@ class ct3di_p1_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -363,8 +370,10 @@ class ct3di_p1_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -401,10 +410,10 @@ class ct3di_p1_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.internal_p1('CosmeticThread3DInternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -419,10 +428,10 @@ class ct3di_p1_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_hole, obj
+        del lst_threads, ct3d_prms, D_hole, obj
 
     def eA_cancel(self):
         """
@@ -456,6 +465,7 @@ class ct3de_p1_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -487,8 +497,10 @@ class ct3de_p1_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -525,10 +537,10 @@ class ct3de_p1_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.external_p1('CosmeticThread3DExternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -543,10 +555,10 @@ class ct3de_p1_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_shaft, obj
+        del lst_threads, ct3d_prms, D_shaft, obj
 
     def eA_cancel(self):
         """
@@ -589,6 +601,7 @@ class ct3di_p2_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -620,8 +633,10 @@ class ct3di_p2_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -658,10 +673,10 @@ class ct3di_p2_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.internal_p2('CosmeticThread3DInternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -676,10 +691,10 @@ class ct3di_p2_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_hole, obj
+        del lst_threads, ct3d_prms, D_hole, obj
 
     def eA_cancel(self):
         """
@@ -713,6 +728,7 @@ class ct3de_p2_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -744,8 +760,10 @@ class ct3de_p2_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -781,11 +799,11 @@ class ct3de_p2_menu_command():
         ct3dGuiTools.fillParamsE(ct3d_prms,
                                  lst_threads.getName(0),
                                  lst_threads)
-         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
+        # Cosmetic thread creation
         obj = ct3d_p.external_p2('CosmeticThread3DExternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -800,10 +818,10 @@ class ct3de_p2_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_shaft, obj
+        del lst_threads, ct3d_prms, D_shaft, obj
 
     def eA_cancel(self):
         """
@@ -846,6 +864,7 @@ class ct3di_p3_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -877,8 +896,10 @@ class ct3di_p3_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -915,10 +936,10 @@ class ct3di_p3_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.internal_p3('CosmeticThread3DInternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -933,10 +954,10 @@ class ct3di_p3_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_hole, obj
+        del lst_threads, ct3d_prms, D_hole, obj
 
     def eA_cancel(self):
         """
@@ -970,6 +991,7 @@ class ct3de_p3_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -1001,8 +1023,10 @@ class ct3de_p3_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -1039,10 +1063,10 @@ class ct3de_p3_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.external_p3('CosmeticThread3DExternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -1057,10 +1081,10 @@ class ct3de_p3_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_shaft, obj
+        del lst_threads, ct3d_prms, D_shaft, obj
 
     def eA_cancel(self):
         """
@@ -1103,6 +1127,7 @@ class ct3di_p4_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -1134,8 +1159,10 @@ class ct3di_p4_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -1172,10 +1199,10 @@ class ct3di_p4_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.internal_p4('CosmeticThread3DInternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -1190,10 +1217,10 @@ class ct3di_p4_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_hole, obj
+        del lst_threads, ct3d_prms, D_hole, obj
 
     def eA_cancel(self):
         """
@@ -1227,6 +1254,7 @@ class ct3de_p4_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.aPart = None
 
     def GetResources(self):
         """
@@ -1258,8 +1286,10 @@ class ct3de_p4_menu_command():
             App.Console.PrintError('No Active Document.\n')
         else:
             # Make GUI part of the creation
+            self.aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowP_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowP_direction.create(self.doc,
+                                                                self.aPart)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -1296,10 +1326,10 @@ class ct3de_p4_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        aPart = Gui.ActiveDocument.ActiveView.getActiveObject('part')
         obj = ct3d_p.external_p4('CosmeticThread3DExternal',
                                  ct3d_prms,
-                                 aPart)
+                                 self.doc,
+                                 self.aPart)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -1314,10 +1344,10 @@ class ct3de_p4_menu_command():
         if form.result == ct3dGuiTools.userCancelled:
             self.doc.removeObject(obj.Name)
         elif form.useGroup is True:
-            ct3dGuiTools.useGroupThreads(obj, aPart)
+            ct3dGuiTools.useGroupThreads(obj, self.aPart)
         #
         # clean up...
-        del lst_threads, ct3d_prms, aPart, D_shaft, obj
+        del lst_threads, ct3d_prms, D_shaft, obj
 
     def eA_cancel(self):
         """
@@ -1360,6 +1390,7 @@ class ct3di_pd0_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.body = None
 
     def GetResources(self):
         """
@@ -1387,17 +1418,18 @@ class ct3di_pd0_menu_command():
         # this was who knows when. The button is pressed NOW and now You
         # need to know active document...
         self.doc = App.ActiveDocument
-        body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
+        self.body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
-        elif not body:
+        elif not self.body:
             App.Console.PrintError("No active body.\n")
-        elif body.Tip is None:
+        elif self.body.Tip is None:
             App.Console.PrintError("Cosmetic thread can not be a first feature in a body.\n")
         else:
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowPD_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowPD_direction.create(self.doc,
+                                                                 self.body)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -1434,7 +1466,10 @@ class ct3di_pd0_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        obj = ct3d_pd.internal_pd0('CosmeticThread3DInternal', ct3d_prms)
+        obj = ct3d_pd.internal_pd0('CosmeticThread3DInternal',
+                                   ct3d_prms,
+                                   self.doc,
+                                   self.body)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
@@ -1484,6 +1519,7 @@ class ct3de_pd0_menu_command():
     def __init__(self):
         self.doc = None
         self.obj_tmp = None
+        self.body = None
 
     def GetResources(self):
         """
@@ -1511,17 +1547,18 @@ class ct3de_pd0_menu_command():
         # this was who knows when. The button is pressed NOW and now You
         # need to know active document...
         self.doc = App.ActiveDocument
-        body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
+        self.body = Gui.ActiveDocument.ActiveView.getActiveObject("pdbody")
         if not self.doc:
             App.Console.PrintError('No Active Document.\n')
-        elif not body:
+        elif not self.body:
             App.Console.PrintError("No active body.\n")
-        elif body.Tip is None:
+        elif self.body.Tip is None:
             App.Console.PrintError("Cosmetic thread can not be a first feature in a body.\n")
         else:
             # Make GUI part of the creation
             # Create an temporary object - arrow/cone for example
-            self.obj_tmp = ct3dGuiTools.arrowPD_direction.create()
+            self.obj_tmp = ct3dGuiTools.arrowPD_direction.create(self.doc,
+                                                                 self.body)
             # Clear selected objects, if threre are any
             Gui.Selection.clearSelection(True)
             # Object Attachement...
@@ -1558,7 +1595,10 @@ class ct3de_pd0_menu_command():
                                  lst_threads.getName(0),
                                  lst_threads)
         # Cosmetic thread creation
-        obj = ct3d_pd.external_pd0('CosmeticThread3DExternal', ct3d_prms)
+        obj = ct3d_pd.external_pd0('CosmeticThread3DExternal',
+                                   ct3d_prms,
+                                   self.doc,
+                                   self.body)
         # Attachement apply from temporary object to cosmetic thread
         ct3dGuiTools.copy_attachment(self.obj_tmp, obj)
         obj.recompute()
