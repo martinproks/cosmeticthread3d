@@ -35,6 +35,7 @@ from PySide import QtCore, QtGui
 from PySide.QtGui import QFrame
 import FreeCAD as App
 import Part
+import Draft
 
 import MetricCoarse1st
 import MetricCoarse2nd
@@ -516,11 +517,15 @@ class arrowP_direction():
         doc   - document where the arrow should be created
         aPart - part object where the arrow should be created or None
         """
-        obj = doc.addObject('Part::Cone', 'ThreadOrientation')
-        obj.Label = 'ThreadOrientation'
-        obj.Radius1 = '1.0 mm'
-        obj.Radius2 = '0.0 mm'
-        obj.Height = '2.5 mm'
+        pL = []
+        pL.append(App.Vector(0, 0, 3))
+        pL.append(App.Vector(-0.5, 0, 0))
+        pL.append(App.Vector(0.5, 0, 0))
+        pL.append(App.Vector(0, 0, 3))
+        pL.append(App.Vector(0, -0.5, 0))
+        pL.append(App.Vector(0, 0.5, 0))
+        pL.append(App.Vector(0, 0, 3))
+        obj = Draft.makeWire(pL)
         # Move it into Active Part - if ActivePart exists
         if aPart is not None:
             aPart.addObject(obj)
@@ -534,9 +539,16 @@ class arrowP_direction():
         Scale directional symbol / arrow / cone (textlink obj) to be visually
         adequate to hole diameter.
         """
-        obj.Radius1 = 0.25 * hole_diameter
-        obj.Radius2 = 0.0
-        obj.Height = 2.5 * obj.Radius1
+        k = hole_diameter*0.6
+        pL = []
+        pL.append(App.Vector(0, 0, k*3))
+        pL.append(App.Vector(k*-0.5, 0, 0))
+        pL.append(App.Vector(k*0.5, 0, 0))
+        pL.append(App.Vector(0, 0, k*3))
+        pL.append(App.Vector(0, k*-0.5, 0))
+        pL.append(App.Vector(0, k*0.5, 0))
+        pL.append(App.Vector(0, 0, k*3))
+        obj.Points = pL
         obj.recompute()
 
 
@@ -569,8 +581,16 @@ class arrowPD_direction():
         body - active PartDesign body or None
         """
         # Actually I do not need 'doc' object here, if I use body.newObject().
-        obj = body.newObject('PartDesign::CoordinateSystem','Local_CS')
-        obj.Label = 'ThreadOrientation'
+        pL = []
+        pL.append(App.Vector(0, 0, 3))
+        pL.append(App.Vector(-0.5, 0, 0))
+        pL.append(App.Vector(0.5, 0, 0))
+        pL.append(App.Vector(0, 0, 3))
+        pL.append(App.Vector(0, -0.5, 0))
+        pL.append(App.Vector(0, 0.5, 0))
+        pL.append(App.Vector(0, 0, 3))
+        obj = Draft.makeWire(pL)
+        body.addObject(obj)
         obj.recompute()
         return obj
 
@@ -581,7 +601,18 @@ class arrowPD_direction():
         Scale directional symbol / arrow / cone (textlink obj) to be visually
         adequate to hole diameter.
         """
-        # emnpty, LCS does not need scale...
+        k = hole_diameter*0.6
+        pL = []
+        pL.append(App.Vector(0, 0, k*3))
+        pL.append(App.Vector(k*-0.5, 0, 0))
+        pL.append(App.Vector(k*0.5, 0, 0))
+        pL.append(App.Vector(0, 0, k*3))
+        pL.append(App.Vector(0, k*-0.5, 0))
+        pL.append(App.Vector(0, k*0.5, 0))
+        pL.append(App.Vector(0, 0, k*3))
+        obj.Points = pL
+        obj.recompute()
+
 
 
 # +-------------------------------------------------------+
