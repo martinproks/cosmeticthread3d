@@ -26,12 +26,10 @@
 """
 Definition of PythonFeature for each PartDesign version of thread geometry type.
 """
-
-___title__  = 'Cosmetic Thread 3D Work Bench'
-__author__  = 'Martin Prokš'
+___title__ = 'Cosmetic Thread 3D Work Bench'
+__author__ = 'Martin Prokš'
 __License__ = 'LGPL-2.1-or-later'
-__url__     = 'https://github.com/martinproks/cosmeticthread3d'
-
+__url__ = 'https://github.com/martinproks/cosmeticthread3d'
 """
 Vocabulary:
 ct3d   - Cosmetic Thread 3D
@@ -100,7 +98,7 @@ class ViewProviderCosmeticThread3DInternal:
         the chance to handle this here.
         """
 
-    def getDisplayModes(self,obj):
+    def getDisplayModes(self, obj):
         """
         Return a list of display modes.
         """
@@ -113,7 +111,7 @@ class ViewProviderCosmeticThread3DInternal:
         """
         return "Wireframe"
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
         """
         Map the display mode defined in attach with those defined
         in getDisplayModes. Since they have the same names nothing
@@ -164,7 +162,7 @@ class ViewProviderCosmeticThread3DInternal:
         Called during document saving.
         """
 
-    def loads(self,state):
+    def loads(self, state):
         """
         Called during document restore.
         """
@@ -193,7 +191,7 @@ def internal_pd0(name, ct3di_prms, doc, body):
 
     obj = None
     if doc is None:
-        App.Console.PrintError("Document has to be set.\n")        
+        App.Console.PrintError("Document has to be set.\n")
     elif not body:
         App.Console.PrintError("Body has to be set.\n")
     elif body.Tip is None:
@@ -226,20 +224,18 @@ class CosmeticThread3DInternal_pd0:
     The geometry and all handlers are defined here.
     Service function for thread creation is internal_pd0() above.
     """
-    
     # https://wiki.freecad.org/Scripted_objects - PartDesign, pay attention to attachment...
-    
+
     def __init__(self, obj, ct3di_prms):
         """
         __init__(obj, ct3di_prms)
-        
+
         constructor of a CosmeticThread3DInternal_pd0 class / internall
         function.
         """
-        #
         self.Type = 'CosmeticThread3DInternal_pd0'
         obj.Proxy = self
-        # Add property of internal thread into obj 
+        # Add property of internal thread into obj
         ct3d_params.addProperty_internal_thread(obj, ct3di_prms)
         # Attachement extension
         self.makeAttachable(obj)
@@ -321,6 +317,114 @@ class CosmeticThread3DInternal_pd0:
 
 
 
+# +-------------------------------------------------------------+
+# |                                                             |
+# | internal_pd1() - create internal thread object and geometry |
+# |                                                             |
+# +-------------------------------------------------------------+
+def internal_pd1(name, ct3di_prms, doc, body):
+    """
+    internal_pd1(name, ct3di_prms, doc, body) -> obj
+
+    It creates Cosmetic Thread 3D Internal (PartDesign version, type 1)
+    and returns obj.
+
+    This function is mentioned to be used for object creation.
+
+    name       - [string]                 name of the object in the model tree
+    ct3di_prms - [ct3di_params_class]     parameters of the cosmetic thread
+    doc        - [text link]              document for thread creating
+    body       - [PartDesign body object] body object for the thread
+    """
+
+    obj = None
+    if doc is None:
+        App.Console.PrintError("Document has to be set.\n")
+    elif not body:
+        App.Console.PrintError("Body has to be set.\n")
+    elif body.Tip is None:
+        App.Console.PrintError("Cosmetic thread can not be a first feature in a body.\n")
+    elif ct3di_prms is None:
+        App.Console.PrintError('internal_pd1(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
+    else:
+        if (name is None) or (name == ''):
+            name = ct3di_prms.name
+        obj = doc.addObject('Part::Part2DObjectPython', name)
+        ViewProviderCosmeticThread3DInternal(obj.ViewObject,
+                                             body.ViewObject)
+        CosmeticThread3DInternal_pd1(obj, ct3di_prms)
+        body.addObject(obj) # optionally we can also use body.insertObject()
+    return obj
+
+
+
+# +---------------------------------------------------------+
+# |                                                         |
+# | CosmeticThread3DInternal_pd1 class.                     |
+# |                                                         |
+# | The geometry and all handlers are defined here.         |
+# |                                                         |
+# +---------------------------------------------------------+
+class CosmeticThread3DInternal_pd1:
+    """
+    CosmeticThread3DInternal_pd1 class
+
+    The geometry and all handlers are defined here.
+    Service function for thread creation is internal_pd1() above.
+    """
+    def __init__(self, obj, ct3di_prms):
+        """
+        __init__(obj, ct3di_prms)
+
+        constructor of a CosmeticThread3DInternal_pd1 class / internall
+        function.
+        """
+        self.Type = 'CosmeticThread3DInternal_pd1'
+        obj.Proxy = self
+        # Add property of internal thread into obj
+        ct3d_params.addProperty_internal_thread(obj, ct3di_prms)
+
+    def onChanged(self, obj, prop):
+        """
+        Do something when a property has changed.
+        """
+        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
+
+    def execute(self, obj):
+        """
+        Do something when doing a recomputation, this method is mandatory.
+        """
+        ct3dGeo = []
+        # helix
+        tmp = Part.makeHelix(obj.pitch.Value,
+                             obj.length.Value,
+                             0.5*obj.D1.Value)
+        ct3dGeo.append(tmp)
+        # Major diameter at z=0
+        tmp = Part.makeCircle(0.5*obj.D.Value)
+        ct3dGeo.append(tmp)
+        # Major diameter at z = Thread Length
+        tmp = Part.makeCircle(0.5*obj.D.Value)
+        tmp.Placement.translate(App.Vector(0, 0, obj.length.Value))
+        ct3dGeo.append(tmp)
+        if not obj.length_through:
+            # Minor diameter at z = obj.length
+            tmp = Part.makeCircle(0.5*obj.D1.Value)
+            tmp.Placement.translate(App.Vector(0, 0, obj.length.Value))
+            ct3dGeo.append(tmp)
+        # resulting geometry
+        rslt = Part.makeCompound(ct3dGeo)
+
+        # Apply attachement to the obj
+        if not hasattr(obj, "positionBySupport"):
+            self.makeAttachable(obj)
+        obj.positionBySupport()
+
+        rslt.Placement = obj.Placement
+        obj.Shape = rslt
+
+
+
 # **************************************************************** #
 # **************************************************************** #
 # **************************************************************** #
@@ -376,7 +480,7 @@ class ViewProviderCosmeticThread3DExternal:
         the chance to handle this here.
         """
 
-    def getDisplayModes(self,obj):
+    def getDisplayModes(self, obj):
         """
         Return a list of display modes.
         """
@@ -389,7 +493,7 @@ class ViewProviderCosmeticThread3DExternal:
         """
         return "Wireframe"
 
-    def setDisplayMode(self,mode):
+    def setDisplayMode(self, mode):
         """
         Map the display mode defined in attach with those defined
         in getDisplayModes. Since they have the same names nothing
@@ -446,7 +550,7 @@ class ViewProviderCosmeticThread3DExternal:
         Called during document saving.
         """
 
-    def loads(self,state):
+    def loads(self, state):
         """
         Called during document restore.
         """
@@ -475,7 +579,7 @@ def external_pd0(name, ct3de_prms, doc, body):
 
     obj = None
     if doc is None:
-        App.Console.PrintError("Document has to be set.\n")        
+        App.Console.PrintError("Document has to be set.\n")
     elif not body:
         App.Console.PrintError("Body has to be set.\n")
     elif body.Tip is None:
@@ -503,19 +607,27 @@ def external_pd0(name, ct3de_prms, doc, body):
 # |                                                         |
 # +---------------------------------------------------------+
 class CosmeticThread3DExternal_pd0:
+    """
+    CosmeticThread3DExternal_pd0 class
+
+    The geometry and all handlers are defined here.
+    Service function for thread creation is external_pd0() above.
+    """
+
     def __init__(self, obj, ct3de_prms):
         """
         __init__(obj, ct3de_prms)
-        
-        constructor of a CosmeticThread3DExternal class / internall function
+
+        constructor of a CosmeticThread3DExternal class / internall
+        function.
         """
-        
         self.Type = 'CosmeticThread3DExternal_pd0'
         obj.Proxy = self
+        # Add property of internal thread into obj
         ct3d_params.addProperty_external_thread(obj, ct3de_prms)
         # Attachement extension
         self.makeAttachable(obj)
-        
+
     def makeAttachable(self, obj):
         if int(App.Version()[1]) >= 19:
             obj.addExtension('Part::AttachExtensionPython')
@@ -592,3 +704,113 @@ class CosmeticThread3DExternal_pd0:
         # Subshape for patterns
         ct3dSolid.transformShape(obj.Placement.inverse().toMatrix(), True)
         obj.AddSubShape = ct3dSolid
+
+
+
+# +-------------------------------------------------------------+
+# |                                                             |
+# | external_pd1() - create external thread object and geometry |
+# |                                                             |
+# +-------------------------------------------------------------+
+def external_pd1(name, ct3de_prms, doc, body):
+    """
+    external_pd1(name, ct3de_prms, doc, body) -> obj
+
+    creates Cosmetic Thread 3D External (Part Design version, type 1)
+    and returns obj.
+
+    This function is mentioned to be used for object creation.
+
+    name       - [string]                 name of the object in the model tree
+    ct3de_prms - [ct3de_params_class]     parameters of the cosmetic thread
+    doc        - [text link]              document for thread creating
+    body       - [PartDesign body object] body object for the thread
+    """
+
+    obj = None
+    if doc is None:
+        App.Console.PrintError("Document has to be set.\n")
+    elif not body:
+        App.Console.PrintError("Body has to be set.\n")
+    elif body.Tip is None:
+        App.Console.PrintError("Cosmetic thread can not be a first feature in a body.\n")
+    elif ct3de_prms is None:
+        App.Console.PrintError('external_pd1(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
+    else:
+        obj = None
+        if (name is None) or (name == ''):
+            name = ct3de_prms.name
+        obj = doc.addObject('Part::Part2DObjectPython', name)
+        ViewProviderCosmeticThread3DExternal(obj.ViewObject,
+                                             body.ViewObject)
+        CosmeticThread3DExternal_pd1(obj, ct3de_prms)
+        body.addObject(obj) # optionally we can also use body.insertObject()
+    return obj
+
+
+
+# +---------------------------------------------------------+
+# |                                                         |
+# | CosmeticThread3DExternal_pd1 class.                     |
+# |                                                         |
+# | The geometry and all handlers are defined here.         |
+# |                                                         |
+# +---------------------------------------------------------+
+class CosmeticThread3DExternal_pd1:
+    """
+    CosmeticThread3DExternal_pd1 class
+
+    The geometry and all handlers are defined here.
+    Service function for thread creation is external_pd1() above.
+    """
+
+    def __init__(self, obj, ct3de_prms):
+        """
+        __init__(obj, ct3de_prms)
+
+        constructor of a CosmeticThread3DExternal class / internall
+        function.
+        """
+        self.Type = 'CosmeticThread3DExternal_pd1'
+        obj.Proxy = self
+        # Add property of external thread into obj
+        ct3d_params.addProperty_external_thread(obj, ct3de_prms)
+
+    def onChanged(self, obj, prop):
+        """
+        Do something when a property has changed.
+        """
+        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
+
+    def execute(self, obj):
+        """
+        Do something when doing a recomputation, this method is mandatory.
+        """
+        ct3dGeo = []
+        # helix
+        tmp = Part.makeHelix(obj.pitch.Value,
+                             obj.length.Value,
+                             0.5*obj.D.Value)
+        ct3dGeo.append(tmp)
+        # Minor diameter at z=0
+        tmp = Part.makeCircle(0.5*obj.d3.Value)
+        ct3dGeo.append(tmp)
+        # Minor diameter at z = Thread Length
+        tmp = Part.makeCircle(0.5*obj.d3.Value)
+        tmp.Placement.translate(App.Vector(0, 0, obj.length.Value))
+        ct3dGeo.append(tmp)
+        if not obj.length_through:
+            # Major diameter at z = obj.length
+            tmp = Part.makeCircle(0.5*obj.D.Value)
+            tmp.Placement.translate(App.Vector(0, 0, obj.length.Value))
+            ct3dGeo.append(tmp)
+        # resulting geometry
+        rslt = Part.makeCompound(ct3dGeo)
+
+        # Apply attachement to the obj
+        if not hasattr(obj, "positionBySupport"):
+            self.makeAttachable(obj)
+        obj.positionBySupport()
+
+        rslt.Placement = obj.Placement
+        obj.Shape = rslt

@@ -77,7 +77,9 @@ class CosmeticThread3D(Workbench):
                      'internal_cosmetic_thread_p4',
                      'external_cosmetic_thread_p4',
                      'internal_cosmetic_thread_pd0',
-                     'external_cosmetic_thread_pd0']
+                     'external_cosmetic_thread_pd0',
+                     'internal_cosmetic_thread_pd1',
+                     'external_cosmetic_thread_pd1']
         #
         # # creates a new toolbar with your commands
         # # toolbar not necessary, this workbench is for developement and testing of tools
