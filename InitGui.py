@@ -76,6 +76,8 @@ class CosmeticThread3D(Workbench):
                      'external_cosmetic_thread_p3',
                      'internal_cosmetic_thread_p4',
                      'external_cosmetic_thread_p4',
+                     'internal_cosmetic_thread_p5',
+                     'external_cosmetic_thread_p5',
                      'internal_cosmetic_thread_pd0',
                      'external_cosmetic_thread_pd0',
                      'internal_cosmetic_thread_pd1',
