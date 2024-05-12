@@ -167,6 +167,120 @@ class ViewProviderCosmeticThread3DInternal:
 
 # +------------------------------------------------------------+
 # |                                                            |
+# | internal() - create internal thread object and geometry    |
+# |                                                            |
+# +------------------------------------------------------------+
+def internal(name, ct3di_prms, doc, aPart):
+    """
+    internal(name, ct3di_prms, doc, aPart) -> obj
+
+    It creates Cosmetic Thread 3D Internal (Part version)
+    and returns obj.
+
+    This function is mentioned to be used for object creation.
+
+    name       - [string]             name of the object in the model tree
+    ct3di_prms - [ct3di_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
+    """
+    obj = None
+    if ct3di_prms is None:
+        App.Console.PrintError('internal(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
+    elif doc is None:
+        App.Console.PrintError('internal(name, ct3di_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
+    else:
+        if name is None:
+            name = ct3di_prms.name
+        obj = doc.addObject('Part::Part2DObjectPython', name)
+        if aPart is not None:
+            aPart.addObject(obj)
+        ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        CosmeticThread3DInternal(obj, ct3di_prms)
+        App.ActiveDocument.recompute()
+    return obj
+
+
+
+# +------------------------------------------------------+
+# |                                                      |
+# | CosmeticThread3DInternal class.                      |
+# |                                                      |
+# | The geometry and all handlers are defined here.      |
+# |                                                      |
+# +------------------------------------------------------+
+class CosmeticThread3DInternal:
+    """
+    CosmeticThread3DInternal class
+
+    The geometry and all handlers are defined here.
+    Service function for thread creation is internal() above.
+    """
+
+    def __init__(self, obj, ct3di_prms):
+        """
+        __init__(obj, ct3di_prms)
+
+        constructor of a CosmeticThread3DInternal_p0 class,
+        internall function.
+        """
+        #
+        self.Type = 'CosmeticThread3DInternalPart'
+        obj.Proxy = self
+        # Add property of internal thread into obj
+        ct3d_params.addProperty_internal_thread(obj, ct3di_prms)
+        ##### # Attachement extension
+        ##### self.makeAttachable(obj)
+        ##### 
+        # def makeAttachable(self, obj):
+        ##### if int(App.Version()[1]) >= 19:
+        #####     obj.addExtension('Part::AttachExtensionPython')
+        ##### else:
+        #####     obj.addExtension('Part::AttachExtensionPython', obj)
+        ##### obj.setEditorMode('Placement', 0) # non-readonly non-hidden
+
+    def onChanged(self, obj, prop):
+        """
+        Do something when a property has changed
+        """
+
+    def execute(self, obj):
+        """
+        Do something when doing a recomputation, this method is mandatory
+        """
+        ct3dGeo = []
+        # helix
+        tmp = Part.makeHelix(obj.pitch.Value,
+                             obj.length.Value,
+                             0.5*obj.D1.Value)
+        ct3dGeo.append(tmp)
+        # Major diameter at z=0
+        tmp = Part.makeCircle(0.5*obj.D.Value)
+        ct3dGeo.append(tmp)
+        # Major diameter at z = Thread Length
+        tmp = Part.makeCircle(0.5*obj.D.Value)
+        tmp.Placement.translate(App.Vector(0, 0, obj.length.Value))
+        ct3dGeo.append(tmp)
+        if not obj.length_through:
+            # Minor diameter at z = obj.length
+            tmp = Part.makeCircle(0.5*obj.D1.Value)
+            tmp.Placement.translate(App.Vector(0, 0, obj.length.Value))
+            ct3dGeo.append(tmp)
+        # resulting geometry
+        rslt = Part.makeCompound(ct3dGeo)
+        #
+        # Apply attachement to the obj
+        if not hasattr(obj, "positionBySupport"):
+            self.makeAttachable(obj)
+        obj.positionBySupport()
+
+        rslt.Placement = obj.Placement
+        obj.Shape = rslt
+
+
+
+# +------------------------------------------------------------+
+# |                                                            |
 # | internal_p0() - create internal thread object and geometry |
 # |                                                            |
 # +------------------------------------------------------------+
@@ -1045,6 +1159,113 @@ class ViewProviderCosmeticThread3DExternal:
         """
         Called during document restore.
         """
+
+
+
+# +---------------------------------------------------------+
+# |                                                         |
+# | external() - create external thread object and geometry |
+# |                                                         |
+# +---------------------------------------------------------+
+def external(name, ct3de_prms, doc, aPart):
+    """
+    external(name, ct3de_prms, doc, aPart) -> obj
+
+    creates Cosmetic Thread 3D External (Part version)
+    and returns obj.
+
+    This function is mentioned to be used for object creation.
+
+    name       - [string]             name of the object in the model tree
+    ct3de_prms - [ct3de_params_class] parameters of the cosmetic thread
+    doc        - [text link]          document for thread creating
+    aPart      - [text link]          Part object for thread creating or None
+
+    """
+    obj = None
+    if ct3de_prms is None:
+        App.Console.PrintError('external(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
+    elif doc is None:
+        App.Console.PrintError('external(name, ct3de_prms, doc, aPart) - doc has to be some FreeCAD document!\n')
+    else:
+        if name is None:
+            name = ct3de_prms.name
+        obj = doc.addObject('Part::Part2DObjectPython', name)
+        if aPart is not None:
+            aPart.addObject(obj)
+        ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        CosmeticThread3DExternal_p0(obj, ct3de_prms)
+        App.ActiveDocument.recompute()
+    return obj
+
+
+
+# +------------------------------------------------------+
+# |                                                      |
+# | CosmeticThread3DExternal class.                      |
+# |                                                      |
+# | The geometry and all handlers are defined here.      |
+# |                                                      |
+# +------------------------------------------------------+
+class CosmeticThread3DExternal:
+    def __init__(self, obj, ct3de_prms):
+        """
+        __init__(obj, ct3de_prms)
+
+        constructor of a CosmeticThread3DExternal class,
+        internall function
+        """
+
+        self.Type = 'CosmeticThread3DExternalPart'
+        obj.Proxy = self
+        ct3d_params.addProperty_external_thread(obj, ct3de_prms)
+        ##### # Attachement extension
+        ##### self.makeAttachable(obj)
+        ##### 
+        # def makeAttachable(self, obj):
+        ##### if int(App.Version()[1]) >= 19:
+        #####     obj.addExtension('Part::AttachExtensionPython')
+        ##### else:
+        #####     obj.addExtension('Part::AttachExtensionPython', obj)
+        ##### obj.setEditorMode('Placement', 0) #non-readonly non-hidden
+
+    def onChanged(self, obj, prop):
+        """
+        Do something when a property has changed
+        """
+
+    def execute(self, obj):
+        """
+        Do something when doing a recomputation, this method is mandatory
+        """
+        ct3dGeo = []
+        # helix
+        tmp = Part.makeHelix(obj.pitch.Value,
+                             obj.length.Value,
+                             0.5*obj.D.Value)
+        ct3dGeo.append(tmp)
+        # Minor diameter at z=0
+        tmp = Part.makeCircle(0.5*obj.d3.Value)
+        ct3dGeo.append(tmp)
+        # Minor diameter at z = Thread Length
+        tmp = Part.makeCircle(0.5*obj.d3.Value)
+        tmp.Placement.translate(App.Vector(0, 0, obj.length.Value))
+        ct3dGeo.append(tmp)
+        if not obj.length_through:
+            # Major diameter at z = obj.length
+            tmp = Part.makeCircle(0.5*obj.D.Value)
+            tmp.Placement.translate(App.Vector(0, 0, obj.length.Value))
+            ct3dGeo.append(tmp)
+        # resulting geometry
+        rslt = Part.makeCompound(ct3dGeo)
+
+        # Apply attachement to the obj
+        if not hasattr(obj, "positionBySupport"):
+            self.makeAttachable(obj)
+        obj.positionBySupport()
+
+        rslt.Placement = obj.Placement
+        obj.Shape = rslt
 
 
 

@@ -629,21 +629,18 @@ def copy_attachment(obj_from, obj_to):
     #
     obj_to.AttachmentOffset = obj_from.AttachmentOffset
     obj_to.MapReversed = obj_from.MapReversed
-    # They changed Support to AttachmentSupport in 0.22.devel:
-    if int(App.Version()[1]) >= 22:
+    if App.Version()[4] == 'https://github.com/FreeCAD/FreeCAD main':
+        # FreeCAD changed Support to AttachmentSupport in 0.22.devel:
+        if (((int(App.Version()[0]) == 0) and \
+             (int(App.Version()[1]) >= 22)) or \
+            (int(App.Version()[0]) > 0)):
+            obj_to.AttachmentSupport = obj_from.AttachmentSupport
+        else:
+            obj_to.Support = obj_from.Support
+    if App.Version()[4] == 'https://github.com/Ondsel-Development/FreeCAD':
         obj_to.AttachmentSupport = obj_from.AttachmentSupport
-    else:
-        obj_to.Support = obj_from.Support
     obj_to.MapPathParameter = obj_from.MapPathParameter
     obj_to.MapMode = obj_from.MapMode
-    #
-    # Work-around https://forum.freecad.org/viewtopic.php?t=86029
-    # Reset obj_to.AttachmentOfset = point[0,0,0], rotation[0,0,0]
-    # Calculate global position of obj_to.Support
-    # Calculate global position of obj_to
-    # Compare them and if they do not match:
-    #     Calculate delta between them - obj_to.Support -> obj_to
-    #     Apply the delta to obj_to.AttachmentOffset
 
 
 
@@ -666,11 +663,16 @@ def diameter_from_attachment(obj):
     #     [[Part.getShape(feature, sub, needSubElement = True) \
     #          for sub in subs] for feature, subs in obj.Support]
     #     edge.Curve.Radius
-    # They changed Support to AttachmentSupport in 0.22.devel:
-    if int(App.Version()[1]) >= 22:
+    if App.Version()[4] == 'https://github.com/FreeCAD/FreeCAD main':
+        # FreeCAD changed Support to AttachmentSupport in 0.22.devel:
+        if (((int(App.Version()[0]) == 0) and \
+             (int(App.Version()[1]) >= 22)) or \
+            (int(App.Version()[0]) > 0)):
+            obj_AS = obj.AttachmentSupport
+        else:
+            obj_AS = obj.Support
+    if App.Version()[4] == 'https://github.com/Ondsel-Development/FreeCAD':
         obj_AS = obj.AttachmentSupport
-    else:
-        obj_AS = obj.Support
     for feature, subs in obj_AS:
         for sub in subs:
             # Look just for first circular element and estimate diameter
