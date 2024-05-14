@@ -841,6 +841,8 @@ def internal_p4(name, ct3di_prms, doc, aPart):
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DInternal(obj.ViewObject)
+        # change displaymode to Shaded - this is texture based thread
+        obj.ViewObject.DisplayMode = "Shaded"
         CosmeticThread3DInternal_p4(obj, ct3di_prms)
         App.ActiveDocument.recompute()
 
@@ -1800,6 +1802,8 @@ def external_p4(name, ct3de_prms, doc, aPart):
         if aPart is not None:
             aPart.addObject(obj)
         ViewProviderCosmeticThread3DExternal(obj.ViewObject)
+        # change displaymode to Shaded - this is texture based thread
+        obj.ViewObject.DisplayMode = "Shaded"
         CosmeticThread3DExternal_p4(obj, ct3de_prms)
         App.ActiveDocument.recompute()
 

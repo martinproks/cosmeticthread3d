@@ -629,15 +629,12 @@ def copy_attachment(obj_from, obj_to):
     #
     obj_to.AttachmentOffset = obj_from.AttachmentOffset
     obj_to.MapReversed = obj_from.MapReversed
-    if App.Version()[4] == 'https://github.com/FreeCAD/FreeCAD main':
-        # FreeCAD changed Support to AttachmentSupport in 0.22.devel:
-        if (((int(App.Version()[0]) == 0) and \
-             (int(App.Version()[1]) >= 22)) or \
-            (int(App.Version()[0]) > 0)):
-            obj_to.AttachmentSupport = obj_from.AttachmentSupport
-        else:
-            obj_to.Support = obj_from.Support
-    if App.Version()[4] == 'https://github.com/Ondsel-Development/FreeCAD':
+    # FreeCAD changed Support to AttachmentSupport in 0.22.devel:
+    if ((int(App.Version()[0]) == 0) and
+        (int(App.Version()[1]) < 22) and
+        (App.Version()[4] == 'https://github.com/FreeCAD/FreeCAD.git')):
+        obj_to.Support = obj_from.Support
+    else: # default - newer versions of FreeCAD or (new) forks
         obj_to.AttachmentSupport = obj_from.AttachmentSupport
     obj_to.MapPathParameter = obj_from.MapPathParameter
     obj_to.MapMode = obj_from.MapMode
@@ -657,21 +654,17 @@ def diameter_from_attachment(obj):
 
     Return Diameter or 0 if is it unsucesfull.
     """
-
     D = 0.0
     # https://forum.freecad.org/viewtopic.php?p=743699#p743699
     #     [[Part.getShape(feature, sub, needSubElement = True) \
     #          for sub in subs] for feature, subs in obj.Support]
     #     edge.Curve.Radius
-    if App.Version()[4] == 'https://github.com/FreeCAD/FreeCAD main':
-        # FreeCAD changed Support to AttachmentSupport in 0.22.devel:
-        if (((int(App.Version()[0]) == 0) and \
-             (int(App.Version()[1]) >= 22)) or \
-            (int(App.Version()[0]) > 0)):
-            obj_AS = obj.AttachmentSupport
-        else:
-            obj_AS = obj.Support
-    if App.Version()[4] == 'https://github.com/Ondsel-Development/FreeCAD':
+    # FreeCAD changed Support to AttachmentSupport in 0.22.devel:
+    if ((int(App.Version()[0]) == 0) and
+        (int(App.Version()[1]) < 22) and
+        (App.Version()[4] == 'https://github.com/FreeCAD/FreeCAD.git')):
+        obj_AS = obj.Support
+    else: # default - newer versions of FreeCAD or (new) forks
         obj_AS = obj.AttachmentSupport
     for feature, subs in obj_AS:
         for sub in subs:
