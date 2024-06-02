@@ -456,7 +456,7 @@ class ct3d_threadUI(QtGui.QDialog):
         del name
 
     def onApply(self):
-        self.__obj.Label = self.w_lthr.currentText()
+        self.__obj.Label2 = self.w_lthr.currentText()
         self.__obj.Description = self.w_lthr.currentText()
         self.__obj.D_nominal = float(self.w_D_nom.text())
         self.__obj.pitch = float(self.w_pitch.text())

@@ -66,43 +66,16 @@ class CosmeticThread3D(Workbench):
         import cosmeticthread3d_Gui
         #
         # a list of command names created in the line above
-        # self.list = ['internal_cosmetic_thread_p0',
-        #              'external_cosmetic_thread_p0',
-        #              'internal_cosmetic_thread_p1',
-        #              'external_cosmetic_thread_p1',
-        #              'internal_cosmetic_thread_p2',
-        #              'external_cosmetic_thread_p2',
-        #              'internal_cosmetic_thread_p3',
-        #              'external_cosmetic_thread_p3',
-        #              'internal_cosmetic_thread_p4',
-        #              'external_cosmetic_thread_p4',
-        #              'internal_cosmetic_thread_p5',
-        #              'external_cosmetic_thread_p5',
-        #              'internal_cosmetic_thread_pd0',
-        #              'external_cosmetic_thread_pd0',
-        #              'internal_cosmetic_thread_pd1',
-        #              'external_cosmetic_thread_pd1']
+        # self.list = ['internal_cosmetic_thread_p',
+        #              'external_cosmetic_thread_p'
+        #              'internal_cosmetic_thread_pd',
+        #              'external_cosmetic_thread_pd']
         self.list = ['internal_cosmetic_thread_p',
-                     'external_cosmetic_thread_p',
-                     'internal_cosmetic_thread_p0',
-                     'external_cosmetic_thread_p0',
-                     'internal_cosmetic_thread_p1',
-                     'external_cosmetic_thread_p1',
-                     'internal_cosmetic_thread_p2',
-                     'external_cosmetic_thread_p2',
-                     'internal_cosmetic_thread_p3',
-                     'external_cosmetic_thread_p3',
-                     'internal_cosmetic_thread_p4',
-                     'external_cosmetic_thread_p4',
-                     'internal_cosmetic_thread_p5',
-                     'external_cosmetic_thread_p5',
-                     'internal_cosmetic_thread_pd0',
-                     'external_cosmetic_thread_pd0',
-                     'internal_cosmetic_thread_pd1',
-                     'external_cosmetic_thread_pd1']
+                     'external_cosmetic_thread_p']
         #
         # # creates a new toolbar with your commands
-        # # toolbar not necessary, this workbench is for developement and testing of tools
+        # # toolbar not necessary, this workbench is for developement and
+        # # testing of tools
         # self.appendToolbar("Cosmetic_Thread_3D", self.list)
         #
         # creates a new menu

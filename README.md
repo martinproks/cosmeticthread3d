@@ -1,6 +1,6 @@
 # CosmeticThread3D
 
-Version: 0.2
+Version: 0.3
 
 **FreeCAD** version supported: **0.21.2 or higher**
 
@@ -18,9 +18,7 @@ FreeCAD tool - cosmetic thread for 3D geometry - experimental.
 
 This tool should make 3D representation and important parameters of cosmetic threads (internal and external) for standard threads to the FreeCAD.
 
-Goal of this tool is not bring final version of the cosmetic threads (not yet), but explore ways how to do it and prepare background for more stable and good final implementation. There are 5 types of Part version of geometric representation of cosmetic thread. You can test each of them and select the one You prefer. **Please let feedback what type is the best in your opinion - what type to develop more and finally implement**.
-
-![Cosmetic Thread 3D - internal and external examples](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/test_2024-04-20.png?raw=true)
+![Cosmetic Thread 3D - internal and external examples](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/ct3d_2024-06-02.png?raw=true)
 
 ---
 
@@ -40,21 +38,11 @@ But testers and feedback from them is very helpfull and important. Please test i
 
 ## Usage
 
-1. Open some document (`tests_and_examples/testing_model.FCStd` for example)
+For normal usage form GUI follow documentation: [user-manual.html](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/user-manual.html)
 
-2. Press Internal cosmetic thread button (from menu or from tool buttons). It should create cone and attachment editor. It represent thread orientation.
+For usage from python console follow documentation: [How-to-use-it-from-python-console.html](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/How-to-use-it-from-python-console.html)
 
-3. Select hole edge (circle) as first attachment and select "Concentric".
-
-4. If You need, flip side orientation.
-
-5. Set thread parameters.
-
-6. Press OK.
-
-![Cosmetic Thread 3D internal  how to use it](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/img/ct3d__first_test.gif?raw=true)
-
-Feedback is welcome.
+Video (little outdated, but the main workflow remains): [Cosmetic Thread 3D tutorial - Part version - flange and studs](https://odysee.com/@Martin.Proks:a/flange_and_studs__part:3)
 
 ---
 
@@ -72,7 +60,7 @@ Tapered threads are not supported at this moment.
 
 ## Visual representation
 
-There are more types of Cosmetic Threads for tests and comparison what type is the best for further implementation. Generally it is important  to see in 3D:
+Generally it is important  to see in 3D:
 
 * Length of the thread.
 
@@ -80,13 +68,7 @@ There are more types of Cosmetic Threads for tests and comparison what type is t
 
 * Optionally some helpfull geometry to better visualisation of the thread (e.g. helix with correct pitch).
 
-## FreeCAD geometric and parameter representation
-
-### Geometric representation
-
-There are two major versions of cosmetic thread. Part version and PartDesign version of cosmetic thread. Part version is based on non-solid geometry. It consist of shells and curves in 3D. PartDesign version is based on solid substractive feature.
-
-### Parameters of FreeCAD thread feature
+## Parameters of FreeCAD thread feature
 
 The cosmetic thread geometry is wrapped into one FreeCAD feature (python feature) with parameters for possibility to advanced usage - for example for TechDraw.
 
@@ -146,31 +128,11 @@ The parameters are:
 
 ## Notes to implementation
 
-There are more functions and classes for threads.
+Workbench for just two buttons does not make sense in the end. But for the developement of the tools it is most probably the easyest way how to do it. Someday in the future it will be good idea to merge it with some existing and more general work bench - Part WB I think. Or merge it with some other thread oriented work bench?
 
-* **P0** - **Part** version, **type 0** of geometry representation.
-  The whole work is based on Part objects and it is dedicated to be used on Part geometry. Do not mix it with PartDesign, there are non-compatible problems.
+Notes specific to Part version of cosmetic threads: Each thread is separate Part object that could be inserted in a group Threads. It is easy to identify all threads and read their parameters, switch on/off all in once by Threads group. The main solid of the base part is not affected by the cosmetic threads - important for CAM and FEM. But TechDraw can not show curves from model at this moment.
 
-* **P1** - **Part** version, **type 1** of geometry representation.
-  Simmilar as P0, but without the helix.
-
-* **P2** - **Part** version, **type 2** of geometry representation.
-  Thread is simulated by tube D-D1-length / D-d3-length.
-
-* **P3 - Part** version, **type 3** of geometry representation.
-  Outer and bottom shell of the thread as P1 type. Thread shape is **replaced** by **rotated zig-zag** profile (shell).
-
-* **P4** - **Part** version, **type 4** of geometry representation.
-  Shell with texture.
-
-* **PD0** - **PartDesign** version, **type 0** of geometry representation.
-  Geometric simmilar to P1. There are not shells, but verry thin gaps representing the thread.
-
-Workbench for just two buttons does not make sense in the end. But for the developement of the tools it is most probably the easyest way how to do it. Someday in the future it will be good idea to merge it with some existing and more general work bench - Part or PartDesign I think. Or merge it with some other thread oriented work bench?
-
-Notes specific to Part version of cosmetic threads: Each thread is separate Part object that could be inserted in a group Threads. It is easy to identify all threads and read their parameters, switch on/off all in once by Threads group. The main solid of the base part is not affected by the cosmetic threads - important for CAM and FEM. But TechDraw can not show shells at this moment.
-
-Notes specific to PartDesign version of cosmetic threads: The cosmetic thread geometry is thin solid. Each cosmetic thread is normal feature in the modeling tree. Pros is, this approach is shown on TechDraw, even it is not correct according standards. Cons are two. Thread are burried inside the modeling tree and it is costs more efford to find them all. Second and more important, the cosmetic threads affects the base solid of part. Cosmetic thread is gap or crac - like geometry in the main body. It could be problem for CAM and FEM.
+Notes specific to PartDesign version of cosmetic threads: there is no functional version of Cosmetic Thread 3D at this moment. Use ShapeBinder (or SubShapeBinder) and attache the Cosmetic Thread 3D to the binded geometry.
 
 # Known issues
 
@@ -184,7 +146,7 @@ Notes specific to PartDesign version of cosmetic threads: The cosmetic thread ge
 
 5. Icons are uggly. Who cares? It is just start of developement, icons are the last thing I care.
 
-6. TechDraw problems in Part version. On the normal view, the thread major diameter is shown. It is not exactly according to ISO drawing standards, there is whole circle shown. Bigger problem is ViewSections. The ViewSections showns just bodies, faces and their edges are ignored. It means, the cosmetic thread is not shown on ViewSections at this moment.
+6. TechDraw problem. TechDraw does not project curves from model to the drawing. The TechDraw should solve cosmetic thread according its parameters.
 
 7. There is no python report what functions are called on background.
 
