@@ -36,11 +36,11 @@ This tool is under developement. It is not usable for real work yet - some impor
 
 But testers and feedback from them is very helpfull and important. Please test it and left a feedback. Thanks.
 
-## Usage
+## Usage`http://htmlpreview.github.io/?`
 
-For normal usage form GUI follow documentation: [user-manual.html](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/user-manual.html)
+For normal usage form GUI follow documentation: [user-manual.html](http://htmlpreview.github.io/?https://github.com/martinproks/cosmeticthread3d/blob/main/doc/user-manual.html)
 
-For usage from python console follow documentation: [How-to-use-it-from-python-console.html](https://github.com/martinproks/cosmeticthread3d/blob/main/doc/How-to-use-it-from-python-console.html)
+For usage from python console follow documentation: [How-to-use-it-from-python-console.html](http://htmlpreview.github.io/?https://github.com/martinproks/cosmeticthread3d/blob/main/doc/How-to-use-it-from-python-console.html)
 
 Video (little outdated, but the main workflow remains): [Cosmetic Thread 3D tutorial - Part version - flange and studs](https://odysee.com/@Martin.Proks:a/flange_and_studs__part:3)
 
