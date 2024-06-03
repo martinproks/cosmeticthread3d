@@ -170,6 +170,7 @@ def internal(name, ct3di_prms, doc, aPart):
     doc        - [text link]          document for thread creating
     aPart      - [text link]          Part object for thread creating or None
     """
+    doc.openTransaction('undo000')
     obj = None
     if ct3di_prms is None:
         App.Console.PrintError('internal(name, ct3di_prms, doc, aPart) - Check ct3di_prms\n')
@@ -184,6 +185,7 @@ def internal(name, ct3di_prms, doc, aPart):
         ViewProvider_ct3di(obj.ViewObject)
         CosmeticThread3DInternal(obj, ct3di_prms)
         App.ActiveDocument.recompute()
+    doc.commitTransaction()
     return obj
 
 # +------------------------------------------------------+
@@ -385,6 +387,7 @@ def external(name, ct3de_prms, doc, aPart):
     aPart      - [text link]          Part object for thread creating or None
 
     """
+    doc.openTransaction('undo000')
     obj = None
     if ct3de_prms is None:
         App.Console.PrintError('external(name, ct3de_prms, doc, aPart) - Check ct3de_prms\n')
@@ -399,6 +402,7 @@ def external(name, ct3de_prms, doc, aPart):
         ViewProvider_ct3de(obj.ViewObject)
         CosmeticThread3DExternal(obj, ct3de_prms)
         App.ActiveDocument.recompute()
+    doc.commitTransaction()
     return obj
 
 # +------------------------------------------------------+

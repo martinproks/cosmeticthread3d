@@ -517,6 +517,7 @@ class arrowP_direction():
         doc   - document where the arrow should be created
         aPart - part object where the arrow should be created or None
         """
+        doc.openTransaction('undo000')
         pL = []
         pL.append(App.Vector(0, 0, 3))
         pL.append(App.Vector(-0.5, 0, 0))
@@ -530,6 +531,7 @@ class arrowP_direction():
         if aPart is not None:
             aPart.addObject(obj)
         obj.recompute()
+        doc.commitTransaction()
         return obj
 
     def scale(obj, hole_diameter):
@@ -581,6 +583,7 @@ class arrowPD_direction():
         body - active PartDesign body or None
         """
         # Actually I do not need 'doc' object here, if I use body.newObject().
+        doc.openTransaction('undo000')
         pL = []
         pL.append(App.Vector(0, 0, 3))
         pL.append(App.Vector(-0.5, 0, 0))
@@ -592,6 +595,7 @@ class arrowPD_direction():
         obj = Draft.makeWire(pL)
         body.addObject(obj)
         obj.recompute()
+        doc.commitTransaction()
         return obj
 
     def scale(obj, hole_diameter):

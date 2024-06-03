@@ -180,7 +180,7 @@ def internal(name, ct3di_prms, doc, body):
     doc        - [text link]              document for thread creating
     body       - [PartDesign body object] body object for the thread
     """
-
+    doc.openTransaction('undo000')
     obj = None
     if doc is None:
         App.Console.PrintError("Document has to be set.\n")
@@ -197,6 +197,7 @@ def internal(name, ct3di_prms, doc, body):
         ViewProvider_ct3di(obj.ViewObject, body.ViewObject)
         CosmeticThread3DInternal(obj, ct3di_prms)
         body.addObject(obj) # optionally we can also use body.insertObject()
+    doc.commitTransaction()
     return obj
 
 # +---------------------------------------------------------+
@@ -409,7 +410,7 @@ def external(name, ct3de_prms, doc, body):
     doc        - [text link]              document for thread creating
     body       - [PartDesign body object] body object for the thread
     """
-
+    doc.openTransaction('undo000')
     obj = None
     if doc is None:
         App.Console.PrintError("Document has to be set.\n")
@@ -427,6 +428,7 @@ def external(name, ct3de_prms, doc, body):
         ViewProvider_ct3de(obj.ViewObject, body.ViewObject)
         CosmeticThread3DExternal(obj, ct3de_prms)
         body.addObject(obj) # optionally we can also use body.insertObject()
+    doc.commitTransaction()
     return obj
 
 # +---------------------------------------------------------+
