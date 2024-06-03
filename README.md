@@ -36,7 +36,7 @@ This tool is under developement. It is not usable for real work yet - some impor
 
 But testers and feedback from them is very helpfull and important. Please test it and left a feedback. Thanks.
 
-## Usage`http://htmlpreview.github.io/?`
+## Usage
 
 For normal usage form GUI follow documentation: [user-manual.html](http://htmlpreview.github.io/?https://github.com/martinproks/cosmeticthread3d/blob/main/doc/user-manual.html)
 
